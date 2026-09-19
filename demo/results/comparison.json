@@ -1,0 +1,21 @@
+{
+  "cognitive_complexity": {
+    "before": 35.0,
+    "after": 31.0,
+    "change": -4.0,
+    "percent_change": -11.4
+  },
+  "predicted_risk_score": {
+    "before": 0.29373795111974077,
+    "after": 0.29373795111974077,
+    "change": 0.0
+  },
+  "action": {
+    "before": "no_intervention",
+    "after": "no_intervention"
+  },
+  "refactoring_suggestion_applied": true,
+  "act_trigger_reasons": [
+    "Act layer: measured complexity_before 35.0 > per-method threshold 15.0"
+  ]
+}

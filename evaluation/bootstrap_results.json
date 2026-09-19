@@ -1,0 +1,32 @@
+{
+  "phase": "II_ANALYZE",
+  "study": "out_of_sample_bootstrap_validation",
+  "warning": "Bootstrap validation on a 62-row dataset. The a-priori target AUC > 0.80 (Methodology \u00a73.5.1) is a pipeline-validation checkpoint here, not a dissertation-level claim - scale the Sense-phase sample before reporting these figures as final.",
+  "row_count": 62,
+  "n_iterations_requested": 1000,
+  "target_auc": 0.8,
+  "models": {
+    "random_forest": {
+      "requested_iterations": 1000,
+      "valid_iterations": 1000,
+      "skipped_iterations": 0,
+      "skip_reason": "bag or out-of-bag set contained only one class",
+      "mean_auc": 0.7206232164225778,
+      "median_auc": 0.7261904761904762,
+      "std_auc": 0.10440126017180601,
+      "ci_95_low": 0.4932916666666667,
+      "ci_95_high": 0.9045178167420813
+    },
+    "xgboost": {
+      "requested_iterations": 1000,
+      "valid_iterations": 1000,
+      "skipped_iterations": 0,
+      "skip_reason": "bag or out-of-bag set contained only one class",
+      "mean_auc": 0.6818010020371496,
+      "median_auc": 0.6904761904761905,
+      "std_auc": 0.1164345370698827,
+      "ci_95_low": 0.43741776315789477,
+      "ci_95_high": 0.8977377946127946
+    }
+  }
+}

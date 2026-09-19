@@ -1,0 +1,166 @@
+{
+  "phase": "II_ANALYZE",
+  "status": "pilot_evaluation_smote_balanced",
+  "warning": "Pilot metrics on a 62-row dataset are a pipeline validation, not a final dissertation claim. Scale the Sense-phase sample (more commons-lang PRs, then Kafka/Dubbo) before reporting dissertation-level results.",
+  "row_count": 62,
+  "feature_fields": [
+    "additions",
+    "deletions",
+    "changed_files",
+    "changed_java_files",
+    "commits",
+    "comments",
+    "review_comments",
+    "body_character_count",
+    "title_word_count",
+    "complexity_before"
+  ],
+  "excluded_post_submission_fields": [
+    "complexity_after",
+    "complexity_delta",
+    "complexity_increased",
+    "exceeds_significant_complexity_increase",
+    "complexity_threshold"
+  ],
+  "label_field": "exceeds_significant_complexity_increase",
+  "temporal_split": {
+    "train_fraction": 0.7,
+    "train_count": 43,
+    "test_count": 19,
+    "train_pr_numbers": [
+      1311,
+      1319,
+      1324,
+      1381,
+      1386,
+      1392,
+      1407,
+      1481,
+      1483,
+      1525,
+      1546,
+      1554,
+      1569,
+      1575,
+      1594,
+      1599,
+      1610,
+      1613,
+      1616,
+      1619,
+      1624,
+      1626,
+      1633,
+      1634,
+      1640,
+      1644,
+      1648,
+      1652,
+      1655,
+      1657,
+      1658,
+      1662,
+      1679,
+      1680,
+      1681,
+      1683,
+      1686,
+      1691,
+      1699,
+      1700,
+      1705,
+      1710,
+      1712
+    ],
+    "test_pr_numbers": [
+      1713,
+      1719,
+      1723,
+      1726,
+      1735,
+      1736,
+      1739,
+      1742,
+      1746,
+      1750,
+      1752,
+      1754,
+      1755,
+      1758,
+      1762,
+      1764,
+      1766,
+      1768,
+      1771
+    ]
+  },
+  "class_balance": {
+    "train_before_smote": {
+      "0": 32,
+      "1": 11
+    },
+    "train_after_smote": {
+      "0": 32,
+      "1": 32
+    },
+    "smote_k_neighbors": 5,
+    "test_positive": 7,
+    "test_negative": 12,
+    "test_true_positive_rate": 0.3684210526315789
+  },
+  "models": {
+    "random_forest": {
+      "accuracy": 0.7894736842105263,
+      "precision": 0.8,
+      "recall": 0.5714285714285714,
+      "f1": 0.6666666666666666,
+      "predicted_positive_rate": 0.2631578947368421,
+      "confusion_matrix": {
+        "true_negative": 11,
+        "false_positive": 1,
+        "false_negative": 3,
+        "true_positive": 4
+      },
+      "roc_auc": 0.8928571428571429,
+      "feature_importances": {
+        "additions": 0.20843786656557148,
+        "complexity_before": 0.12540776037302373,
+        "body_character_count": 0.12152710322433079,
+        "title_word_count": 0.10625776277179037,
+        "changed_files": 0.09937651866640652,
+        "changed_java_files": 0.09479343176763032,
+        "deletions": 0.08705310563867548,
+        "commits": 0.05909469805127917,
+        "review_comments": 0.0576406737494492,
+        "comments": 0.040411079191842995
+      }
+    },
+    "xgboost": {
+      "accuracy": 0.7894736842105263,
+      "precision": 0.8,
+      "recall": 0.5714285714285714,
+      "f1": 0.6666666666666666,
+      "predicted_positive_rate": 0.2631578947368421,
+      "confusion_matrix": {
+        "true_negative": 11,
+        "false_positive": 1,
+        "false_negative": 3,
+        "true_positive": 4
+      },
+      "roc_auc": 0.9166666666666667,
+      "feature_importances": {
+        "changed_files": 0.21297234296798706,
+        "additions": 0.11376771330833435,
+        "changed_java_files": 0.10489200800657272,
+        "review_comments": 0.10204634070396423,
+        "title_word_count": 0.09526371210813522,
+        "commits": 0.08540664613246918,
+        "complexity_before": 0.07908381521701813,
+        "body_character_count": 0.07276500016450882,
+        "deletions": 0.07213010638952255,
+        "comments": 0.06167227402329445
+      }
+    }
+  },
+  "interpretation_note": "Feature importance is reasonably distributed across the feature set in both models (top feature per model: random_forest: additions (0.21), xgboost: changed_files (0.21)), consistent with genuine multi-feature prediction rather than a single dominant signal."
+}

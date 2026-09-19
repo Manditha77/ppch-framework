@@ -1,0 +1,14 @@
+.env
+venv/
+.venv311/
+__pycache__/
+*.pyc
+sense/data/raw/*
+sense/data/processed/*
+!sense/data/raw/.gitkeep
+!sense/data/processed/.gitkeep
+analyze/models/*.pkl
+analyze/models/*.joblib
+.DS_Store
+demo/scratch_test/
+*.class

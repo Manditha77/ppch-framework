@@ -1,0 +1,107 @@
+[
+  {
+    "pr_number": 1681,
+    "risk_score": 0.985829560359319,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 8801 to 8802 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  },
+  {
+    "pr_number": 1392,
+    "risk_score": 0.9661069619655609,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "substitute",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "substitute",
+        "complexity": 75.0
+      }
+    ],
+    "sonarqube": {
+      "before": 110.0,
+      "after": 108.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 84 to the 15 allowed.",
+          "line": 1112
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 81 to the 15 allowed.",
+          "line": 1112
+        }
+      ]
+    }
+  },
+  {
+    "pr_number": 1700,
+    "risk_score": 0.9659163117408752,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "format",
+    "extractions_applied": 7,
+    "still_over_threshold_after": [
+      {
+        "method": "formatPeriod",
+        "complexity": 30.0
+      },
+      {
+        "method": "formatExtracted2ExtractedExtractedExtractedExtracted",
+        "complexity": 22.0
+      },
+      {
+        "method": "formatDurationWords",
+        "complexity": 18.0
+      }
+    ],
+    "sonarqube": {
+      "before": 174.0,
+      "after": 157.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 64 to the 15 allowed.",
+          "line": 248
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.",
+          "line": 436
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 37 to the 15 allowed.",
+          "line": 527
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 40 to the 15 allowed.",
+          "line": 656
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.",
+          "line": 307
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.",
+          "line": 465
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 32 to the 15 allowed.",
+          "line": 556
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 40 to the 15 allowed.",
+          "line": 690
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,18 @@
+name: PPCH Proactive Code Health
+
+description: Predict cognitive-complexity risk and deliver a transparent PR intervention
+
+inputs:
+  complexity-threshold:
+    description: Repository cognitive-complexity threshold
+    required: false
+    default: "15"
+
+runs:
+  using: composite
+  steps:
+    - name: Run PPCH intervention
+      shell: bash
+      env:
+        PPCH_COMPLEXITY_THRESHOLD: ${{ inputs.complexity-threshold }}
+      run: python act/github-action/pipeline.py --pr-number "${{ github.event.pull_request.number }}" --threshold "$PPCH_COMPLEXITY_THRESHOLD"

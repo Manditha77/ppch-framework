@@ -1,0 +1,14 @@
+{
+  "_note": "SYNTHETIC metadata for the standalone live demo — not a real GitHub PR. Represents a plausible scenario: a contributor submitting this pricing engine as a new feature. Structural counts (additions/files) are real (derived from the actual demo files); process/text fields (commits/comments/title/body) are illustrative placeholders, clearly labeled as such so the demo is honest about what is real vs simulated. complexity_before is NOT included here — it is computed live by scripts/sense_scan.py from an actual SonarScanner run, exactly like the real Sense-phase pipeline.",
+
+  "title": "Add configurable pricing engine with tiered and coupon discounts",
+  "body": "Introduces PricingEngine to calculate final order prices based on customer tier, holiday status, and coupon codes. Includes support classes Customer, Order, and CustomerTier.",
+
+  "additions": 122,
+  "deletions": 0,
+  "changed_files": 4,
+  "changed_java_files": 4,
+  "commits": 1,
+  "comments": 2,
+  "review_comments": 1
+}

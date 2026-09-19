@@ -1,0 +1,54 @@
+{
+  "status": "threshold_unreachable",
+  "solver": "CBC",
+  "selected_statement_indices": [
+    8,
+    9,
+    10,
+    11
+  ],
+  "original_complexity": 28.0,
+  "remaining_complexity": 21.0,
+  "complexity_threshold": 15.0,
+  "max_local_variables": 4,
+  "source_file": "PricingEngine.java",
+  "method_name": "calculateFinalPrice",
+  "method_start_line": 11,
+  "was_touched_by_pr": true,
+  "approximate_method_complexity": 28.0,
+  "trigger_reasons": [
+    "Act layer: measured complexity_before 35.0 > per-method threshold 15.0"
+  ],
+  "note": "approximate_method_complexity is this framework's own reproduction of Campbell's (2018) rules, not SonarQube's proprietary engine \u2014 the complexity_before figure used for the risk PREDICTION above is the real SonarQube measurement; this number is only used to select and score the extraction candidate.",
+  "suggestion": {
+    "rendered": true,
+    "source_line_range": [
+      21,
+      29
+    ],
+    "brace_balanced": true,
+    "inferred_parameters": [
+      "customer",
+      "discount",
+      "order"
+    ],
+    "parameter_types": {
+      "customer": "Customer",
+      "discount": "double",
+      "order": "Order"
+    },
+    "return_analysis": {
+      "outbound_variables": [
+        "discount"
+      ],
+      "status": "single_return"
+    },
+    "suggested_method_name": "calculateFinalPriceExtracted",
+    "suggested_signature": "private double calculateFinalPriceExtracted(Customer customer, double discount, Order order)",
+    "extracted_source": "                if (customer.getTier() == CustomerTier.GOLD) {\n                    if (order.getItemCount() > 5) {\n                        discount = discount + 0.15;\n                    } else {\n                        discount = discount + 0.10;\n                    }\n                } else if (customer.getTier() == CustomerTier.SILVER) {\n                    discount = discount + 0.05;\n                }",
+    "full_snippet": "private double calculateFinalPriceExtracted(Customer customer, double discount, Order order) {\n        if (customer.getTier() == CustomerTier.GOLD) {\n            if (order.getItemCount() > 5) {\n                discount = discount + 0.15;\n            } else {\n                discount = discount + 0.10;\n            }\n        } else if (customer.getTier() == CustomerTier.SILVER) {\n            discount = discount + 0.05;\n        }\n        return discount;\n}",
+    "call_site_replacement": "discount = calculateFinalPriceExtracted(customer, discount, order);",
+    "safe_to_auto_apply": true,
+    "caveat": "(Extended from the naive line 25 to 29 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  }
+}

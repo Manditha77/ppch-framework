@@ -1,0 +1,16 @@
+# Phase I — Sense
+PyGithub==2.4.0
+python-dotenv==1.0.1
+pandas==2.2.3
+tqdm==4.67.1
+requests==2.32.3
+
+# Phase II — Analyze (installed later, listed here for reference)
+scikit-learn==1.5.2
+xgboost==2.1.2
+imbalanced-learn==0.12.4
+# sentence-transformers==3.2.1
+shap==0.46.0
+
+# Phase III — Act (installed later)
+pulp==2.9.0
