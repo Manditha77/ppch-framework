@@ -10,38 +10,38 @@ in Methodology §3.3.3, which are not yet implemented.
 
 ## random_forest
 
-Full-model AUC: **0.911**
+Full-model AUC: **0.798**
 
 | Family removed | AUC without family | Δ vs full |
 |---|---:|---:|
-| baseline_complexity | 0.911 | +0.000 |
-| structural_size | 0.625 | -0.286 |
-| process | 0.893 | -0.018 |
-| textual_proxy | 0.869 | -0.042 |
+| baseline_complexity | 0.726 | -0.071 |
+| structural_size | 0.702 | -0.095 |
+| process | 0.893 | +0.095 |
+| textual_proxy | 0.774 | -0.024 |
 
 | Family alone | Standalone AUC |
 |---|---:|
 | baseline_complexity | 0.726 |
-| structural_size | 0.732 |
-| process | 0.405 |
-| textual_proxy | 0.738 |
+| structural_size | 0.738 |
+| process | 0.667 |
+| textual_proxy | 0.714 |
 
 ## xgboost
 
-Full-model AUC: **0.917**
+Full-model AUC: **0.786**
 
 | Family removed | AUC without family | Δ vs full |
 |---|---:|---:|
-| baseline_complexity | 0.929 | +0.012 |
-| structural_size | 0.750 | -0.167 |
-| process | 0.869 | -0.048 |
-| textual_proxy | 0.881 | -0.036 |
+| baseline_complexity | 0.679 | -0.107 |
+| structural_size | 0.726 | -0.059 |
+| process | 0.869 | +0.083 |
+| textual_proxy | 0.762 | -0.024 |
 
 | Family alone | Standalone AUC |
 |---|---:|
 | baseline_complexity | 0.732 |
 | structural_size | 0.815 |
-| process | 0.411 |
+| process | 0.565 |
 | textual_proxy | 0.655 |
 
 **Reading this table:** a large negative Δ when a family is removed means that

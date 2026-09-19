@@ -84,6 +84,18 @@ def build_feature_row(number: int, complexity_threshold: float = 15.0, delta_thr
         "complexity_threshold": complexity_threshold,
         "delta_threshold": delta_threshold,
         "label_definition": "complexity_delta_significant_increase",
+        # Methodology §3.3.2's named code smells (God Class -> SonarJava
+        # S6539 "Monster Class", Long Method -> S138), scoped to this PR's
+        # touched files the same way complexity is - see
+        # 02_scan_pilot_batch.py's get_scoped_smell_counts. None on scan
+        # records collected before this field existed (legacy pilot data) -
+        # not yet wired into the trained model's active feature set (kept as
+        # collected evidence for now, to limit how many places need to stay
+        # in sync at once - a natural, low-risk next feature-set expansion).
+        "god_class_smells_before": scan.get("god_class_smells_before"),
+        "god_class_smells_after": scan.get("god_class_smells_after"),
+        "long_method_smells_before": scan.get("long_method_smells_before"),
+        "long_method_smells_after": scan.get("long_method_smells_after"),
     }
 
 

@@ -31,6 +31,8 @@ from pipeline import (  # noqa: E402
 )
 
 EVALUATION_DIR = THIS_DIR.parents[1] / "evaluation"
+sys.path.insert(0, str(THIS_DIR.parents[1] / "analyze"))
+from feature_utils import apply_log_transform  # noqa: E402
 
 
 def load_models() -> dict:
@@ -41,7 +43,9 @@ def load_models() -> dict:
 
 
 def predict_risk(models: dict, feature_row: dict) -> float:
-    x = pd.DataFrame([{f: feature_row[f] for f in FEATURES}])
+    # MUST match analyze/train_models.py's load_dataset() exactly, or
+    # predictions silently skew (see analyze/feature_utils.py).
+    x = apply_log_transform(pd.DataFrame([{f: feature_row[f] for f in FEATURES}]))
     probs = [model.predict_proba(x)[0, 1] for model in models.values()]
     return sum(probs) / len(probs)
 

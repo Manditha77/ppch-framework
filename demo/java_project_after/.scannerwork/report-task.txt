@@ -2,5 +2,5 @@ projectKey=ppch-demo-after
 serverUrl=http://localhost:9000
 serverVersion=26.8.0.126808
 dashboardUrl=http://localhost:9000/dashboard?id=ppch-demo-after
-ceTaskId=84c76f16-03d8-4645-95a0-b7ddc1824741
-ceTaskUrl=http://localhost:9000/api/ce/task?id=84c76f16-03d8-4645-95a0-b7ddc1824741
+ceTaskId=3f27de6a-ea91-4495-94a9-e31a6e72ae7a
+ceTaskUrl=http://localhost:9000/api/ce/task?id=3f27de6a-ea91-4495-94a9-e31a6e72ae7a

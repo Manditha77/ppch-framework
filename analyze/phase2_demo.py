@@ -18,6 +18,10 @@ PREDICTOR_FIELDS = [
     "review_comments",
     "body_character_count",
     "title_word_count",
+    "contributor_prior_pr_count",
+    "contributor_prior_acceptance_rate",
+    "contributor_tenure_days",
+    "contributor_follower_count",
 ]
 LABEL_FIELD = "exceeds_significant_complexity_increase"
 POST_SUBMISSION_FIELDS = {

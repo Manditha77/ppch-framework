@@ -6,9 +6,9 @@
     "percent_change": -11.4
   },
   "predicted_risk_score": {
-    "before": 0.29373795111974077,
-    "after": 0.29373795111974077,
-    "change": 0.0
+    "before": 0.3023858803510666,
+    "after": 0.3007192136843999,
+    "change": -0.002
   },
   "action": {
     "before": "no_intervention",

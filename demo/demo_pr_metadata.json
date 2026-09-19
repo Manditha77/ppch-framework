@@ -1,5 +1,5 @@
 {
-  "_note": "SYNTHETIC metadata for the standalone live demo — not a real GitHub PR. Represents a plausible scenario: a contributor submitting this pricing engine as a new feature. Structural counts (additions/files) are real (derived from the actual demo files); process/text fields (commits/comments/title/body) are illustrative placeholders, clearly labeled as such so the demo is honest about what is real vs simulated. complexity_before is NOT included here — it is computed live by scripts/sense_scan.py from an actual SonarScanner run, exactly like the real Sense-phase pipeline.",
+  "_note": "SYNTHETIC metadata for the standalone live demo — not a real GitHub PR. Represents a plausible scenario: a moderately-established contributor submitting this pricing engine as a new feature. Structural counts (additions/files) are real (derived from the actual demo files); process/text/contributor fields (commits/comments/title/body/contributor_*) are illustrative placeholders, clearly labeled as such so the demo is honest about what is real vs simulated. complexity_before is NOT included here — it is computed live by scripts/sense_scan.py from an actual SonarScanner run, exactly like the real Sense-phase pipeline. contributor_* fields mirror the real, leakage-safe computation in sense/scripts/04_enrich_process_features.py (prior PRs before this one, current follower count) — here just hand-picked to represent a plausible profile rather than computed from real history.",
 
   "title": "Add configurable pricing engine with tiered and coupon discounts",
   "body": "Introduces PricingEngine to calculate final order prices based on customer tier, holiday status, and coupon codes. Includes support classes Customer, Order, and CustomerTier.",
@@ -10,5 +10,9 @@
   "changed_java_files": 4,
   "commits": 1,
   "comments": 2,
-  "review_comments": 1
+  "review_comments": 1,
+  "contributor_prior_pr_count": 3,
+  "contributor_prior_acceptance_rate": 0.67,
+  "contributor_tenure_days": 90.0,
+  "contributor_follower_count": 5
 }

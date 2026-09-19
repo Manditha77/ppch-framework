@@ -25,6 +25,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 from xgboost import XGBClassifier
 
+from feature_utils import apply_log_transform
+
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED_DIR = ROOT / "sense" / "data" / "processed"
 EVALUATION_DIR = ROOT / "evaluation"
@@ -32,6 +34,8 @@ EVALUATION_DIR = ROOT / "evaluation"
 FEATURES = [
     "additions", "deletions", "changed_files", "changed_java_files", "commits",
     "comments", "review_comments", "body_character_count", "title_word_count",
+    "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
+    "contributor_tenure_days", "contributor_follower_count",
     "complexity_before",
 ]
 LABEL = "exceeds_significant_complexity_increase"
@@ -43,7 +47,7 @@ def load_dataset() -> pd.DataFrame:
         json.loads(path.read_text(encoding="utf-8"))
         for path in PROCESSED_DIR.glob("pr_*/feature_table.json")
     ]
-    return pd.DataFrame(rows).reset_index(drop=True)
+    return apply_log_transform(pd.DataFrame(rows).reset_index(drop=True))
 
 
 def make_model(name: str, seed: int):

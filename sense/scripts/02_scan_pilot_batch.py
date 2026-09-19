@@ -232,6 +232,48 @@ def get_scoped_complexity(project_key: str, file_paths: list, sonar_token: str, 
     return total
 
 
+# Methodology §3.3.2: "SonarScanner was executed... to identify code smells
+# such as God Class and Long Method." SonarJava has no rule literally named
+# "God Class" - S6539 ("Monster Class") is SonarSource's own modern name for
+# the same smell (a class doing/knowing too much); S138 ("Methods should not
+# have too many lines") is the direct Long Method analog. Verified against
+# this project's own SonarQube instance's /api/rules/search before use, not
+# guessed - see the god-class/long-method verification note in
+# docs/04_phase1_full_progress_bilingual_continue.md.
+GOD_CLASS_RULE = "java:S6539"
+LONG_METHOD_RULE = "java:S138"
+
+
+def get_scoped_smell_counts(project_key: str, file_paths: list, sonar_token: str, sonar_host: str) -> dict:
+    """Count God-Class/Long-Method issues, scoped to `file_paths` only (same
+    scoping principle as get_scoped_complexity - a PR's own smell signal, not
+    the whole project's pre-existing smells)."""
+    counts = {"god_class_smells": 0, "long_method_smells": 0}
+    if not file_paths:
+        return counts
+
+    scoped_components = {f"{project_key}:{fp}" for fp in file_paths}
+    resp = requests.get(
+        f"{sonar_host}/api/issues/search",
+        params={
+            "componentKeys": project_key,
+            "rules": f"{GOD_CLASS_RULE},{LONG_METHOD_RULE}",
+            "ps": 500,
+        },
+        auth=(sonar_token, ""),
+    )
+    if resp.status_code != 200:
+        return counts
+    for issue in resp.json().get("issues", []):
+        if issue.get("component") not in scoped_components:
+            continue  # a pre-existing smell in a file this PR didn't touch
+        if issue.get("rule") == GOD_CLASS_RULE:
+            counts["god_class_smells"] += 1
+        elif issue.get("rule") == LONG_METHOD_RULE:
+            counts["long_method_smells"] += 1
+    return counts
+
+
 # ---------------------------------------------------------------------------
 # Step 6: cleanup
 # ---------------------------------------------------------------------------
@@ -248,7 +290,11 @@ def delete_project(project_key: str, sonar_token: str, sonar_host: str):
 # Per-snapshot pipeline: checkout -> scan -> scoped-query
 # ---------------------------------------------------------------------------
 
-def scan_snapshot(sha: str, project_key: str, changed_files: list, sonar_token: str, sonar_host: str) -> float | None:
+def scan_snapshot(sha: str, project_key: str, changed_files: list, sonar_token: str, sonar_host: str) -> dict | None:
+    """Returns {"complexity": float, "god_class_smells": int,
+    "long_method_smells": int} for one snapshot, or None if the checkout/
+    scan/processing failed. Both the complexity measure and the smell
+    issues come from the SAME completed analysis - no second scan needed."""
     if not checkout_commit(sha):
         print(f"    [skip] could not check out {sha[:10]}")
         return None
@@ -258,7 +304,11 @@ def scan_snapshot(sha: str, project_key: str, changed_files: list, sonar_token: 
     if not ce_task_url or not wait_for_processing(ce_task_url, sonar_token):
         print(f"    [skip] analysis processing did not complete for {project_key}")
         return None
-    return get_scoped_complexity(project_key, changed_files, sonar_token, sonar_host)
+    complexity = get_scoped_complexity(project_key, changed_files, sonar_token, sonar_host)
+    if complexity is None:
+        return None
+    smells = get_scoped_smell_counts(project_key, changed_files, sonar_token, sonar_host)
+    return {"complexity": complexity, **smells}
 
 
 def already_scanned() -> set:
@@ -326,13 +376,15 @@ def main():
             head_key = f"cl-pr{number}-head"
 
             print("  Scanning base (before)...")
-            complexity_before = scan_snapshot(pr["base_sha"], base_key, changed_files, sonar_token, sonar_host)
+            before = scan_snapshot(pr["base_sha"], base_key, changed_files, sonar_token, sonar_host)
             delete_project(base_key, sonar_token, sonar_host)
 
             print("  Scanning head (after)...")
-            complexity_after = scan_snapshot(pr["head_sha"], head_key, changed_files, sonar_token, sonar_host)
+            after = scan_snapshot(pr["head_sha"], head_key, changed_files, sonar_token, sonar_host)
             delete_project(head_key, sonar_token, sonar_host)
 
+            complexity_before = before["complexity"] if before else None
+            complexity_after = after["complexity"] if after else None
             if complexity_before is None or complexity_after is None:
                 print(f"  [warn] incomplete data for PR #{number} — recording as null")
 
@@ -352,10 +404,20 @@ def main():
                 "cognitive_complexity_before": complexity_before,
                 "cognitive_complexity_after": complexity_after,
                 "cognitive_complexity_delta": delta,
+                # Methodology §3.3.2's named code smells, scoped to this PR's
+                # touched files the same way complexity is - see
+                # get_scoped_smell_counts.
+                "god_class_smells_before": before["god_class_smells"] if before else None,
+                "god_class_smells_after": after["god_class_smells"] if after else None,
+                "long_method_smells_before": before["long_method_smells"] if before else None,
+                "long_method_smells_after": after["long_method_smells"] if after else None,
             }
             out.write(json.dumps(record) + "\n")
             out.flush()
             print(f"  Result (scoped to touched files): before={complexity_before}, after={complexity_after}, delta={delta}")
+            if before and after:
+                print(f"  Smells: God Class {before['god_class_smells']}->{after['god_class_smells']}, "
+                      f"Long Method {before['long_method_smells']}->{after['long_method_smells']}")
 
     print(f"\nDone. Results written to {RESULTS_PATH}")
 

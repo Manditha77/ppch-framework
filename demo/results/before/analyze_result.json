@@ -10,13 +10,17 @@
     "review_comments": 1,
     "body_character_count": 174,
     "title_word_count": 9,
+    "contributor_prior_pr_count": 3,
+    "contributor_prior_acceptance_rate": 0.67,
+    "contributor_tenure_days": 90.0,
+    "contributor_follower_count": 5,
     "complexity_before": 35.0
   },
   "model_probabilities": {
-    "random_forest": 0.25666666666666665,
-    "xgboost": 0.33080923557281494
+    "random_forest": 0.31,
+    "xgboost": 0.2947717607021332
   },
-  "risk_score": 0.29373795111974077,
+  "risk_score": 0.3023858803510666,
   "predicted_label": 0,
   "action": "no_intervention",
   "refactoring_suggestion_requested": false

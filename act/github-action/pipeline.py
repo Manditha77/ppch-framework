@@ -29,6 +29,8 @@ from fetch_source import fetch_file_at_commit
 from diff_utils import changed_line_numbers
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "analyze"))
+from feature_utils import apply_log_transform  # noqa: E402
 PROCESSED_DIR = ROOT / "sense" / "data" / "processed"
 MODEL_DIR = ROOT / "analyze" / "models"
 SCAN_RESULTS_PATH = ROOT / "sense" / "data" / "raw" / "pilot_scan_results.jsonl"
@@ -40,6 +42,11 @@ GITHUB_REPO = "commons-lang"
 FEATURES = [
     "additions", "deletions", "changed_files", "changed_java_files", "commits",
     "comments", "review_comments", "body_character_count", "title_word_count",
+    # Contributor process features (Methodology §3.3.3), added via
+    # sense/scripts/04_enrich_process_features.py — leakage-safe (computed
+    # strictly from this contributor's PRIOR PRs and current follower count).
+    "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
+    "contributor_tenure_days", "contributor_follower_count",
     # Legitimate pre-submission signal: the TARGET BRANCH's complexity before this
     # PR's changes are applied. In real use this comes from scanning the base
     # branch independently of the incoming PR (even continuously) - it is not
@@ -179,7 +186,9 @@ def load_models() -> dict:
 
 
 def predict_risk(models: dict, feature_row: dict) -> dict:
-    x = pd.DataFrame([{field: feature_row[field] for field in FEATURES}])
+    # MUST match analyze/train_models.py's load_dataset() exactly, or
+    # predictions silently skew (see analyze/feature_utils.py).
+    x = apply_log_transform(pd.DataFrame([{field: feature_row[field] for field in FEATURES}]))
     probabilities = {name: float(model.predict_proba(x)[0, 1]) for name, model in models.items()}
     risk_score = sum(probabilities.values()) / len(probabilities)
     return {"model_probabilities": probabilities, "risk_score": risk_score}

@@ -29,6 +29,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 from xgboost import XGBClassifier
 
+from feature_utils import apply_log_transform
+
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED_DIR = ROOT / "sense" / "data" / "processed"
 EVALUATION_DIR = ROOT / "evaluation"
@@ -36,7 +38,15 @@ EVALUATION_DIR = ROOT / "evaluation"
 FAMILIES = {
     "baseline_complexity": ["complexity_before"],
     "structural_size": ["additions", "deletions", "changed_files", "changed_java_files"],
-    "process": ["commits", "comments", "review_comments"],
+    # "process" now includes the PR's own activity (commits/comments/review_
+    # comments) AND the contributor-level process features Methodology §3.3.3
+    # specifies (prior acceptance rate, tenure, prior PR count, follower
+    # count) — added via sense/scripts/04_enrich_process_features.py.
+    "process": [
+        "commits", "comments", "review_comments",
+        "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
+        "contributor_tenure_days", "contributor_follower_count",
+    ],
     "textual_proxy": ["body_character_count", "title_word_count"],
 }
 ALL_FEATURES = [f for group in FAMILIES.values() for f in group]
@@ -48,7 +58,7 @@ def load_split():
         json.loads(path.read_text(encoding="utf-8"))
         for path in PROCESSED_DIR.glob("pr_*/feature_table.json")
     ]
-    frame = pd.DataFrame(rows).sort_values("created_at").reset_index(drop=True)
+    frame = apply_log_transform(pd.DataFrame(rows).sort_values("created_at").reset_index(drop=True))
     split_index = max(1, int(len(frame) * 0.7))
     return frame.iloc[:split_index], frame.iloc[split_index:]
 

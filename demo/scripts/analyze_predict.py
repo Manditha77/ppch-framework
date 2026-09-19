@@ -15,6 +15,7 @@ Usage:
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import joblib
@@ -24,11 +25,15 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 DEMO_DIR = SCRIPTS_DIR.parent
 ROOT = DEMO_DIR.parent  # ppch-framework/
 MODEL_DIR = ROOT / "analyze" / "models"
+sys.path.insert(0, str(ROOT / "analyze"))
+from feature_utils import apply_log_transform  # noqa: E402
 
 # Must exactly match analyze/train_models.py's FEATURES list and order.
 FEATURES = [
     "additions", "deletions", "changed_files", "changed_java_files", "commits",
     "comments", "review_comments", "body_character_count", "title_word_count",
+    "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
+    "contributor_tenure_days", "contributor_follower_count",
     "complexity_before",
 ]
 
@@ -61,6 +66,10 @@ def build_feature_row(version: str) -> dict:
         "review_comments": pr_meta["review_comments"],
         "body_character_count": len(pr_meta["body"]),
         "title_word_count": len(pr_meta["title"].split()),
+        "contributor_prior_pr_count": pr_meta["contributor_prior_pr_count"],
+        "contributor_prior_acceptance_rate": pr_meta["contributor_prior_acceptance_rate"],
+        "contributor_tenure_days": pr_meta["contributor_tenure_days"],
+        "contributor_follower_count": pr_meta["contributor_follower_count"],
         "complexity_before": sense_result["cognitive_complexity"],
     }
 
@@ -68,7 +77,9 @@ def build_feature_row(version: str) -> dict:
 def predict(version: str) -> dict:
     models = load_models()
     feature_row = build_feature_row(version)
-    x = pd.DataFrame([feature_row])[FEATURES]
+    # MUST match analyze/train_models.py's load_dataset() exactly, or
+    # predictions silently skew (see feature_utils.py).
+    x = apply_log_transform(pd.DataFrame([feature_row]))[FEATURES]
 
     probabilities = {name: float(model.predict_proba(x)[0, 1]) for name, model in models.items()}
     risk_score = sum(probabilities.values()) / len(probabilities)

@@ -35,6 +35,8 @@ from sklearn.metrics import (
 )
 from xgboost import XGBClassifier
 
+from feature_utils import apply_log_transform
+
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED_DIR = ROOT / "sense" / "data" / "processed"
 MODEL_DIR = ROOT / "analyze" / "models"
@@ -43,6 +45,13 @@ EVALUATION_DIR = ROOT / "evaluation"
 FEATURES = [
     "additions", "deletions", "changed_files", "changed_java_files", "commits",
     "comments", "review_comments", "body_character_count", "title_word_count",
+    # Contributor process features (Methodology §3.3.3) — added via
+    # sense/scripts/04_enrich_process_features.py. All leakage-safe: computed
+    # strictly from this contributor's PRIOR PRs (before this PR's
+    # created_at) and their current follower count, same as a real
+    # deployment could query at submission time.
+    "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
+    "contributor_tenure_days", "contributor_follower_count",
     # complexity_before reflects the TARGET BRANCH's state before the PR's
     # changes are applied — it is genuinely available at PR-submission time (a
     # real deployment could scan the base branch independently of any incoming
@@ -76,7 +85,14 @@ def load_dataset() -> pd.DataFrame:
     frame = pd.DataFrame(rows).sort_values("created_at").reset_index(drop=True)
     if frame[FEATURES + [LABEL]].isnull().any().any():
         raise ValueError("Training features or labels contain null values")
-    return frame
+    # Methodology §3.3.4: log-transform heavy-tailed numeric features. See
+    # feature_utils.py - NOT a fitted transform, so applying it here (before
+    # the train/test split) introduces no leakage. Every prediction-time
+    # caller (demo/scripts/analyze_predict.py, act/github-action/pipeline.py,
+    # explore_candidates.py) MUST apply the exact same transform before
+    # calling predict_proba, or predictions silently skew - verified this
+    # stays in sync by testing a real prediction end-to-end after this change.
+    return apply_log_transform(frame)
 
 
 def metrics(model, x_test: pd.DataFrame, y_test: pd.Series) -> dict:

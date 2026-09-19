@@ -13,6 +13,10 @@
     "review_comments",
     "body_character_count",
     "title_word_count",
+    "contributor_prior_pr_count",
+    "contributor_prior_acceptance_rate",
+    "contributor_tenure_days",
+    "contributor_follower_count",
     "complexity_before"
   ],
   "excluded_post_submission_fields": [
@@ -110,57 +114,65 @@
   },
   "models": {
     "random_forest": {
-      "accuracy": 0.7894736842105263,
-      "precision": 0.8,
-      "recall": 0.5714285714285714,
-      "f1": 0.6666666666666666,
-      "predicted_positive_rate": 0.2631578947368421,
+      "accuracy": 0.7368421052631579,
+      "precision": 0.75,
+      "recall": 0.42857142857142855,
+      "f1": 0.5454545454545454,
+      "predicted_positive_rate": 0.21052631578947367,
       "confusion_matrix": {
         "true_negative": 11,
         "false_positive": 1,
-        "false_negative": 3,
-        "true_positive": 4
+        "false_negative": 4,
+        "true_positive": 3
       },
-      "roc_auc": 0.8928571428571429,
+      "roc_auc": 0.8333333333333334,
       "feature_importances": {
-        "additions": 0.20843786656557148,
-        "complexity_before": 0.12540776037302373,
-        "body_character_count": 0.12152710322433079,
-        "title_word_count": 0.10625776277179037,
-        "changed_files": 0.09937651866640652,
-        "changed_java_files": 0.09479343176763032,
-        "deletions": 0.08705310563867548,
-        "commits": 0.05909469805127917,
-        "review_comments": 0.0576406737494492,
-        "comments": 0.040411079191842995
+        "additions": 0.12053081020421624,
+        "contributor_follower_count": 0.09217967284749902,
+        "title_word_count": 0.08806537961925925,
+        "deletions": 0.08177186533909868,
+        "body_character_count": 0.07728280506612012,
+        "commits": 0.07495735116438076,
+        "changed_java_files": 0.07374893462870895,
+        "contributor_prior_pr_count": 0.06964937012478514,
+        "complexity_before": 0.06557301615278331,
+        "changed_files": 0.06273487831147143,
+        "contributor_tenure_days": 0.05141214885924405,
+        "review_comments": 0.05140636162970382,
+        "contributor_prior_acceptance_rate": 0.048163446153515234,
+        "comments": 0.04252395989921403
       }
     },
     "xgboost": {
-      "accuracy": 0.7894736842105263,
-      "precision": 0.8,
-      "recall": 0.5714285714285714,
-      "f1": 0.6666666666666666,
-      "predicted_positive_rate": 0.2631578947368421,
+      "accuracy": 0.6842105263157895,
+      "precision": 0.6666666666666666,
+      "recall": 0.2857142857142857,
+      "f1": 0.4,
+      "predicted_positive_rate": 0.15789473684210525,
       "confusion_matrix": {
         "true_negative": 11,
         "false_positive": 1,
-        "false_negative": 3,
-        "true_positive": 4
+        "false_negative": 5,
+        "true_positive": 2
       },
-      "roc_auc": 0.9166666666666667,
+      "roc_auc": 0.8214285714285715,
       "feature_importances": {
-        "changed_files": 0.21297234296798706,
-        "additions": 0.11376771330833435,
-        "changed_java_files": 0.10489200800657272,
-        "review_comments": 0.10204634070396423,
-        "title_word_count": 0.09526371210813522,
-        "commits": 0.08540664613246918,
-        "complexity_before": 0.07908381521701813,
-        "body_character_count": 0.07276500016450882,
-        "deletions": 0.07213010638952255,
-        "comments": 0.06167227402329445
+        "changed_files": 0.22454969584941864,
+        "contributor_follower_count": 0.15286822617053986,
+        "title_word_count": 0.08706194162368774,
+        "additions": 0.07854504138231277,
+        "commits": 0.07053422182798386,
+        "deletions": 0.05910796672105789,
+        "body_character_count": 0.057721395045518875,
+        "review_comments": 0.05625542253255844,
+        "changed_java_files": 0.048432476818561554,
+        "contributor_prior_pr_count": 0.0448487214744091,
+        "comments": 0.033650416880846024,
+        "complexity_before": 0.030120212584733963,
+        "contributor_prior_acceptance_rate": 0.02909839153289795,
+        "contributor_tenure_days": 0.02720576897263527
       }
     }
   },
-  "interpretation_note": "Feature importance is reasonably distributed across the feature set in both models (top feature per model: random_forest: additions (0.21), xgboost: changed_files (0.21)), consistent with genuine multi-feature prediction rather than a single dominant signal."
+  "interpretation_note": "Feature importance is reasonably distributed across the feature set in both models (top feature per model: random_forest: additions (0.12), xgboost: changed_files (0.22)), consistent with genuine multi-feature prediction rather than a single dominant signal."
 }
