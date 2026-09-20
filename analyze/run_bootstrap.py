@@ -33,9 +33,14 @@ ROOT = Path(__file__).resolve().parents[1]
 PROCESSED_DIR = ROOT / "sense" / "data" / "processed"
 EVALUATION_DIR = ROOT / "evaluation"
 
+# Real BERT + Word2Vec embeddings (PCA-reduced to 5 dims each, MinMax-scaled
+# non-negative for MultinomialNB) - see sense/scripts/05_compute_textual_embeddings.py
+TEXTUAL_EMBEDDING_FEATURES = [f"bert_embed_{i}" for i in range(5)] + [f"w2v_embed_{i}" for i in range(5)]
+
 FEATURES = [
     "additions", "deletions", "changed_files", "changed_java_files", "commits",
     "comments", "review_comments", "body_character_count", "title_word_count",
+    *TEXTUAL_EMBEDDING_FEATURES,
     "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
     "contributor_tenure_days", "contributor_follower_count",
     "complexity_before",

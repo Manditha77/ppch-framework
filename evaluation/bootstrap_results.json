@@ -11,44 +11,44 @@
       "valid_iterations": 1000,
       "skipped_iterations": 0,
       "skip_reason": "bag or out-of-bag set contained only one class",
-      "mean_auc": 0.7659375260821147,
-      "median_auc": 0.7662616019097501,
-      "std_auc": 0.037279557346333876,
-      "ci_95_low": 0.6907293205591923,
-      "ci_95_high": 0.8388954705628507
+      "mean_auc": 0.7459236677126557,
+      "median_auc": 0.7479734573751669,
+      "std_auc": 0.038170668457909576,
+      "ci_95_low": 0.6700391502537588,
+      "ci_95_high": 0.8170497064753321
     },
     "xgboost": {
       "requested_iterations": 1000,
       "valid_iterations": 1000,
       "skipped_iterations": 0,
       "skip_reason": "bag or out-of-bag set contained only one class",
-      "mean_auc": 0.7683714054816685,
-      "median_auc": 0.7701491091258601,
-      "std_auc": 0.036510173805292784,
-      "ci_95_low": 0.6916429249762582,
-      "ci_95_high": 0.8332871738241009
+      "mean_auc": 0.752542636919635,
+      "median_auc": 0.7555077912954625,
+      "std_auc": 0.037505934798228606,
+      "ci_95_low": 0.6756723286754245,
+      "ci_95_high": 0.8267212450138236
     },
     "naive_bayes": {
       "requested_iterations": 1000,
       "valid_iterations": 1000,
       "skipped_iterations": 0,
       "skip_reason": "bag or out-of-bag set contained only one class",
-      "mean_auc": 0.6379895050497523,
-      "median_auc": 0.6446780307492825,
-      "std_auc": 0.06409571226997471,
-      "ci_95_low": 0.5020903693548621,
-      "ci_95_high": 0.7444717444717445
+      "mean_auc": 0.6595873762330096,
+      "median_auc": 0.6658533868092691,
+      "std_auc": 0.06532576345567878,
+      "ci_95_low": 0.516703963335169,
+      "ci_95_high": 0.7682515125910618
     },
     "logistic_regression": {
       "requested_iterations": 1000,
       "valid_iterations": 1000,
       "skipped_iterations": 0,
       "skip_reason": "bag or out-of-bag set contained only one class",
-      "mean_auc": 0.7714138743659568,
-      "median_auc": 0.773429802955665,
-      "std_auc": 0.03660449025015471,
-      "ci_95_low": 0.698764880952381,
-      "ci_95_high": 0.8393570863933089
+      "mean_auc": 0.7758277069058167,
+      "median_auc": 0.7757505678913039,
+      "std_auc": 0.036141125484950416,
+      "ci_95_low": 0.7065096143409397,
+      "ci_95_high": 0.8452110538516702
     }
   }
 }

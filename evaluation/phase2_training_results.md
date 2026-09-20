@@ -8,23 +8,23 @@ Temporal holdout results on a 334-row dataset (single-project, apache/commons-la
 
 | Model | ROC AUC | Accuracy | Precision | Recall | F1 | Predicted-positive rate |
 |---|---:|---:|---:|---:|---:|---:|
-| random_forest | 0.652 | 0.703 | 0.636 | 0.212 | 0.318 | 0.109 |
-| xgboost | 0.690 | 0.673 | 0.500 | 0.152 | 0.233 | 0.099 |
-| naive_bayes | 0.638 | 0.713 | 0.643 | 0.273 | 0.383 | 0.139 |
-| logistic_regression | 0.722 | 0.663 | 0.486 | 0.545 | 0.514 | 0.366 |
+| random_forest | 0.655 | 0.683 | 0.556 | 0.152 | 0.238 | 0.089 |
+| xgboost | 0.675 | 0.713 | 0.667 | 0.242 | 0.356 | 0.119 |
+| naive_bayes | 0.659 | 0.683 | 0.529 | 0.273 | 0.360 | 0.168 |
+| logistic_regression | 0.742 | 0.663 | 0.490 | 0.727 | 0.585 | 0.485 |
 
 **Confusion matrices** (rows=actual, cols=predicted):
 
-- **random_forest**: TN=64, FP=4, FN=26, TP=7
-- **xgboost**: TN=63, FP=5, FN=28, TP=5
-- **naive_bayes**: TN=63, FP=5, FN=24, TP=9
-- **logistic_regression**: TN=49, FP=19, FN=15, TP=18
+- **random_forest**: TN=64, FP=4, FN=28, TP=5
+- **xgboost**: TN=64, FP=4, FN=25, TP=8
+- **naive_bayes**: TN=60, FP=8, FN=24, TP=9
+- **logistic_regression**: TN=43, FP=25, FN=9, TP=24
 
 Post-submission complexity measurements (after/delta) were excluded from the
 predictor matrix; complexity_before was correctly INCLUDED since it reflects
 the target branch's state prior to the PR and is genuinely available at
 submission time.
 
-**Interpretation note:** Feature importance is reasonably distributed across the feature set in both models (top feature per model: random_forest: additions (0.21), xgboost: additions (0.18)), consistent with genuine multi-feature prediction rather than a single dominant signal.
+**Interpretation note:** Feature importance is reasonably distributed across the feature set in both models (top feature per model: random_forest: additions (0.15), xgboost: changed_files (0.16)), consistent with genuine multi-feature prediction rather than a single dominant signal.
 
 A predicted-positive rate close to the test set's true positive rate (0.327) indicates the model is discriminating between classes rather than defaulting to the majority class — check this figure before trusting accuracy/precision/recall on an imbalanced set like this one.

@@ -39,9 +39,17 @@ SCAN_RESULTS_PATH = ROOT / "sense" / "data" / "raw" / "pilot_scan_results.jsonl"
 GITHUB_OWNER = "apache"
 GITHUB_REPO = "commons-lang"
 
+# Real BERT + Word2Vec embeddings (PCA-reduced to 5 dims each, MinMax-scaled
+# non-negative for MultinomialNB) - see sense/scripts/05_compute_textual_embeddings.py.
+# live_predict.py MUST compute these with the SAME persisted PCA/scaler/
+# Word2Vec models (analyze/models/*.joblib, word2vec.model), never refit -
+# see that module's own note on why.
+TEXTUAL_EMBEDDING_FEATURES = [f"bert_embed_{i}" for i in range(5)] + [f"w2v_embed_{i}" for i in range(5)]
+
 FEATURES = [
     "additions", "deletions", "changed_files", "changed_java_files", "commits",
     "comments", "review_comments", "body_character_count", "title_word_count",
+    *TEXTUAL_EMBEDDING_FEATURES,
     # Contributor process features (Methodology §3.3.3), added via
     # sense/scripts/04_enrich_process_features.py — leakage-safe (computed
     # strictly from this contributor's PRIOR PRs and current follower count).

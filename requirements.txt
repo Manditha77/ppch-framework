@@ -9,7 +9,8 @@ requests==2.32.3
 scikit-learn==1.5.2
 xgboost==2.1.2
 imbalanced-learn==0.12.4
-# sentence-transformers==3.2.1
+sentence-transformers==6.1.0
+gensim==4.4.0
 shap==0.46.0
 
 # Phase III — Act (installed later)

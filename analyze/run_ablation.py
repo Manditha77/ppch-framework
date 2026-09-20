@@ -6,16 +6,20 @@ Isolates the contribution of each feature family to predictive performance by:
   3. Family-alone: train using ONLY each family, to see its standalone power.
 
 Family definitions here reflect what is actually implemented in the current
-feature table (see docs — textual-semantic features are still a crude proxy,
-not the BERT/Word2Vec embeddings specified in Methodology §3.3.3; this should
-be stated as a limitation until that gap is closed):
+feature table:
 
   - baseline_complexity: complexity_before (the target file's pre-existing
     complexity — legitimate pre-submission signal, NOT a leakage field)
   - structural_size: additions, deletions, changed_files, changed_java_files
-  - process: commits, comments, review_comments
-  - textual_proxy: body_character_count, title_word_count (placeholders for
-    the specified BERT/Word2Vec embeddings, not the real thing yet)
+  - process: commits, comments, review_comments (+ contributor process
+    features — see sense/scripts/04_enrich_process_features.py)
+  - textual_semantic: body_character_count, title_word_count, PLUS real
+    BERT (sentence-transformers/all-MiniLM-L6-v2) and Word2Vec (trained on
+    this project's own PR corpus) embeddings, PCA-reduced to 5 dims each —
+    see sense/scripts/05_compute_textual_embeddings.py. This closes the gap
+    this docstring used to flag here: earlier versions of this family were
+    body_character_count/title_word_count only, a crude proxy for the
+    BERT/Word2Vec embeddings Methodology §3.3.3 actually specifies.
 
 Uses the SAME temporal train/test split as analyze/train_models.py so results
 are directly comparable to the main reported metrics.
@@ -49,7 +53,17 @@ FAMILIES = {
         "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
         "contributor_tenure_days", "contributor_follower_count",
     ],
-    "textual_proxy": ["body_character_count", "title_word_count"],
+    # Real BERT (sentence-transformers/all-MiniLM-L6-v2) + Word2Vec (trained
+    # on this project's own PR corpus) embeddings, PCA-reduced to 5 dims each
+    # - see sense/scripts/05_compute_textual_embeddings.py. Replaces the
+    # earlier body_character_count/title_word_count-only placeholder that
+    # this family's name ("textual_proxy") used to refer to; kept as
+    # "textual_semantic" now that it's the real thing.
+    "textual_semantic": (
+        ["body_character_count", "title_word_count"]
+        + [f"bert_embed_{i}" for i in range(5)]
+        + [f"w2v_embed_{i}" for i in range(5)]
+    ),
 }
 ALL_FEATURES = [f for group in FAMILIES.values() for f in group]
 LABEL = "exceeds_significant_complexity_increase"
@@ -135,9 +149,12 @@ def main() -> None:
         "spikes in Java Pull Requests?* Same temporal train/test split as the main",
         "training run.",
         "",
-        "**Feature-family caveat:** `textual_proxy` here is `body_character_count` and",
-        "`title_word_count` — placeholders for the BERT/Word2Vec embeddings specified",
-        "in Methodology §3.3.3, which are not yet implemented.",
+        "**Feature-family note:** `textual_semantic` now includes real BERT",
+        "(sentence-transformers/all-MiniLM-L6-v2) and Word2Vec (trained on this",
+        "project's own PR corpus) embeddings, PCA-reduced to 5 dims each, alongside",
+        "the original `body_character_count`/`title_word_count` — closing the gap an",
+        "earlier version of this report flagged here (see",
+        "sense/scripts/05_compute_textual_embeddings.py).",
         "",
     ]
     for model_name in MODEL_NAMES:

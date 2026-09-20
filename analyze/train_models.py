@@ -44,9 +44,19 @@ PROCESSED_DIR = ROOT / "sense" / "data" / "processed"
 MODEL_DIR = ROOT / "analyze" / "models"
 EVALUATION_DIR = ROOT / "evaluation"
 
+# Real BERT (sentence-transformers/all-MiniLM-L6-v2) + Word2Vec (trained on
+# this project's own PR corpus) embeddings, PCA-reduced to 5 dims each - see
+# sense/scripts/05_compute_textual_embeddings.py. Replaces body_character_
+# count/title_word_count as the actual textual-semantic signal Methodology
+# §3.3.3 specifies; those two stay in FEATURES too since they're cheap,
+# already-collected, legitimate structural-size-of-text signals in their
+# own right, not because they're still standing in for the embeddings.
+TEXTUAL_EMBEDDING_FEATURES = [f"bert_embed_{i}" for i in range(5)] + [f"w2v_embed_{i}" for i in range(5)]
+
 FEATURES = [
     "additions", "deletions", "changed_files", "changed_java_files", "commits",
     "comments", "review_comments", "body_character_count", "title_word_count",
+    *TEXTUAL_EMBEDDING_FEATURES,
     # Contributor process features (Methodology §3.3.3) — added via
     # sense/scripts/04_enrich_process_features.py. All leakage-safe: computed
     # strictly from this contributor's PRIOR PRs (before this PR's

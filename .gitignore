@@ -9,6 +9,7 @@ sense/data/processed/*
 !sense/data/processed/.gitkeep
 analyze/models/*.pkl
 analyze/models/*.joblib
+analyze/models/*.model
 .DS_Store
 demo/scratch_test/
 *.class
