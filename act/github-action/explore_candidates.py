@@ -108,10 +108,21 @@ def main() -> None:
             "line_span": line_span,
             "brace_balanced": suggestion.get("brace_balanced"),
             "inferred_parameter_count": len(suggestion.get("inferred_parameters", [])),
+            # "status": "optimal" only means the ILP SOLVER found a
+            # mathematically valid extraction - it says nothing about
+            # whether the RENDERED code is safe to apply (e.g. a `return`
+            # statement inside the extracted block makes it unsafe
+            # regardless of how clean the ILP solution looks). Surfaced
+            # explicitly so a reader of this table doesn't conflate "the
+            # solver succeeded" with "this is ready to auto-apply" - see
+            # act/github-action/verify_pr_suggestion.py for the real,
+            # SonarQube-checked outcome on a candidate-by-candidate basis.
+            "safe_to_auto_apply": suggestion.get("safe_to_auto_apply"),
         }
         survey.append(entry)
         print(f"method={entry['method_name']}, touched_by_pr={entry['was_touched_by_pr']}, "
-              f"selected={entry['selected_statement_count']} stmts, line_span={line_span}")
+              f"selected={entry['selected_statement_count']} stmts, line_span={line_span}, "
+              f"safe_to_auto_apply={entry['safe_to_auto_apply']}")
 
     EVALUATION_DIR.mkdir(parents=True, exist_ok=True)
     (EVALUATION_DIR / "refactoring_candidates_survey.json").write_text(
@@ -129,15 +140,16 @@ def main() -> None:
         "of the PR's actual diff (trustworthy candidates first), then by line_span (smaller = "
         "more localized, more classically \"Extract Method\"-shaped suggestion).",
         "",
-        "| PR | Risk | Method | Touched by PR? | Selected stmts | Line span | Remaining complexity | Balanced |",
-        "|---|---:|---|---|---:|---:|---:|---|",
+        "| PR | Risk | Method | Touched by PR? | Selected stmts | Line span | Remaining complexity | Balanced | Safe to auto-apply |",
+        "|---|---:|---|---|---:|---:|---:|---|---|",
     ]
     for s in optimal:
         touched = "✅" if s.get("was_touched_by_pr") else "⚠️ NO"
+        safe = "✅" if s.get("safe_to_auto_apply") else "⚠️ NO"
         lines.append(
             f"| #{s['pr_number']} | {s['risk_score']:.3f} | `{s['method_name']}` | {touched} | "
             f"{s['selected_statement_count']} | {s['line_span']} | {s['remaining_complexity']:.1f} | "
-            f"{s['brace_balanced']} |"
+            f"{s['brace_balanced']} | {safe} |"
         )
     untrusted_count = sum(1 for s in optimal if not s.get("was_touched_by_pr"))
     if untrusted_count:
@@ -151,6 +163,14 @@ def main() -> None:
                        f"complexity under the target threshold with a single extraction** - shown as "
                        "best-effort suggestions; these methods likely need more than one extraction "
                        "to fully resolve."]
+    unsafe_count = sum(1 for s in optimal if not s.get("safe_to_auto_apply"))
+    if unsafe_count:
+        lines += ["", f"**{unsafe_count} of {len(optimal)} candidates are NOT safe to auto-apply** "
+                       "(most commonly: the extracted block contains a `return` statement, which this "
+                       "tool doesn't model return-forwarding for) - the ILP still found a mathematically "
+                       "valid extraction, but applying it as-is risks incorrect code. These need manual "
+                       "restructuring, not automatic application. See act/github-action/"
+                       "verify_pr_suggestion.py for confirmed, SonarQube-checked outcomes on specific PRs."]
     non_optimal = [s for s in survey if s.get("status") not in ("optimal", "threshold_unreachable")]
     if non_optimal:
         lines += ["", f"{len(non_optimal)} candidates did not produce an optimal suggestion "

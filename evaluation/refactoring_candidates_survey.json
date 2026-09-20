@@ -2,16 +2,17 @@
   {
     "pr_number": 1411,
     "risk_score": 0.988,
-    "status": "optimal",
+    "status": "threshold_unreachable",
     "method_name": "isAssignable",
     "source_file": "src/main/java/org/apache/commons/lang3/ClassUtils.java",
     "was_touched_by_pr": false,
-    "original_complexity": 31.0,
-    "remaining_complexity": 14.0,
+    "original_complexity": 38.0,
+    "remaining_complexity": 16.0,
     "selected_statement_count": 18,
     "line_span": 29,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1422,
@@ -20,12 +21,13 @@
     "method_name": "getCanonicalName",
     "source_file": "src/main/java/org/apache/commons/lang3/ClassUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 15.0,
-    "remaining_complexity": 13.0,
+    "original_complexity": 17.0,
+    "remaining_complexity": 15.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1700,
@@ -34,12 +36,13 @@
     "method_name": "format",
     "source_file": "src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java",
     "was_touched_by_pr": false,
-    "original_complexity": 55.0,
-    "remaining_complexity": 48.0,
+    "original_complexity": 64.0,
+    "remaining_complexity": 56.0,
     "selected_statement_count": 5,
     "line_span": 9,
     "brace_balanced": true,
-    "inferred_parameter_count": 7
+    "inferred_parameter_count": 7,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1587,
@@ -53,7 +56,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1591,
@@ -62,12 +66,13 @@
     "method_name": "getShortClassName",
     "source_file": "src/main/java/org/apache/commons/lang3/ClassUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 5.0,
-    "remaining_complexity": 4.0,
+    "original_complexity": 6.0,
+    "remaining_complexity": 5.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1545,
@@ -82,12 +87,13 @@
     "method_name": "getMatchingAccessibleMethod",
     "source_file": "src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 11.0,
-    "remaining_complexity": 9.0,
+    "original_complexity": 14.0,
+    "remaining_complexity": 11.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1623,
@@ -96,12 +102,13 @@
     "method_name": "isCreatable",
     "source_file": "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 61.0,
-    "remaining_complexity": 47.0,
+    "original_complexity": 78.0,
+    "remaining_complexity": 58.0,
     "selected_statement_count": 14,
     "line_span": 27,
     "brace_balanced": true,
-    "inferred_parameter_count": 6
+    "inferred_parameter_count": 6,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1435,
@@ -110,12 +117,13 @@
     "method_name": "containsAllWords",
     "source_file": "src/main/java/org/apache/commons/lang3/text/WordUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 6.0,
-    "remaining_complexity": 4.0,
+    "original_complexity": 7.0,
+    "remaining_complexity": 5.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1548,
@@ -124,12 +132,13 @@
     "method_name": "isAssignable",
     "source_file": "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 17.0,
-    "remaining_complexity": 12.0,
+    "original_complexity": 21.0,
+    "remaining_complexity": 14.0,
     "selected_statement_count": 7,
     "line_span": 14,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1392,
@@ -138,12 +147,13 @@
     "method_name": "substitute",
     "source_file": "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
     "was_touched_by_pr": true,
-    "original_complexity": 78.0,
-    "remaining_complexity": 75.0,
+    "original_complexity": 81.0,
+    "remaining_complexity": 78.0,
     "selected_statement_count": 3,
     "line_span": 4,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1470,
@@ -157,7 +167,8 @@
     "selected_statement_count": 3,
     "line_span": 4,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1494,
@@ -171,7 +182,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1637,
@@ -180,12 +192,13 @@
     "method_name": "getAnnotation",
     "source_file": "src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 11.0,
-    "remaining_complexity": 10.0,
+    "original_complexity": 15.0,
+    "remaining_complexity": 13.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1459,
@@ -199,7 +212,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1382,
@@ -208,12 +222,13 @@
     "method_name": "findMatches",
     "source_file": "src/main/java/org/apache/commons/lang3/RegExUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 2.0,
+    "original_complexity": 3.0,
     "remaining_complexity": 1.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1385,
@@ -227,7 +242,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1639,
@@ -241,7 +257,8 @@
     "selected_statement_count": 4,
     "line_span": 6,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1475,
@@ -255,7 +272,8 @@
     "selected_statement_count": 3,
     "line_span": 6,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1328,
@@ -264,12 +282,13 @@
     "method_name": "substitute",
     "source_file": "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
     "was_touched_by_pr": true,
-    "original_complexity": 78.0,
-    "remaining_complexity": 75.0,
+    "original_complexity": 81.0,
+    "remaining_complexity": 78.0,
     "selected_statement_count": 3,
     "line_span": 4,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1629,
@@ -278,12 +297,13 @@
     "method_name": "createNumber",
     "source_file": "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 35.0,
-    "remaining_complexity": 21.0,
+    "original_complexity": 54.0,
+    "remaining_complexity": 35.0,
     "selected_statement_count": 18,
     "line_span": 25,
     "brace_balanced": true,
-    "inferred_parameter_count": 4
+    "inferred_parameter_count": 4,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1532,
@@ -292,12 +312,13 @@
     "method_name": "isParsable",
     "source_file": "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 4.0,
+    "original_complexity": 5.0,
     "remaining_complexity": 3.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1394,
@@ -311,7 +332,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1398,
@@ -320,12 +342,13 @@
     "method_name": "repeatChars",
     "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 17.0,
-    "remaining_complexity": 16.0,
+    "original_complexity": 20.0,
+    "remaining_complexity": 18.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1445,
@@ -334,12 +357,13 @@
     "method_name": "isAssignable",
     "source_file": "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 17.0,
-    "remaining_complexity": 14.0,
-    "selected_statement_count": 2,
-    "line_span": 3,
+    "original_complexity": 20.0,
+    "remaining_complexity": 13.0,
+    "selected_statement_count": 7,
+    "line_span": 14,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1389,
@@ -348,12 +372,13 @@
     "method_name": "camelCase",
     "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 6.0,
+    "original_complexity": 7.0,
     "remaining_complexity": 5.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1638,
@@ -362,12 +387,13 @@
     "method_name": "random",
     "source_file": "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 76.0,
-    "remaining_complexity": 51.0,
+    "original_complexity": 98.0,
+    "remaining_complexity": 71.0,
     "selected_statement_count": 17,
     "line_span": 45,
     "brace_balanced": true,
-    "inferred_parameter_count": 5
+    "inferred_parameter_count": 5,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1495,
@@ -376,26 +402,19 @@
     "method_name": "toCleanName",
     "source_file": "src/main/java/org/apache/commons/lang3/ClassUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 14.0,
-    "remaining_complexity": 13.0,
+    "original_complexity": 16.0,
+    "remaining_complexity": 15.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1482,
-    "risk_score": 0.887,
-    "status": "optimal",
-    "method_name": "getTimeZone",
-    "source_file": "src/main/java/org/apache/commons/lang3/time/FastTimeZone.java",
-    "was_touched_by_pr": true,
-    "original_complexity": 1.0,
-    "remaining_complexity": 0.0,
-    "selected_statement_count": 2,
-    "line_span": 3,
-    "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "risk_score": 0.8865134286880494,
+    "status": "infeasible",
+    "reason": null
   },
   {
     "pr_number": 1323,
@@ -404,12 +423,13 @@
     "method_name": "inContainer",
     "source_file": "src/main/java/org/apache/commons/lang3/RuntimeEnvironment.java",
     "was_touched_by_pr": true,
-    "original_complexity": 1.0,
-    "remaining_complexity": 0.0,
+    "original_complexity": 2.0,
+    "remaining_complexity": 1.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1390,
@@ -418,12 +438,13 @@
     "method_name": "countUpperCaseLetters",
     "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 4.0,
-    "remaining_complexity": 2.0,
+    "original_complexity": 5.0,
+    "remaining_complexity": 3.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1643,
@@ -437,7 +458,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1278,
@@ -451,7 +473,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1590,
@@ -465,7 +488,8 @@
     "selected_statement_count": 8,
     "line_span": 12,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1373,
@@ -479,7 +503,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1497,
@@ -493,7 +518,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1388,
@@ -502,12 +528,13 @@
     "method_name": "substitute",
     "source_file": "src/main/java/org/apache/commonsl/lang3/text/StrSubstitutor.java",
     "was_touched_by_pr": false,
-    "original_complexity": 78.0,
-    "remaining_complexity": 75.0,
+    "original_complexity": 81.0,
+    "remaining_complexity": 78.0,
     "selected_statement_count": 3,
     "line_span": 4,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1526,
@@ -527,7 +554,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1474,
@@ -541,7 +569,8 @@
     "selected_statement_count": 3,
     "line_span": 6,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1589,
@@ -556,12 +585,13 @@
     "method_name": "isParsableDecimal",
     "source_file": "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 13.0,
-    "remaining_complexity": 12.0,
-    "selected_statement_count": 2,
-    "line_span": 3,
+    "original_complexity": 19.0,
+    "remaining_complexity": 5.0,
+    "selected_statement_count": 16,
+    "line_span": 21,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 7,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1476,
@@ -575,7 +605,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1437,
@@ -584,12 +615,13 @@
     "method_name": "getCanonicalName",
     "source_file": "src/main/java/org/apache/commons/lang3/ClassUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 13.0,
-    "remaining_complexity": 11.0,
+    "original_complexity": 15.0,
+    "remaining_complexity": 13.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1345,
@@ -604,12 +636,13 @@
     "method_name": "reflectionAppend",
     "source_file": "src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java",
     "was_touched_by_pr": true,
-    "original_complexity": 3.0,
-    "remaining_complexity": 1.0,
+    "original_complexity": 6.0,
+    "remaining_complexity": 2.0,
     "selected_statement_count": 2,
     "line_span": 9,
     "brace_balanced": true,
-    "inferred_parameter_count": 7
+    "inferred_parameter_count": 7,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1481,
@@ -618,12 +651,13 @@
     "method_name": "getTimeZone",
     "source_file": "src/main/java/org/apache/commons/lang3/time/TimeZones.java",
     "was_touched_by_pr": true,
-    "original_complexity": 3.0,
+    "original_complexity": 4.0,
     "remaining_complexity": 0.0,
     "selected_statement_count": 4,
     "line_span": 11,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1654,
@@ -638,12 +672,13 @@
     "method_name": "toSnakeCase",
     "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 7.0,
-    "remaining_complexity": 2.0,
+    "original_complexity": 10.0,
+    "remaining_complexity": 3.0,
     "selected_statement_count": 5,
     "line_span": 9,
     "brace_balanced": true,
-    "inferred_parameter_count": 5
+    "inferred_parameter_count": 5,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1287,
@@ -652,12 +687,13 @@
     "method_name": "substitute",
     "source_file": "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
     "was_touched_by_pr": true,
-    "original_complexity": 78.0,
-    "remaining_complexity": 75.0,
+    "original_complexity": 81.0,
+    "remaining_complexity": 78.0,
     "selected_statement_count": 3,
     "line_span": 4,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1355,
@@ -666,12 +702,13 @@
     "method_name": "append",
     "source_file": "src/main/java/org/apache/commons/lang3/text/FormattableUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 2.0,
-    "remaining_complexity": 1.0,
+    "original_complexity": 4.0,
+    "remaining_complexity": 2.0,
     "selected_statement_count": 3,
     "line_span": 4,
     "brace_balanced": true,
-    "inferred_parameter_count": 4
+    "inferred_parameter_count": 4,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1630,
@@ -680,12 +717,13 @@
     "method_name": "parseLocale",
     "source_file": "src/main/java/org/apache/commons/lang3/LocaleUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 12.0,
-    "remaining_complexity": 10.0,
+    "original_complexity": 16.0,
+    "remaining_complexity": 14.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1649,
@@ -699,7 +737,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 4
+    "inferred_parameter_count": 4,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1523,
@@ -708,12 +747,13 @@
     "method_name": "random",
     "source_file": "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 39.0,
-    "remaining_complexity": 27.0,
+    "original_complexity": 54.0,
+    "remaining_complexity": 37.0,
     "selected_statement_count": 19,
     "line_span": 43,
     "brace_balanced": true,
-    "inferred_parameter_count": 9
+    "inferred_parameter_count": 9,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1647,
@@ -722,12 +762,13 @@
     "method_name": "reflectionAppend",
     "source_file": "src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java",
     "was_touched_by_pr": true,
-    "original_complexity": 6.0,
-    "remaining_complexity": 1.0,
+    "original_complexity": 9.0,
+    "remaining_complexity": 2.0,
     "selected_statement_count": 3,
     "line_span": 10,
     "brace_balanced": true,
-    "inferred_parameter_count": 8
+    "inferred_parameter_count": 8,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1648,
@@ -741,7 +782,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1651,
@@ -755,7 +797,8 @@
     "selected_statement_count": 3,
     "line_span": 14,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1615,
@@ -764,26 +807,28 @@
     "method_name": "reflectionEquals",
     "source_file": "src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java",
     "was_touched_by_pr": true,
-    "original_complexity": 3.0,
-    "remaining_complexity": 2.0,
+    "original_complexity": 7.0,
+    "remaining_complexity": 6.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1664,
     "risk_score": 0.761,
     "status": "optimal",
-    "method_name": "fromChar",
+    "method_name": "fromInt",
     "source_file": "src/main/java/org/apache/commons/lang3/Conversion.java",
     "was_touched_by_pr": true,
-    "original_complexity": 2.0,
-    "remaining_complexity": 1.0,
+    "original_complexity": 3.0,
+    "remaining_complexity": 2.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1492,
@@ -798,12 +843,13 @@
     "method_name": "random",
     "source_file": "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 42.0,
-    "remaining_complexity": 30.0,
+    "original_complexity": 59.0,
+    "remaining_complexity": 42.0,
     "selected_statement_count": 19,
     "line_span": 43,
     "brace_balanced": true,
-    "inferred_parameter_count": 9
+    "inferred_parameter_count": 9,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1447,
@@ -817,7 +863,8 @@
     "selected_statement_count": 5,
     "line_span": 7,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1603,
@@ -826,12 +873,13 @@
     "method_name": "getLevenshteinDistance",
     "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 24.0,
-    "remaining_complexity": 21.0,
+    "original_complexity": 25.0,
+    "remaining_complexity": 22.0,
     "selected_statement_count": 5,
     "line_span": 9,
     "brace_balanced": true,
-    "inferred_parameter_count": 5
+    "inferred_parameter_count": 5,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1369,
@@ -840,12 +888,13 @@
     "method_name": "listSplitWorker",
     "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 47.0,
-    "remaining_complexity": 32.0,
+    "original_complexity": 52.0,
+    "remaining_complexity": 36.0,
     "selected_statement_count": 15,
     "line_span": 62,
     "brace_balanced": true,
-    "inferred_parameter_count": 11
+    "inferred_parameter_count": 11,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1601,
@@ -854,12 +903,13 @@
     "method_name": "getLevenshteinDistance",
     "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 24.0,
-    "remaining_complexity": 21.0,
+    "original_complexity": 25.0,
+    "remaining_complexity": 22.0,
     "selected_statement_count": 5,
     "line_span": 9,
     "brace_balanced": true,
-    "inferred_parameter_count": 5
+    "inferred_parameter_count": 5,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1719,
@@ -873,7 +923,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1657,
@@ -893,21 +944,23 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1760,
     "risk_score": 0.671,
     "status": "optimal",
-    "method_name": "setAccessibleTrue",
+    "method_name": "setAccessible",
     "source_file": "src/main/java/org/apache/commons/lang3/builder/AbstractReflection.java",
     "was_touched_by_pr": true,
     "original_complexity": 3.0,
-    "remaining_complexity": 0.0,
-    "selected_statement_count": 4,
-    "line_span": 7,
+    "remaining_complexity": 2.0,
+    "selected_statement_count": 2,
+    "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1704,
@@ -921,7 +974,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1765,
@@ -935,7 +989,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 2
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1716,
@@ -944,12 +999,13 @@
     "method_name": "createNumber",
     "source_file": "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 35.0,
-    "remaining_complexity": 21.0,
+    "original_complexity": 54.0,
+    "remaining_complexity": 35.0,
     "selected_statement_count": 18,
     "line_span": 25,
     "brace_balanced": true,
-    "inferred_parameter_count": 4
+    "inferred_parameter_count": 4,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1534,
@@ -963,7 +1019,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1600,
@@ -977,7 +1034,8 @@
     "selected_statement_count": 2,
     "line_span": 7,
     "brace_balanced": false,
-    "inferred_parameter_count": 4
+    "inferred_parameter_count": 4,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1703,
@@ -986,12 +1044,13 @@
     "method_name": "random",
     "source_file": "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 81.0,
-    "remaining_complexity": 56.0,
+    "original_complexity": 106.0,
+    "remaining_complexity": 79.0,
     "selected_statement_count": 17,
     "line_span": 45,
     "brace_balanced": true,
-    "inferred_parameter_count": 5
+    "inferred_parameter_count": 5,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1537,
@@ -1000,40 +1059,43 @@
     "method_name": "random",
     "source_file": "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 41.0,
-    "remaining_complexity": 29.0,
+    "original_complexity": 58.0,
+    "remaining_complexity": 41.0,
     "selected_statement_count": 19,
     "line_span": 43,
     "brace_balanced": true,
-    "inferred_parameter_count": 9
+    "inferred_parameter_count": 9,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1714,
     "risk_score": 0.602,
-    "status": "optimal",
+    "status": "threshold_unreachable",
     "method_name": "toBooleanObject",
     "source_file": "src/main/java/org/apache/commons/lang3/BooleanUtils.java",
     "was_touched_by_pr": false,
-    "original_complexity": 10.0,
-    "remaining_complexity": 3.0,
-    "selected_statement_count": 7,
-    "line_span": 17,
+    "original_complexity": 29.0,
+    "remaining_complexity": 28.0,
+    "selected_statement_count": 2,
+    "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 4
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1758,
     "risk_score": 0.598,
     "status": "optimal",
-    "method_name": "parse",
-    "source_file": "src/main/java/org/apache/commons/lang3/time/FastDateParser.java",
+    "method_name": "abbreviateMiddle",
+    "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
     "original_complexity": 4.0,
-    "remaining_complexity": 2.0,
+    "remaining_complexity": 3.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 5
+    "inferred_parameter_count": 2,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1718,
@@ -1048,12 +1110,13 @@
     "method_name": "multiplyBy",
     "source_file": "src/main/java/org/apache/commons/lang3/math/Fraction.java",
     "was_touched_by_pr": true,
-    "original_complexity": 1.0,
+    "original_complexity": 2.0,
     "remaining_complexity": 0.0,
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 3
+    "inferred_parameter_count": 3,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1728,
@@ -1062,12 +1125,13 @@
     "method_name": "swapCase",
     "source_file": "src/main/java/org/apache/commons/lang3/text/WordUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 9.0,
+    "original_complexity": 10.0,
     "remaining_complexity": 7.0,
     "selected_statement_count": 3,
     "line_span": 13,
     "brace_balanced": true,
-    "inferred_parameter_count": 4
+    "inferred_parameter_count": 4,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1636,
@@ -1081,7 +1145,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1544,
@@ -1095,7 +1160,8 @@
     "selected_statement_count": 2,
     "line_span": 3,
     "brace_balanced": true,
-    "inferred_parameter_count": 1
+    "inferred_parameter_count": 1,
+    "safe_to_auto_apply": false
   },
   {
     "pr_number": 1713,
@@ -1104,12 +1170,13 @@
     "method_name": "indexOfDifference",
     "source_file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
     "was_touched_by_pr": true,
-    "original_complexity": 16.0,
-    "remaining_complexity": 14.0,
-    "selected_statement_count": 6,
-    "line_span": 8,
+    "original_complexity": 20.0,
+    "remaining_complexity": 12.0,
+    "selected_statement_count": 8,
+    "line_span": 12,
     "brace_balanced": true,
-    "inferred_parameter_count": 5
+    "inferred_parameter_count": 4,
+    "safe_to_auto_apply": true
   },
   {
     "pr_number": 1413,
