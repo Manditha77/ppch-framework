@@ -107,6 +107,12 @@ def verify_pr(number: int) -> dict:
     result["extractions_applied"] = len(extractions)
     result["still_over_threshold_after"] = refactor_result["still_over_threshold"]
     result["sonarqube"] = verify_with_sonarqube(Path(file_path).name, head_source, refactor_result["final_text"])
+    # The actual Java, not just numbers about it - written by write_outputs()
+    # below, in sense/data/processed/pr_<number>/, so you can open a real
+    # before/after diff in your editor instead of only reading JSON.
+    result["_original_source"] = head_source
+    result["_refactored_source"] = refactor_result["final_text"]
+    result["_filename"] = Path(file_path).name
     return result
 
 
@@ -132,9 +138,28 @@ def main() -> None:
                         print(f"    - line {issue['line']}: {issue['message']}")
                 else:
                     print("  SonarQube confirms: clean after refactoring.")
-        all_results.append(result)
         out_dir = PROCESSED_DIR / f"pr_{number}"
         out_dir.mkdir(parents=True, exist_ok=True)
+
+        # Pop the source blobs out before writing the JSON (they'd bloat it
+        # and duplicate what's now in the .java files below) - written to
+        # real, openable files instead.
+        original_source = result.pop("_original_source", None)
+        refactored_source = result.pop("_refactored_source", None)
+        filename = result.pop("_filename", None)
+        if original_source is not None:
+            stem = Path(filename).stem
+            suffix = Path(filename).suffix
+            original_path = out_dir / f"{stem}_before{suffix}"
+            refactored_path = out_dir / f"{stem}_after{suffix}"
+            original_path.write_text(original_source, encoding="utf-8")
+            refactored_path.write_text(refactored_source, encoding="utf-8")
+            result["original_file"] = str(original_path)
+            result["refactored_file"] = str(refactored_path)
+            print(f"  Wrote {original_path}")
+            print(f"  Wrote {refactored_path}")
+
+        all_results.append(result)
         (out_dir / "suggestion_verification.json").write_text(
             json.dumps(result, indent=2) + "\n", encoding="utf-8"
         )
