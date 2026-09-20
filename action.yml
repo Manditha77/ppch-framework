@@ -1,0 +1,58 @@
+name: "PPCH Cognitive Complexity Guard"
+description: >
+  Predicts cognitive-complexity risk for an incoming Java Pull Request and
+  suggests an ILP-driven Extract Method refactoring when warranted - the
+  Sense -> Analyze -> Act framework from the PPCH dissertation, packaged as
+  an installable GitHub Action (Methodology §3.4.4). Currently trained only
+  on apache/commons-lang PR data - see act/github-action/live_predict.py's
+  own docstring for the scope caveat on other repositories.
+author: "Manditha Madushanka"
+
+inputs:
+  post-comment:
+    description: >
+      Whether to post/update a real PR comment with the result. Defaults to
+      false: the local JSON/Markdown report is always written regardless,
+      so this only controls the extra, more visible step of commenting on
+      the PR itself. Leave false unless you specifically want the Action to
+      comment on this repository's PRs.
+    required: false
+    default: "false"
+  github-token:
+    description: "Token used to read PR data (and, if post-comment is true, to post/update a comment)."
+    required: false
+    default: ${{ github.token }}
+  sonar-token:
+    description: "SonarQube token, needed to compute complexity_before via a real scan of the live base branch."
+    required: true
+  sonar-host-url:
+    description: "SonarQube server URL."
+    required: false
+    default: "http://localhost:9000"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install PPCH framework dependencies
+      shell: bash
+      run: pip install -r "${{ github.action_path }}/requirements.txt"
+
+    - name: Run PPCH live prediction
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        SONAR_TOKEN: ${{ inputs.sonar-token }}
+        SONAR_HOST_URL: ${{ inputs.sonar-host-url }}
+        POST_COMMENT: ${{ inputs.post-comment }}
+      run: python "${{ github.action_path }}/act/github-action/live_action_entrypoint.py"
+
+    - name: Upload prediction report
+      uses: actions/upload-artifact@v4
+      with:
+        name: ppch-prediction-report
+        path: evaluation/live_action_runs/
