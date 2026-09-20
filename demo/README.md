@@ -2,39 +2,24 @@
 
 A self-contained demonstration of the full **Sense → Analyze → Act → Refactor**
 framework on a **single Java file**, for live presentation to your panel —
-independent of the 150-PR historical pipeline, but reusing the exact same
+independent of the 500-PR historical pipeline, but reusing the exact same
 validated components (the real trained models, the real ILP engine, the real
 Java parser) rather than a separate simplified mockup.
-
-## ⚠️ Read this first if you ran this demo before today
-
-An earlier version of the Java complexity analyzer had a serious bug: it did
-not correctly "unwrap" Java's `{ ... }` braces (which parse as a
-`BlockStatement` wrapper), so almost everything inside any braced block was
-silently treated as a single, zero-complexity node. This produced
-implausibly low complexity numbers and near-meaningless extraction choices.
-**It is now fixed and verified against a hand-traced example.** If you ran
-this demo before and got a suspiciously low `original_complexity` (e.g. `3.0`
-for a deliberately complex method), that was this bug — re-run Step 2 with
-the updated `java_statement_extractor.py`.
-
-Also new since the first version:
-- **Real Java types** in suggestions (`String couponCode`, not `/* type? */`)
-- **Return-value detection** — the tool now notices when the extracted block
-  modifies a variable the rest of the method still needs, and generates a
-  correct `return`, instead of silently producing broken code
-- **A new `refactor/` module** (top-level, alongside `sense/`, `analyze/`,
-  `act/`) that automatically applies a suggestion to a real file — Step 3
-  below is now one command, not manual retyping
 
 ## What this demonstrates
 
 1. **Sense**: real SonarScanner measurement of cognitive complexity on
    `PricingEngine.java`
-2. **Analyze**: the actual trained Random Forest / XGBoost models predicting
-   risk from that measurement plus PR-style features
-3. **Act**: the real ILP refactoring engine, if the prediction warrants it,
-   suggesting a concrete, typed, ready-to-copy Extract Method refactoring
+2. **Analyze**: the actual trained Random Forest / XGBoost models (trained on
+   the full 500-PR sample) predicting risk from that measurement plus
+   PR-style features
+3. **Act**: the real ILP refactoring engine, triggered by **either** signal —
+   the Analyze layer's predicted risk crossing its warning threshold, **or**
+   the measured complexity directly exceeding SonarQube's own per-method
+   ceiling (15) — suggesting a concrete, typed, ready-to-copy Extract Method
+   refactoring. `act_result.json`'s `trigger_reasons` field always records
+   which signal(s) actually fired, so this stays honest rather than implying
+   the ML model flagged something it didn't.
 4. **Refactor**: automatically applies that suggestion to a full copy of the
    file — a real "before" and "after" `.java` file, not just a snippet
 5. **Before vs After**: run the same Sense/Analyze pipeline on the refactored
@@ -45,7 +30,9 @@ Also new since the first version:
 ```
 ppch-framework/
 ├── refactor/
-│   └── apply_extraction.py        ← NEW shared module
+│   └── apply_extraction.py
+├── act/
+│   └── refactor_file.py           ← standalone, PR-independent tool (see below)
 └── demo/
     ├── README.md                  ← this file
     ├── demo_pr_metadata.json      ← synthetic PR context (clearly labeled)
@@ -59,7 +46,7 @@ ppch-framework/
     │   ├── sense_scan.py
     │   ├── analyze_predict.py
     │   ├── act_decide_and_suggest.py
-    │   ├── apply_refactoring.py   ← NEW: runs refactor/apply_extraction.py for you
+    │   ├── apply_refactoring.py
     │   └── compare_results.py
     └── results/                   ← generated output (before/, after/, comparison.*)
 ```
@@ -68,9 +55,10 @@ ppch-framework/
 
 - Your existing `.venv311` virtual environment, activated
 - Docker running your local SonarQube server (same one used for the main
-  150-PR pipeline)
+  500-PR pipeline)
 - `.env` in the project root with `SONAR_TOKEN` and `SONAR_HOST_URL`
-- `analyze/models/random_forest.joblib` and `xgboost.joblib` must already exist
+- `analyze/models/random_forest.joblib` and `xgboost.joblib` must already
+  exist (trained on the full 500-PR sample, not the early pilot)
 
 No GitHub token is needed — everything runs on local files.
 
@@ -84,9 +72,11 @@ python sense_scan.py --version before
 python analyze_predict.py --version before
 ```
 
-Read the actual printed numbers — don't assume. If `risk_score` doesn't clear
-the warning threshold (0.7), paste the output back before continuing; we'll
-adjust the demo file together rather than guess at a fix.
+Read the actual printed numbers. The Act layer no longer depends solely on
+`risk_score` clearing the warning threshold (0.7) — it also triggers directly
+whenever measured complexity exceeds 15, so a lower `risk_score` here isn't a
+blocker the way it used to be. Still worth reading the numbers before moving
+on rather than assuming.
 
 ## Step 2 — Generate the refactoring suggestion
 
@@ -95,14 +85,15 @@ python act_decide_and_suggest.py --version before
 ```
 
 Open `demo/results/before/act_result.json`. Check specifically:
-- `approximate_method_complexity` — should now be a plausible double-digit
-  number for `calculateFinalPrice`, not a suspiciously low value like `3.0`
-- `suggestion.full_snippet` — a complete, ready-to-copy method with real
-  types
+- `trigger_reasons` — which signal(s) actually caused Act to run
+- `approximate_method_complexity` — a plausible double-digit number for
+  `calculateFinalPrice`
+- `suggestion.full_snippet` — a complete, ready-to-copy method with real types
 - `suggestion.return_analysis.status` — `void`, `single_return`, or
   `multiple_outbound_manual_review_required`
 - `suggestion.safe_to_auto_apply` — must be `true` for Step 3 to work
-  automatically
+  automatically (it correctly refuses rather than guess when it's `false` —
+  most commonly because the extracted block contains a `return` statement)
 
 **Do this well before your actual presentation, not for the first time live.**
 
@@ -112,19 +103,32 @@ Open `demo/results/before/act_result.json`. Check specifically:
 python apply_refactoring.py --version before
 ```
 
-This is new: it runs the shared `refactor/apply_extraction.py` module to
-**automatically** splice the suggested extraction into a complete copy of the
-file, and copies the other unchanged `.java` files across — producing a
-fully ready `java_project_after/` folder in one command.
+Splices the suggested extraction into a complete copy of the file via the
+shared `refactor/apply_extraction.py` module, and copies the other unchanged
+`.java` files across — producing a fully ready `java_project_after/` folder
+in one command.
 
-**Then open `java_project_after/PricingEngine.java` and actually read it.**
-This is an automated text splice, not a verified compile — confirm it looks
-correct (compile it if you have a Java toolchain handy) before treating it
-as final. If `safe_to_auto_apply` was `false` in Step 2, this command will
-refuse and explain why (usually: the extracted block modifies more than one
-variable the rest of the method still needs) — in that case, use
-`suggestion.full_snippet` and `suggestion.call_site_replacement` from
-`act_result.json` to apply the change by hand instead.
+**Then open `java_project_after/PricingEngine.java` and actually read it** —
+this is an automated text splice, not a verified compile. Compile it if you
+have a Java toolchain handy (`javac`) before treating it as final.
+
+One extraction pass typically won't fully resolve a heavily over-threshold
+method in one shot — that's expected, not a bug (see `evaluation/`'s
+real-PR survey for the same pattern on actual commons-lang code). If you want
+to see the full, fully-resolved result instead of one partial pass, use the
+standalone iterative tool on this same file:
+
+```powershell
+cd ../..
+python act/refactor_file.py demo/java_project_before/PricingEngine.java --verify-sonarqube
+```
+
+This repeatedly extracts until the method is fully under threshold or
+genuinely stuck, and independently confirms the result against a real
+SonarQube scan of an isolated copy — no PR/ML pipeline involved at all. It
+also works on **any other Java file** you want to demo live, including one
+someone in the audience hands you on the spot — that's the point of it being
+PR-independent.
 
 ## Step 4 — Scan and predict on the AFTER version
 
@@ -141,7 +145,7 @@ python compare_results.py
 
 Writes `demo/results/comparison.md` — the single document to have open
 during your live presentation, showing real measured complexity and real
-predicted risk, before vs after.
+predicted risk, before vs after, and exactly which signal(s) triggered Act.
 
 ---
 
@@ -150,34 +154,51 @@ predicted risk, before vs after.
 1. Show `java_project_before/PricingEngine.java` — a realistic, deliberately
    over-complex method.
 2. Show `results/before/sense_result.json` — "the framework measures this
-   file's real cognitive complexity using industry-standard tooling."
+   file's real cognitive complexity using industry-standard tooling
+   (SonarQube), the same tool this metric comes from academically."
 3. Show `results/before/analyze_result.json` — "using only information
-   available before this code is merged, the trained model predicts this
-   will exceed the complexity threshold."
-4. Show `results/before/act_result.json`'s `full_snippet` — "the framework
-   then proposes a concrete, typed, ready-to-use refactoring."
+   available before this code is merged, the trained model — trained on 500
+   real historical Apache Commons Lang pull requests — predicts risk."
+4. Show `results/before/act_result.json`'s `trigger_reasons` and
+   `suggestion.full_snippet` — "the framework proposes a concrete, typed,
+   ready-to-use refactoring, and is explicit about exactly why it decided to
+   intervene."
 5. Show that `apply_refactoring.py` **automatically applied** that
-   suggestion — "and here it's actually applied to the file, not just
-   described."
-6. Show `results/comparison.md` — "and here's the measured result: complexity
-   dropped by X%, and the framework's own risk prediction dropped
-   correspondingly."
+   suggestion, and that it compiles — "and here it's actually applied to the
+   file and compiles, not just described."
+6. Show `results/comparison.md` — "and here's the measured result: real,
+   SonarQube-confirmed complexity reduction."
+7. Optional, for a stronger close: show `act/refactor_file.py` run against a
+   **different** file live (or one the panel suggests) with
+   `--verify-sonarqube`, to demonstrate the mechanism isn't hard-coded to
+   this one example.
 
 ## Honesty notes for questions from the panel
 
-- `complexity_before` is the real, dominant driver of the model's prediction
-  (documented in `evaluation/ablation_results.md` from the main pipeline) —
-  the honest answer if asked "what is the model actually keying off of."
-- The refactoring suggestion is **advisory**, and the automatic application in
-  Step 3 is a **text splice, not a verified compilation** — say this plainly
-  if asked. It correctly detects and refuses to auto-apply the one case it
-  can't safely handle (multiple outbound variables), rather than silently
-  producing broken code.
-- `demo_pr_metadata.json`'s process/text fields (commits, comments, title,
-  body) are clearly-labeled illustrative placeholders for this standalone
-  demo — `complexity_before` itself, and all structural counts, are real.
+- Feature importance is now genuinely distributed across the feature set
+  (see `evaluation/phase2_training_results.md`'s interpretation note) —
+  earlier in development, an incorrectly-defined label made
+  `complexity_before` dominate almost entirely, which produced a suspiciously
+  perfect (~1.000) AUC on the small pilot. That was caught, diagnosed, and
+  fixed (see `sense/scripts/03_build_feature_table.py`'s docstring for the
+  full explanation) before scaling to 500 PRs — a legitimate part of the
+  research story, not something to gloss over if asked "what does the model
+  actually key off of."
+- The refactoring suggestion is **advisory**, and automatic application is a
+  **text splice, not a verified compilation** — say this plainly if asked.
+  It correctly detects and refuses to auto-apply the cases it can't safely
+  handle (a `return` statement inside the extracted block, or multiple
+  outbound variables) rather than silently producing broken code.
+- On the full 85-PR real-world survey (`evaluation/refactoring_candidates_survey.md`),
+  45% of attempted extractions were both confirmed relevant to the PR AND
+  safe to auto-apply as-is — the rest were correctly filtered out by the
+  same safety mechanisms, not silently misapplied. That's the honest,
+  defensible number to cite, not a larger one that doesn't account for safety.
+- `demo_pr_metadata.json`'s process/text/contributor fields are clearly-labeled
+  illustrative placeholders for this standalone demo — `complexity_before`
+  itself, and all structural counts, are real.
 - If asked "did you find and fix real bugs during development" — yes,
-  several, including a significant one in the complexity calculation itself,
-  caught specifically because this demo's numbers looked implausible on
-  inspection. That's a legitimate, honest part of the research story, not
-  something to hide.
+  several, including in the complexity calculation itself (a systematic
+  under-counting of logical `&&`/`||` operators, caught by cross-checking
+  real PR results against actual SonarQube ground truth, not just this demo).
+  That's a legitimate, honest part of the research story.
