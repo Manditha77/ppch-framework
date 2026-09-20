@@ -1,0 +1,503 @@
+{
+  "phase": "III_ACT",
+  "study": "mttd_mttr_benchmark_vs_reactive_sonarqube",
+  "methodology_note": "Modeled/simulated comparison from real PR timestamps, not a live continuous-deployment field measurement - see this script's own docstring for the full operationalization and its limits.",
+  "complexity_issue_count": 52,
+  "skipped_not_merged": 50,
+  "skipped_no_timestamp": 0,
+  "warning_threshold": 0.7,
+  "proactive_mttd_hours": 0.0,
+  "reactive_mttd_hours": {
+    "mean": 82.36504807692307,
+    "median": 12.9225,
+    "min": 0.19805555555555557,
+    "max": 2911.339722222222
+  },
+  "recovery_window_hours_bought_back": {
+    "mean": 82.36504807692307,
+    "median": 12.9225,
+    "note": "Time available for a fix before the issue reaches master under the proactive regime - NOT a claim of confirmed actual remediation (see methodology_note)."
+  },
+  "realistic_catch_rate": {
+    "would_have_flagged_pre_merge": 22,
+    "total_complexity_issues": 52,
+    "rate": 0.4230769230769231,
+    "note": "Fraction of true complexity-increasing PRs the trained models' actual risk_score would have cleared WARNING_THRESHOLD on - NOT an assumed 100% detection rate."
+  },
+  "proportion_merged_under_each_regime": {
+    "reactive": 1.0,
+    "reactive_note": "By definition - a reactive scanner does not gate merging, it only reports after the fact.",
+    "proactive_flagged_pre_merge": 0.4230769230769231,
+    "proactive_note": "Fraction that would have carried a warning BEFORE merge under the proactive regime - not a claim that flagging would have prevented the merge."
+  },
+  "per_pr": [
+    {
+      "pr_number": 1323,
+      "created_at": "2024-11-30T07:04:52+00:00",
+      "merged_at": "2024-12-02T13:28:28+00:00",
+      "reactive_mttd_hours": 54.39333333333333,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8851920139789582,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1437,
+      "created_at": "2025-08-27T19:22:50+00:00",
+      "merged_at": "2025-09-01T19:45:21+00:00",
+      "reactive_mttd_hours": 120.37527777777778,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8365722731749217,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1492,
+      "created_at": "2025-11-16T06:54:34+00:00",
+      "merged_at": "2025-11-16T17:35:13+00:00",
+      "reactive_mttd_hours": 10.6775,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.7596188020706176,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1494,
+      "created_at": "2025-11-17T15:04:18+00:00",
+      "merged_at": "2025-11-18T14:24:22+00:00",
+      "reactive_mttd_hours": 23.334444444444443,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.9372865223884583,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1495,
+      "created_at": "2025-11-18T19:00:02+00:00",
+      "merged_at": "2025-11-19T13:23:03+00:00",
+      "reactive_mttd_hours": 18.38361111111111,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8867568556467692,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1538,
+      "created_at": "2025-12-21T17:51:36+00:00",
+      "merged_at": "2025-12-21T20:42:18+00:00",
+      "reactive_mttd_hours": 2.845,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.6848112579186758,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1548,
+      "created_at": "2025-12-30T15:07:14+00:00",
+      "merged_at": "2025-12-31T19:35:02+00:00",
+      "reactive_mttd_hours": 28.463333333333335,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.9498902555306752,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1558,
+      "created_at": "2026-01-09T14:54:49+00:00",
+      "merged_at": "2026-05-10T22:15:12+00:00",
+      "reactive_mttd_hours": 2911.339722222222,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.835841069618861,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1589,
+      "created_at": "2026-01-27T11:55:06+00:00",
+      "merged_at": "2026-01-28T01:25:03+00:00",
+      "reactive_mttd_hours": 13.499166666666667,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8476813507080079,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1591,
+      "created_at": "2026-01-27T18:23:21+00:00",
+      "merged_at": "2026-01-28T20:29:46+00:00",
+      "reactive_mttd_hours": 26.106944444444444,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.9601091253757477,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1629,
+      "created_at": "2026-04-25T12:04:40+00:00",
+      "merged_at": "2026-04-25T12:28:41+00:00",
+      "reactive_mttd_hours": 0.4002777777777778,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.9019225736459096,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1630,
+      "created_at": "2026-04-29T22:33:18+00:00",
+      "merged_at": "2026-04-30T12:18:58+00:00",
+      "reactive_mttd_hours": 13.761111111111111,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8174860612551371,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1633,
+      "created_at": "2026-05-05T15:43:01+00:00",
+      "merged_at": "2026-05-05T17:09:00+00:00",
+      "reactive_mttd_hours": 1.4330555555555555,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8511003311475118,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1637,
+      "created_at": "2026-05-06T23:01:13+00:00",
+      "merged_at": "2026-05-07T11:21:58+00:00",
+      "reactive_mttd_hours": 12.345833333333333,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.9331994775931041,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1638,
+      "created_at": "2026-05-07T10:54:12+00:00",
+      "merged_at": "2026-05-07T12:08:51+00:00",
+      "reactive_mttd_hours": 1.2441666666666666,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8871047194798787,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1639,
+      "created_at": "2026-05-07T11:47:43+00:00",
+      "merged_at": "2026-05-07T14:05:15+00:00",
+      "reactive_mttd_hours": 2.292222222222222,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.9232319025198619,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1643,
+      "created_at": "2026-05-10T11:58:15+00:00",
+      "merged_at": "2026-05-10T13:07:13+00:00",
+      "reactive_mttd_hours": 1.1494444444444445,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8772991387049357,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1647,
+      "created_at": "2026-05-16T12:44:01+00:00",
+      "merged_at": "2026-05-17T11:14:51+00:00",
+      "reactive_mttd_hours": 22.51388888888889,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.792633027235667,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1648,
+      "created_at": "2026-05-17T13:27:45+00:00",
+      "merged_at": "2026-05-17T14:10:11+00:00",
+      "reactive_mttd_hours": 0.7072222222222222,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.7853225660324097,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1649,
+      "created_at": "2026-05-17T14:18:39+00:00",
+      "merged_at": "2026-05-17T15:29:53+00:00",
+      "reactive_mttd_hours": 1.1872222222222222,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.8134318844477335,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1651,
+      "created_at": "2026-05-17T17:31:01+00:00",
+      "merged_at": "2026-05-17T20:01:14+00:00",
+      "reactive_mttd_hours": 2.5036111111111112,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.7828914920488994,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1654,
+      "created_at": "2026-05-17T21:18:38+00:00",
+      "merged_at": "2026-05-18T02:35:33+00:00",
+      "reactive_mttd_hours": 5.281944444444444,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.831427784760793,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1657,
+      "created_at": "2026-05-18T11:48:06+00:00",
+      "merged_at": "2026-05-18T14:22:16+00:00",
+      "reactive_mttd_hours": 2.5694444444444446,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.6865821794668834,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1672,
+      "created_at": "2026-05-24T16:13:45+00:00",
+      "merged_at": "2026-05-24T17:14:58+00:00",
+      "reactive_mttd_hours": 1.0202777777777778,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.02858511496335268,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1673,
+      "created_at": "2026-05-24T19:01:43+00:00",
+      "merged_at": "2026-05-24T19:35:32+00:00",
+      "reactive_mttd_hours": 0.5636111111111111,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.08469866054753462,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1675,
+      "created_at": "2026-05-24T21:59:03+00:00",
+      "merged_at": "2026-05-24T22:20:05+00:00",
+      "reactive_mttd_hours": 0.35055555555555556,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.14379531115293503,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1678,
+      "created_at": "2026-05-25T11:44:44+00:00",
+      "merged_at": "2026-05-26T11:24:23+00:00",
+      "reactive_mttd_hours": 23.660833333333333,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.09593757130205631,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1680,
+      "created_at": "2026-05-27T12:27:21+00:00",
+      "merged_at": "2026-05-29T10:12:51+00:00",
+      "reactive_mttd_hours": 45.75833333333333,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.19796987901131313,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1681,
+      "created_at": "2026-05-27T14:07:45+00:00",
+      "merged_at": "2026-05-29T10:13:13+00:00",
+      "reactive_mttd_hours": 44.09111111111111,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.07659629235665003,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1682,
+      "created_at": "2026-05-27T19:16:55+00:00",
+      "merged_at": "2026-05-27T20:01:24+00:00",
+      "reactive_mttd_hours": 0.7413888888888889,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.1183846605817477,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1685,
+      "created_at": "2026-06-02T12:27:40+00:00",
+      "merged_at": "2026-06-03T11:29:57+00:00",
+      "reactive_mttd_hours": 23.038055555555555,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.12273141771554946,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1694,
+      "created_at": "2026-06-08T20:21:21+00:00",
+      "merged_at": "2026-06-08T20:33:14+00:00",
+      "reactive_mttd_hours": 0.19805555555555557,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.16582977255185444,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1700,
+      "created_at": "2026-06-11T13:04:56+00:00",
+      "merged_at": "2026-06-30T20:26:00+00:00",
+      "reactive_mttd_hours": 463.3511111111111,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.9714310590426127,
+      "would_flag_pre_merge": true
+    },
+    {
+      "pr_number": 1701,
+      "created_at": "2026-06-12T02:22:45+00:00",
+      "merged_at": "2026-06-12T02:50:06+00:00",
+      "reactive_mttd_hours": 0.4558333333333333,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.11641196126739184,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1703,
+      "created_at": "2026-06-13T17:45:33+00:00",
+      "merged_at": "2026-06-15T11:57:39+00:00",
+      "reactive_mttd_hours": 42.20166666666667,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.6550025963783264,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1710,
+      "created_at": "2026-06-16T10:04:59+00:00",
+      "merged_at": "2026-06-17T18:58:42+00:00",
+      "reactive_mttd_hours": 32.89527777777778,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.2138500867287318,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1712,
+      "created_at": "2026-06-17T07:33:14+00:00",
+      "merged_at": "2026-06-17T18:45:13+00:00",
+      "reactive_mttd_hours": 11.199722222222222,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.19745331247647605,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1713,
+      "created_at": "2026-06-17T14:06:48+00:00",
+      "merged_at": "2026-06-17T19:04:40+00:00",
+      "reactive_mttd_hours": 4.964444444444444,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.42046893497308097,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1718,
+      "created_at": "2026-06-19T12:01:33+00:00",
+      "merged_at": "2026-06-20T11:00:38+00:00",
+      "reactive_mttd_hours": 22.98472222222222,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.4835513557990392,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1719,
+      "created_at": "2026-06-19T16:52:06+00:00",
+      "merged_at": "2026-06-20T16:58:57+00:00",
+      "reactive_mttd_hours": 24.114166666666666,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.6949929209550222,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1721,
+      "created_at": "2026-06-20T09:18:27+00:00",
+      "merged_at": "2026-06-20T11:26:29+00:00",
+      "reactive_mttd_hours": 2.133888888888889,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.11981277177731196,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1722,
+      "created_at": "2026-06-20T13:59:10+00:00",
+      "merged_at": "2026-06-20T17:03:25+00:00",
+      "reactive_mttd_hours": 3.0708333333333333,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.05391448782136043,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1725,
+      "created_at": "2026-06-22T14:59:01+00:00",
+      "merged_at": "2026-06-24T11:52:43+00:00",
+      "reactive_mttd_hours": 44.895,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.35329320391019187,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1727,
+      "created_at": "2026-06-23T17:20:31+00:00",
+      "merged_at": "2026-06-23T18:35:33+00:00",
+      "reactive_mttd_hours": 1.2505555555555556,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.12887404682735604,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1728,
+      "created_at": "2026-06-24T05:35:55+00:00",
+      "merged_at": "2026-06-25T19:12:53+00:00",
+      "reactive_mttd_hours": 37.61611111111111,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.4756239422162374,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1730,
+      "created_at": "2026-06-24T15:43:29+00:00",
+      "merged_at": "2026-06-25T19:28:42+00:00",
+      "reactive_mttd_hours": 27.753611111111113,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.2675715575615565,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1731,
+      "created_at": "2026-06-25T12:52:54+00:00",
+      "merged_at": "2026-06-25T19:18:58+00:00",
+      "reactive_mttd_hours": 6.434444444444445,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.08181460730731488,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1739,
+      "created_at": "2026-07-03T05:29:29+00:00",
+      "merged_at": "2026-07-03T18:59:46+00:00",
+      "reactive_mttd_hours": 13.504722222222222,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.09458417914807797,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1745,
+      "created_at": "2026-07-08T12:11:10+00:00",
+      "merged_at": "2026-07-11T12:29:37+00:00",
+      "reactive_mttd_hours": 72.3075,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.12552034070094426,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1757,
+      "created_at": "2026-07-27T20:54:52+00:00",
+      "merged_at": "2026-07-27T22:08:58+00:00",
+      "reactive_mttd_hours": 1.235,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.326952028075854,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1758,
+      "created_at": "2026-07-29T00:08:20+00:00",
+      "merged_at": "2026-07-30T11:22:48+00:00",
+      "reactive_mttd_hours": 35.24111111111111,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.5976037462552388,
+      "would_flag_pre_merge": false
+    },
+    {
+      "pr_number": 1771,
+      "created_at": "2026-08-11T20:25:44+00:00",
+      "merged_at": "2026-08-12T15:34:18+00:00",
+      "reactive_mttd_hours": 19.142777777777777,
+      "proactive_mttd_hours": 0.0,
+      "risk_score": 0.3044249285260836,
+      "would_flag_pre_merge": false
+    }
+  ]
+}
