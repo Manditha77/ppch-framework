@@ -202,3 +202,19 @@ predicted risk, before vs after, and exactly which signal(s) triggered Act.
   under-counting of logical `&&`/`||` operators, caught by cross-checking
   real PR results against actual SonarQube ground truth, not just this demo).
   That's a legitimate, honest part of the research story.
+- Return-forwarding: the tool now safely handles the ONE tractable sub-case
+  of a `return` inside the extracted block — an exhaustive `if/else-if/
+  .../else` chain (every path guaranteed to return, verified via a genuine
+  control-flow "does every path return" analysis, not a guess), which gets a
+  correctly-typed extracted method and a `return extracted(...);` call site.
+  A `return` mixed with real fall-through, or a sequence of separate
+  sibling `if` guard clauses (no chaining `else`) — the actual shape most
+  commons-lang guard-clause methods use, including `isAssignable` in PR
+  #1422 — is still correctly refused, by design: bundling those into one
+  extraction would require relaxing the ILP's one-independent-root
+  constraint, which was itself a deliberate fix for an earlier invalid-
+  extraction bug (see java_statement_extractor.py's own docstring). Honest
+  finding: verified correct and zero-regression, but zero real candidates in
+  the 85-PR survey currently have the shape it helps — worth citing as an
+  example of a scoped, safety-first design decision rather than a claimed
+  win that isn't real.

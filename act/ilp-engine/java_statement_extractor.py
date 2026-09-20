@@ -89,6 +89,15 @@ class _FlatStatement:
     # NESTED children (whose own lines are complete, independent statements)
     # can be. See method_to_statements / extract_method.py's handling.
     is_chain_link: bool = False
+    # True if THIS statement alone (its own then/else structure, recursively
+    # - see _definitely_returns) guarantees a `return`/`throw` on every path
+    # through it. Used by render_extraction_suggestion to detect an
+    # "exhaustive" guard-clause/decision chain (e.g. isAssignable's
+    # `if (X) return a; if (Y) return b; ... return false;`) as the safe,
+    # tractable sub-case of return-forwarding - as opposed to a `return`
+    # mixed with genuine fall-through, which stays the existing unsafe/
+    # manual-review case.
+    definitely_returns: bool = False
 
 
 def _unwrap_block(node):
@@ -211,6 +220,48 @@ def _contains_break_continue(node) -> bool:
     return any(_contains_break_continue(getattr(node, attr, None)) for attr in node.attrs)
 
 
+def _definitely_returns(node) -> bool:
+    """True if `node` GUARANTEES control never falls through past it - every
+    path reachable through `node` itself (and its own nested then/else
+    structure, recursively) ends in a `return` (or `throw`). This is the
+    SAME "can complete normally" reachability rule javac itself uses for its
+    "missing return statement" compile check: an `if` with no `else` can
+    always fall through (condition false -> nothing happens), so it never
+    counts; an `if/else` (including an "else if" chain, via the recursive
+    IfStatement case below) only counts if BOTH sides do.
+
+    Deliberately conservative for constructs not handled here (loops,
+    switch, try/catch all fall through the final `return False`) - a false
+    negative here just means a genuinely safe exhaustive-return block gets
+    (still correctly, just more cautiously) treated as the existing unsafe/
+    manual-review case, never the other way around. See
+    render_extraction_suggestion's return-forwarding handling, which is the
+    only caller of this and _block_definitely_returns."""
+    if isinstance(node, (javalang.tree.ReturnStatement, javalang.tree.ThrowStatement)):
+        return True
+    if isinstance(node, javalang.tree.IfStatement):
+        if node.else_statement is None:
+            return False
+        return (
+            _block_definitely_returns(_unwrap_block(node.then_statement))
+            and _block_definitely_returns(_unwrap_block(node.else_statement))
+        )
+    if isinstance(node, javalang.tree.BlockStatement):
+        return _block_definitely_returns(list(node.statements or []))
+    return False
+
+
+def _block_definitely_returns(statements: list) -> bool:
+    """A sequence of statements definitely returns iff its LAST statement
+    does - matching Java's own reachability rule (if an earlier statement in
+    the sequence unconditionally returned, nothing legally compiles after it
+    in the same block anyway, so for real, already-compiling source, only
+    the last statement needs checking)."""
+    if not statements:
+        return False
+    return _definitely_returns(statements[-1])
+
+
 def _collect_declared_vars(node) -> set:
     names = set()
     for descendant in _walk_own_subtree(node):
@@ -308,6 +359,7 @@ def _flatten_method_body(statements, nesting_depth=0, parent_index=None, flat=No
             used_vars=_collect_used_vars(stmt),
             assigned_vars=_collect_assigned_vars(stmt),
             is_chain_link=is_chain_link,
+            definitely_returns=_definitely_returns(stmt),
         ))
         child_nesting = nesting_depth + 1 if isinstance(stmt, NESTING_INCREMENTING_TYPES) else nesting_depth
 
@@ -490,9 +542,20 @@ def method_to_statements(method_node):
             "used_vars": fs.used_vars,
             "declared_vars": fs.declared_vars,
             "assigned_vars": fs.assigned_vars,
+            "nesting_depth": fs.nesting_depth,
+            "definitely_returns": fs.definitely_returns,
         }
 
     type_map = _collect_type_map(method_node, flat)
+    # "$return" is not a valid Java identifier, so it can never collide with
+    # a real parameter/local-variable entry in this same dict - reserved key
+    # for the enclosing method's OWN declared return type, needed by
+    # render_extraction_suggestion's return-forwarding case (an extracted
+    # exhaustive-return sub-block must return the SAME type the statements
+    # already return today, since that code already compiles against it).
+    type_map["$return"] = (
+        "void" if method_node.return_type is None else _type_to_string(method_node.return_type)
+    )
     return statements, meta, type_map
 
 
@@ -562,9 +625,29 @@ def render_extraction_suggestion(
       method (signature + body + closing brace).
     - `call_site_replacement`: the exact line(s) to replace the extracted
       block with in the original method.
+    - Return-forwarding (the "easy", tractable sub-case only): a block
+      containing `return` statements is normally refused outright (see
+      `contains_return_statement` below) - but if the block is EXHAUSTIVE
+      (every path through it guarantees a `return`, e.g. a single
+      `if/else-if/.../else` chain with a terminal `else` covering every
+      remaining case - see _definitely_returns) AND has no outbound side
+      effects on pre-existing variables, it's safe to forward: the extracted
+      method reuses the enclosing method's own return type, and the call
+      site becomes `return extracted(...);`. Verified (2026-09) to have zero
+      real-world impact on the 85-PR Apache Commons Lang survey - this
+      codebase's own guard-clause style tends to use SEPARATE sibling `if`
+      statements with a trailing fallback `return`, not a single chained
+      `if/else-if/.../else`, and the ILP's one-independent-root constraint
+      (a deliberate fix for an earlier "gappy extraction" bug - see
+      extract_method.py) means those siblings can never be bundled into one
+      extraction. Kept anyway: correct and safe for the idiom it does cover,
+      and the ILP constraint it depends on is intentionally NOT being
+      relaxed to chase this case further.
 
-    Still advisory: this does not verify the result compiles, and multi-
-    outbound-variable cases are intentionally left for manual handling.
+    Still advisory: this does not verify the result compiles, multi-
+    outbound-variable cases are intentionally left for manual handling, and
+    a `return` mixed with genuine fall-through (not exhaustive) is still
+    refused rather than guessed at.
     """
     if not selected_indices:
         return {"rendered": False, "reason": "no_statements_selected"}
@@ -650,20 +733,57 @@ def render_extraction_suggestion(
         if used_elsewhere:
             outbound_vars.append(name)
 
+    # Exhaustive-return check: the "easy", tractable sub-case of return-
+    # forwarding. Only applies when the extracted block is a pure guard-
+    # clause/decision-tree pattern - EVERY path through it guarantees a
+    # `return` (no fall-through) AND it has no outbound side effects on
+    # pre-existing variables - exactly what isAssignable-style methods look
+    # like (`if (X) return a; if (Y) return b; ... return false;`). The hard
+    # case (a `return` mixed with genuine fall-through, or combined with
+    # outbound variables) deliberately falls through unchanged to the
+    # existing unsafe/manual-review handling below - this does NOT attempt
+    # to make that case safe.
+    #
+    # "Top level of the extraction" = the swept statements at the SHALLOWEST
+    # nesting depth present (the independent root plus any same-level
+    # siblings swept in alongside it) - anything deeper is nested inside one
+    # of these and its own return-behavior is already folded in recursively
+    # by _definitely_returns's own then/else handling. Whether the sequence
+    # as a whole falls through is then just: does its LAST statement (in
+    # source order) definitely return - see _block_definitely_returns.
+    is_exhaustive_return = False
+    if contains_return_statement and swept_indices:
+        min_depth = min(meta[i]["nesting_depth"] for i in swept_indices)
+        top_level_indices = sorted(
+            (i for i in swept_indices if meta[i]["nesting_depth"] == min_depth),
+            key=lambda i: meta[i]["source_line"],
+        )
+        is_exhaustive_return = bool(top_level_indices) and meta[top_level_indices[-1]]["definitely_returns"]
+
+    return_forwarding = contains_return_statement and is_exhaustive_return and not outbound_vars
+
     suggested_name = f"{method_name}Extracted"
     param_list = ", ".join(f"{type_map.get(name, 'Object')} {name}" for name in inferred_parameters)
 
     return_analysis = {
         "outbound_variables": outbound_vars,
         "status": (
-            "void" if not outbound_vars
+            "return_forwarding" if return_forwarding
+            else "void" if not outbound_vars
             else "single_return" if len(outbound_vars) == 1
             else "multiple_outbound_manual_review_required"
         ),
     }
 
     caveat_parts = []
-    if contains_return_statement:
+    if return_forwarding:
+        caveat_parts.append(
+            "This extracted block guarantees a `return` on every path (an exhaustive "
+            "guard-clause/decision chain, no fall-through) - the extracted method "
+            "mirrors the original method's own return type, and the call site "
+            "forwards the result directly (`return " + suggested_name + "(...);`)."
+        )
+    elif contains_return_statement:
         caveat_parts.append(
             "WARNING: the extracted block contains a `return` statement. This tool "
             "does not model return-forwarding, so the snippet below may return from "
@@ -688,7 +808,17 @@ def render_extraction_suggestion(
     )
 
     BODY_INDENT = "        "  # standard 8-space method-body indentation
-    if return_analysis["status"] == "void":
+    if return_analysis["status"] == "return_forwarding":
+        # The extracted body already ends in a `return` on every path (that
+        # is the whole definition of "exhaustive") - no extra return_stmt to
+        # append, and the return TYPE is simply the enclosing method's own
+        # declared return type: the moved `return X;` statements already
+        # compile against it today, so reusing it is guaranteed compatible,
+        # not a fresh inference.
+        return_type = type_map.get("$return", "Object")
+        return_stmt = ""
+        call_site = f"return {suggested_name}({', '.join(inferred_parameters)});"
+    elif return_analysis["status"] == "void":
         return_type = "void"
         return_stmt = ""
         call_site = f"{suggested_name}({', '.join(inferred_parameters)});"
@@ -748,7 +878,7 @@ def render_extraction_suggestion(
         "call_site_replacement": call_site,
         "safe_to_auto_apply": (
             return_analysis["status"] != "multiple_outbound_manual_review_required"
-            and not contains_return_statement
+            and (not contains_return_statement or return_analysis["status"] == "return_forwarding")
         ),
         "caveat": " ".join(caveat_parts),
     }

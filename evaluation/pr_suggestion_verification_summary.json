@@ -33,7 +33,9 @@
           "line": 1295
         }
       ]
-    }
+    },
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1422\\ClassUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1422\\ClassUtils_after.java"
   },
   {
     "pr_number": 1591,
@@ -92,6 +94,8 @@
           "line": 1112
         }
       ]
-    }
+    },
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1392\\StrSubstitutor_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1392\\StrSubstitutor_after.java"
   }
 ]

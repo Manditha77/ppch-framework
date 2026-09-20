@@ -166,11 +166,17 @@ def main() -> None:
     unsafe_count = sum(1 for s in optimal if not s.get("safe_to_auto_apply"))
     if unsafe_count:
         lines += ["", f"**{unsafe_count} of {len(optimal)} candidates are NOT safe to auto-apply** "
-                       "(most commonly: the extracted block contains a `return` statement, which this "
-                       "tool doesn't model return-forwarding for) - the ILP still found a mathematically "
-                       "valid extraction, but applying it as-is risks incorrect code. These need manual "
-                       "restructuring, not automatic application. See act/github-action/"
-                       "verify_pr_suggestion.py for confirmed, SonarQube-checked outcomes on specific PRs."]
+                       "(most commonly: the extracted block contains a `return` statement that isn't "
+                       "safely forwardable - either mixed with genuine fall-through, or a sequence of "
+                       "separate sibling `if` guard clauses rather than a single `if/else-if/.../else` "
+                       "chain with a terminal `else`. That specific chained-else shape IS now safely "
+                       "handled via return-forwarding - see java_statement_extractor.py's "
+                       "render_extraction_suggestion docstring - but as of this survey, zero real "
+                       "candidates in this corpus happen to have that shape) - the ILP still found a "
+                       "mathematically valid extraction, but applying it as-is risks incorrect code. "
+                       "These need manual restructuring, not automatic application. See "
+                       "act/github-action/verify_pr_suggestion.py for confirmed, SonarQube-checked "
+                       "outcomes on specific PRs."]
     non_optimal = [s for s in survey if s.get("status") not in ("optimal", "threshold_unreachable")]
     if non_optimal:
         lines += ["", f"{len(non_optimal)} candidates did not produce an optimal suggestion "
