@@ -8,7 +8,11 @@ A-priori target: AUC > 0.8
 |---|---:|---:|---:|---:|---|
 | random_forest | 1000/1000 | 0.766 | 0.766 | 0.037 | [0.691, 0.839] |
 | xgboost | 1000/1000 | 0.768 | 0.770 | 0.037 | [0.692, 0.833] |
+| naive_bayes | 1000/1000 | 0.638 | 0.645 | 0.064 | [0.502, 0.744] |
+| logistic_regression | 1000/1000 | 0.771 | 0.773 | 0.037 | [0.699, 0.839] |
 
 Bootstrap validation on a 334-row dataset. The a-priori target AUC > 0.80 (Methodology §3.5.1) is a pipeline-validation checkpoint here, not a dissertation-level claim - scale the Sense-phase sample before reporting these figures as final.
 
 SMOTE was NOT applied inside each bootstrap iteration (some bags would have too few minority examples for it to run reliably); iterations with a single-class bag or out-of-bag set are skipped and counted separately.
+
+Four baselines compared: Random Forest, XGBoost, Multinomial Naive Bayes, and Logistic Regression (all named in Methodology §3.4.2). GCN/CNN/RNN deep-learning baselines are also named there but require genuinely new infrastructure (AST-to-graph construction, a torch training pipeline) and are explicitly out of scope given the dissertation timeline.

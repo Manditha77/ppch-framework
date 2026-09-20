@@ -26,7 +26,9 @@ from pathlib import Path
 
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
+from sklearn.naive_bayes import MultinomialNB
 from xgboost import XGBClassifier
 
 from feature_utils import apply_log_transform
@@ -63,6 +65,9 @@ def load_split():
     return frame.iloc[:split_index], frame.iloc[split_index:]
 
 
+MODEL_NAMES = ["random_forest", "xgboost", "naive_bayes", "logistic_regression"]
+
+
 def make_models():
     return {
         "random_forest": RandomForestClassifier(
@@ -74,6 +79,12 @@ def make_models():
             objective="binary:logistic", eval_metric="logloss",
             random_state=42, n_jobs=1,
         ),
+        # MultinomialNB requires non-negative features - true by construction
+        # for every FAMILIES entry here (counts, rates, complexity_before),
+        # preserved by apply_log_transform's log1p (see train_models.py's own
+        # assertion of this same invariant).
+        "naive_bayes": MultinomialNB(),
+        "logistic_regression": LogisticRegression(max_iter=1000, class_weight="balanced", random_state=42),
     }
 
 
@@ -92,7 +103,7 @@ def main() -> None:
     train, test = load_split()
     results = {"phase": "II_ANALYZE", "study": "ablation", "row_count": len(train) + len(test)}
 
-    for model_name in ["random_forest", "xgboost"]:
+    for model_name in MODEL_NAMES:
         full_auc = auc_for(ALL_FEATURES, train, test, model_name)
         leave_one_out = {}
         for family, feats in FAMILIES.items():
@@ -129,7 +140,7 @@ def main() -> None:
         "in Methodology §3.3.3, which are not yet implemented.",
         "",
     ]
-    for model_name in ["random_forest", "xgboost"]:
+    for model_name in MODEL_NAMES:
         r = results[model_name]
         lines += [
             f"## {model_name}",
@@ -156,6 +167,12 @@ def main() -> None:
         "family is essential; Δ near 0 means the model doesn't need it (often because",
         "another family, or `baseline_complexity` in particular, already captures the",
         "same signal). A family's standalone AUC shows how much it can predict on its own.",
+        "",
+        "Four baselines compared: Random Forest, XGBoost, Multinomial Naive Bayes, and "
+        "Logistic Regression (all named in Methodology §3.4.2). GCN/CNN/RNN "
+        "deep-learning baselines are also named there but require genuinely new "
+        "infrastructure (AST-to-graph construction, a torch training pipeline) and are "
+        "explicitly out of scope given the dissertation timeline.",
     ]
     (EVALUATION_DIR / "ablation_results.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(json.dumps(results, indent=2))

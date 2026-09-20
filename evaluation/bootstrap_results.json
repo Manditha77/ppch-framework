@@ -27,6 +27,28 @@
       "std_auc": 0.036510173805292784,
       "ci_95_low": 0.6916429249762582,
       "ci_95_high": 0.8332871738241009
+    },
+    "naive_bayes": {
+      "requested_iterations": 1000,
+      "valid_iterations": 1000,
+      "skipped_iterations": 0,
+      "skip_reason": "bag or out-of-bag set contained only one class",
+      "mean_auc": 0.6379895050497523,
+      "median_auc": 0.6446780307492825,
+      "std_auc": 0.06409571226997471,
+      "ci_95_low": 0.5020903693548621,
+      "ci_95_high": 0.7444717444717445
+    },
+    "logistic_regression": {
+      "requested_iterations": 1000,
+      "valid_iterations": 1000,
+      "skipped_iterations": 0,
+      "skip_reason": "bag or out-of-bag set contained only one class",
+      "mean_auc": 0.7714138743659568,
+      "median_auc": 0.773429802955665,
+      "std_auc": 0.03660449025015471,
+      "ci_95_low": 0.698764880952381,
+      "ci_95_high": 0.8393570863933089
     }
   }
 }

@@ -22,7 +22,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
+from sklearn.naive_bayes import MultinomialNB
 from xgboost import XGBClassifier
 
 from feature_utils import apply_log_transform
@@ -53,12 +55,19 @@ def load_dataset() -> pd.DataFrame:
 def make_model(name: str, seed: int):
     if name == "random_forest":
         return RandomForestClassifier(n_estimators=100, random_state=seed, n_jobs=-1, class_weight="balanced")
-    return XGBClassifier(
-        n_estimators=100, max_depth=3, learning_rate=0.05,
-        subsample=0.9, colsample_bytree=0.9,
-        objective="binary:logistic", eval_metric="logloss",
-        random_state=seed, n_jobs=1,
-    )
+    if name == "xgboost":
+        return XGBClassifier(
+            n_estimators=100, max_depth=3, learning_rate=0.05,
+            subsample=0.9, colsample_bytree=0.9,
+            objective="binary:logistic", eval_metric="logloss",
+            random_state=seed, n_jobs=1,
+        )
+    if name == "naive_bayes":
+        # No random_state - MultinomialNB's fit is deterministic given data.
+        return MultinomialNB()
+    if name == "logistic_regression":
+        return LogisticRegression(max_iter=1000, class_weight="balanced", random_state=seed)
+    raise ValueError(f"Unknown model name: {name}")
 
 
 def bootstrap_validate(frame: pd.DataFrame, model_name: str, n_iterations: int, seed: int) -> dict:
@@ -101,6 +110,7 @@ def main() -> None:
     frame = load_dataset()
     if frame[FEATURES + [LABEL]].isnull().any().any():
         raise ValueError("Dataset contains null values in features or label")
+    assert (frame[FEATURES] >= 0).all().all(), "MultinomialNB requires non-negative features"
 
     results = {
         "phase": "II_ANALYZE",
@@ -116,7 +126,7 @@ def main() -> None:
         "target_auc": 0.80,
         "models": {},
     }
-    for model_name in ["random_forest", "xgboost"]:
+    for model_name in ["random_forest", "xgboost", "naive_bayes", "logistic_regression"]:
         results["models"][model_name] = bootstrap_validate(frame, model_name, N_ITERATIONS, seed=42)
 
     EVALUATION_DIR.mkdir(parents=True, exist_ok=True)
@@ -152,6 +162,12 @@ def main() -> None:
         "SMOTE was NOT applied inside each bootstrap iteration (some bags would have "
         "too few minority examples for it to run reliably); iterations with a "
         "single-class bag or out-of-bag set are skipped and counted separately.",
+        "",
+        "Four baselines compared: Random Forest, XGBoost, Multinomial Naive Bayes, and "
+        "Logistic Regression (all named in Methodology §3.4.2). GCN/CNN/RNN "
+        "deep-learning baselines are also named there but require genuinely new "
+        "infrastructure (AST-to-graph construction, a torch training pipeline) and are "
+        "explicitly out of scope given the dissertation timeline.",
     ]
     (EVALUATION_DIR / "bootstrap_results.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(json.dumps(results, indent=2))

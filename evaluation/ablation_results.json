@@ -55,5 +55,59 @@
       "process": 0.5848930481283423,
       "textual_proxy": 0.47927807486631013
     }
+  },
+  "naive_bayes": {
+    "full_model_auc": 0.6488413547237077,
+    "leave_one_family_out": {
+      "baseline_complexity": {
+        "auc_without_family": 0.6684491978609625,
+        "delta_vs_full": 0.0196
+      },
+      "structural_size": {
+        "auc_without_family": 0.6550802139037433,
+        "delta_vs_full": 0.0062
+      },
+      "process": {
+        "auc_without_family": 0.5842245989304813,
+        "delta_vs_full": -0.0646
+      },
+      "textual_proxy": {
+        "auc_without_family": 0.5949197860962566,
+        "delta_vs_full": -0.0539
+      }
+    },
+    "family_alone": {
+      "baseline_complexity": 0.5,
+      "structural_size": 0.6947415329768271,
+      "process": 0.5133689839572193,
+      "textual_proxy": 0.4696969696969697
+    }
+  },
+  "logistic_regression": {
+    "full_model_auc": 0.7201426024955437,
+    "leave_one_family_out": {
+      "baseline_complexity": {
+        "auc_without_family": 0.7067736185383244,
+        "delta_vs_full": -0.0134
+      },
+      "structural_size": {
+        "auc_without_family": 0.7201426024955437,
+        "delta_vs_full": 0.0
+      },
+      "process": {
+        "auc_without_family": 0.7014260249554367,
+        "delta_vs_full": -0.0187
+      },
+      "textual_proxy": {
+        "auc_without_family": 0.7201426024955437,
+        "delta_vs_full": 0.0
+      }
+    },
+    "family_alone": {
+      "baseline_complexity": 0.5757575757575759,
+      "structural_size": 0.67825311942959,
+      "process": 0.6831550802139037,
+      "textual_proxy": 0.5405525846702317
+    }
   }
 }

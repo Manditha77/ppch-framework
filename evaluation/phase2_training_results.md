@@ -1,9 +1,6 @@
-# Phase II Pilot Training Results (SMOTE-balanced)
+# Phase II Training Results (SMOTE-balanced)
 
-Temporal holdout pilot results on a small (62-row) dataset — a pipeline
-validation, not a final dissertation claim. SMOTE was applied to the
-TRAINING partition only; the test partition is the real, untouched
-class distribution.
+Temporal holdout results on a 334-row dataset (single-project, apache/commons-lang). SMOTE was applied to the TRAINING partition only; the test partition is the real, untouched class distribution. Four baselines are compared: Random Forest, XGBoost, Multinomial Naive Bayes, and Logistic Regression (all named in Methodology §3.4.2). GCN/CNN/RNN deep-learning baselines are also named there but require genuinely new infrastructure (AST-to-graph construction, a torch training pipeline) and are explicitly out of scope given the dissertation timeline.
 
 - Rows: 334
 - Training rows: 233 (before SMOTE: {'0': 164, '1': 69}, after: {'1': 164, '0': 164})
@@ -13,11 +10,15 @@ class distribution.
 |---|---:|---:|---:|---:|---:|---:|
 | random_forest | 0.652 | 0.703 | 0.636 | 0.212 | 0.318 | 0.109 |
 | xgboost | 0.690 | 0.673 | 0.500 | 0.152 | 0.233 | 0.099 |
+| naive_bayes | 0.638 | 0.713 | 0.643 | 0.273 | 0.383 | 0.139 |
+| logistic_regression | 0.722 | 0.663 | 0.486 | 0.545 | 0.514 | 0.366 |
 
 **Confusion matrices** (rows=actual, cols=predicted):
 
 - **random_forest**: TN=64, FP=4, FN=26, TP=7
 - **xgboost**: TN=63, FP=5, FN=28, TP=5
+- **naive_bayes**: TN=63, FP=5, FN=24, TP=9
+- **logistic_regression**: TN=49, FP=19, FN=15, TP=18
 
 Post-submission complexity measurements (after/delta) were excluded from the
 predictor matrix; complexity_before was correctly INCLUDED since it reflects

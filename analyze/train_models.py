@@ -25,6 +25,7 @@ import joblib
 import pandas as pd
 from imblearn.over_sampling import SMOTE
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     accuracy_score,
     confusion_matrix,
@@ -33,6 +34,7 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
+from sklearn.naive_bayes import MultinomialNB
 from xgboost import XGBClassifier
 
 from feature_utils import apply_log_transform
@@ -137,6 +139,15 @@ def main() -> None:
     x_train_bal, y_train_bal = smote.fit_resample(x_train, y_train)
     post_smote_counts = {str(k): int(v) for k, v in y_train_bal.value_counts().to_dict().items()}
 
+    # MultinomialNB requires non-negative features. Every FEATURES column
+    # (counts, rates, complexity_before) is non-negative by construction, and
+    # apply_log_transform (log1p) preserves non-negativity, so no special-
+    # casing is needed here - SMOTE's convex-combination interpolation
+    # between two non-negative points also stays non-negative. Assert rather
+    # than assume, since a silent MultinomialNB crash from a future feature
+    # addition would otherwise be confusing.
+    assert (x_train_bal >= 0).all().all(), "MultinomialNB requires non-negative features"
+
     models = {
         "random_forest": RandomForestClassifier(
             n_estimators=300,
@@ -154,6 +165,16 @@ def main() -> None:
             random_state=42,
             n_jobs=1,
         ),
+        # Methodology §3.4.2: Multinomial Naive Bayes, "on the strength of its
+        # reported 97.3 per cent accuracy for structural-complexity prediction"
+        # [Odeh et al., 2024].
+        "naive_bayes": MultinomialNB(),
+        # Methodology §3.4.2: "slice-based logistic-regression baselines were
+        # retained to preserve comparability with the defect-prediction
+        # literature" - not slice-based here (no srcSlice integration), but
+        # the same classical linear baseline for comparability against the
+        # tree-ensemble models above.
+        "logistic_regression": LogisticRegression(max_iter=1000, class_weight="balanced"),
     }
 
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
@@ -161,10 +182,10 @@ def main() -> None:
         "phase": "II_ANALYZE",
         "status": "pilot_evaluation_smote_balanced",
         "warning": (
-            "Pilot metrics on a 62-row dataset are a pipeline validation, not a "
-            "final dissertation claim. Scale the Sense-phase sample (more "
-            "commons-lang PRs, then Kafka/Dubbo) before reporting dissertation-"
-            "level results."
+            f"Metrics on a {len(frame)}-row dataset (single-project, apache/commons-lang). "
+            "Multi-project sampling (Kafka/Dubbo) and GCN/CNN/RNN deep-learning baselines "
+            "are explicitly out of scope for this dissertation's timeline - see the "
+            "limitations write-up."
         ),
         "row_count": len(frame),
         "feature_fields": FEATURES,
@@ -240,12 +261,16 @@ def main() -> None:
     predictions.to_csv(EVALUATION_DIR / "phase2_test_predictions.csv", index=False)
 
     lines = [
-        "# Phase II Pilot Training Results (SMOTE-balanced)",
+        "# Phase II Training Results (SMOTE-balanced)",
         "",
-        "Temporal holdout pilot results on a small (62-row) dataset — a pipeline",
-        "validation, not a final dissertation claim. SMOTE was applied to the",
-        "TRAINING partition only; the test partition is the real, untouched",
-        "class distribution.",
+        f"Temporal holdout results on a {len(frame)}-row dataset (single-project, "
+        "apache/commons-lang). SMOTE was applied to the TRAINING partition only; "
+        "the test partition is the real, untouched class distribution. Four "
+        "baselines are compared: Random Forest, XGBoost, Multinomial Naive Bayes, "
+        "and Logistic Regression (all named in Methodology §3.4.2). GCN/CNN/RNN "
+        "deep-learning baselines are also named there but require genuinely new "
+        "infrastructure (AST-to-graph construction, a torch training pipeline) and "
+        "are explicitly out of scope given the dissertation timeline.",
         "",
         f"- Rows: {len(frame)}",
         f"- Training rows: {len(train)} (before SMOTE: {pre_smote_counts}, after: {post_smote_counts})",

@@ -1,7 +1,7 @@
 {
   "phase": "II_ANALYZE",
   "status": "pilot_evaluation_smote_balanced",
-  "warning": "Pilot metrics on a 62-row dataset are a pipeline validation, not a final dissertation claim. Scale the Sense-phase sample (more commons-lang PRs, then Kafka/Dubbo) before reporting dissertation-level results.",
+  "warning": "Metrics on a 334-row dataset (single-project, apache/commons-lang). Multi-project sampling (Kafka/Dubbo) and GCN/CNN/RNN deep-learning baselines are explicitly out of scope for this dissertation's timeline - see the limitations write-up.",
   "row_count": 334,
   "feature_fields": [
     "additions",
@@ -444,6 +444,34 @@
         "body_character_count": 0.04124515876173973,
         "title_word_count": 0.04109133034944534
       }
+    },
+    "naive_bayes": {
+      "accuracy": 0.7128712871287128,
+      "precision": 0.6428571428571429,
+      "recall": 0.2727272727272727,
+      "f1": 0.3829787234042553,
+      "predicted_positive_rate": 0.13861386138613863,
+      "confusion_matrix": {
+        "true_negative": 63,
+        "false_positive": 5,
+        "false_negative": 24,
+        "true_positive": 9
+      },
+      "roc_auc": 0.6381461675579324
+    },
+    "logistic_regression": {
+      "accuracy": 0.6633663366336634,
+      "precision": 0.4864864864864865,
+      "recall": 0.5454545454545454,
+      "f1": 0.5142857142857142,
+      "predicted_positive_rate": 0.36633663366336633,
+      "confusion_matrix": {
+        "true_negative": 49,
+        "false_positive": 19,
+        "false_negative": 15,
+        "true_positive": 18
+      },
+      "roc_auc": 0.7219251336898396
     }
   },
   "interpretation_note": "Feature importance is reasonably distributed across the feature set in both models (top feature per model: random_forest: additions (0.21), xgboost: additions (0.18)), consistent with genuine multi-feature prediction rather than a single dominant signal."
