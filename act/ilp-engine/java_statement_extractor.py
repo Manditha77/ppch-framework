@@ -109,14 +109,59 @@ def _unwrap_block(node):
     return [node]
 
 
+def _count_boolean_operator_sequences(node, parent_operator=None, exclude_attrs=frozenset({"then_statement", "else_statement", "body"})):
+    """Campbell's rule for logical operators: each MAXIMAL RUN of the same
+    &&/|| operator in an expression counts once; switching operator type
+    within the same expression (e.g. `a && b || c`) adds another increment.
+    `parent_operator` tells a BinaryOperation node whether it's a
+    continuation of its parent's run (same operator - contributes 0 more)
+    or the start of a new one (different operator, or no logical parent -
+    contributes 1).
+
+    `exclude_attrs` mirrors _walk_own_subtree's exclusion set EXACTLY, and
+    for the same reason: _complexity_of_node is called with the WHOLE
+    statement node (e.g. an IfStatement, which structurally still contains
+    its then/else/body children in the raw AST) - without this exclusion,
+    a boolean expression inside a nested branch would be counted HERE
+    (via its ancestor if-statement) AND AGAIN by that branch's own
+    separately-flattened statement entry.
+
+    CORRECTNESS HISTORY: _complexity_of_node used to have a dead branch
+    checking `isinstance(node, BinaryOperation)` - but the node it's called
+    with is always a STATEMENT (an if/for/while/... header), never the
+    boolean EXPRESSION inside that statement's own condition, so that
+    branch could never fire. Confirmed by reproducing on two real PRs (see
+    git history): a method with 6 &&/|| operators in its guard conditions
+    scored a Campbell estimate 5 points below SonarQube's own real
+    measurement."""
+    if node is None:
+        return 0
+    if isinstance(node, (list, tuple, set)):
+        return sum(_count_boolean_operator_sequences(item, parent_operator, exclude_attrs) for item in node)
+    if not hasattr(node, "attrs"):
+        return 0  # primitive value - not a javalang Node
+
+    if isinstance(node, javalang.tree.BinaryOperation) and node.operator in ("&&", "||"):
+        increment = 0 if node.operator == parent_operator else 1
+        left = _count_boolean_operator_sequences(node.operandl, node.operator, exclude_attrs)
+        right = _count_boolean_operator_sequences(node.operandr, node.operator, exclude_attrs)
+        return increment + left + right
+
+    total = 0
+    for attr_name in node.attrs:
+        if attr_name in exclude_attrs:
+            continue
+        total += _count_boolean_operator_sequences(getattr(node, attr_name, None), None, exclude_attrs)
+    return total
+
+
 def _complexity_of_node(node, nesting_depth: int) -> float:
     """+1 for a flow-breaking node, plus its current nesting depth as a
-    nesting penalty (approximating Campbell's B3 rule)."""
-    if isinstance(node, FLOW_BREAKING_TYPES):
-        return 1.0 + nesting_depth
-    if isinstance(node, javalang.tree.BinaryOperation) and node.operator in ("&&", "||"):
-        return 1.0
-    return 0.0
+    nesting penalty (approximating Campbell's B3 rule), plus one increment
+    per logical-operator run/change in its OWN condition/expression content
+    (Campbell's B2 rule for &&/||) - see _count_boolean_operator_sequences."""
+    base = 1.0 + nesting_depth if isinstance(node, FLOW_BREAKING_TYPES) else 0.0
+    return base + _count_boolean_operator_sequences(node)
 
 
 def _walk_own_subtree(node, exclude_attrs=frozenset({"then_statement", "else_statement", "body"})):

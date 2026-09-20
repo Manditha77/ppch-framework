@@ -8,14 +8,14 @@
 
 ## Predicted Risk (Analyze layer, same trained models throughout)
 
-- Before: risk_score = **0.302** -> action = `no_intervention`
-- After:  risk_score = **0.301** -> action = `no_intervention`
+- Before: risk_score = **0.806** -> action = `complexity_warning_and_refactoring_review`
+- After:  risk_score = **0.808** -> action = `complexity_warning_and_refactoring_review`
 
 ## Refactoring suggestion (Act layer)
 
-A refactoring suggestion WAS generated for the BEFORE version, targeting `calculateFinalPrice` (approximate complexity 28.0).
+A refactoring suggestion WAS generated for the BEFORE version, targeting `calculateFinalPrice` (approximate complexity 29.0).
+- Triggered by: Analyze layer: risk_score 0.806 >= warning threshold
 - Triggered by: Act layer: measured complexity_before 35.0 > per-method threshold 15.0
 - Suggested extraction: lines 21-29 of PricingEngine.java
 - Inferred parameters: ['customer', 'discount', 'order']
 - Suggested method name: `calculateFinalPriceExtracted`
-- Note: risk_score (0.302) was below the Analyze layer's own warning threshold; this suggestion was triggered by the measured complexity alone, independent of the ML prediction.

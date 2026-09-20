@@ -7,16 +7,17 @@
     10,
     11
   ],
-  "original_complexity": 28.0,
-  "remaining_complexity": 21.0,
+  "original_complexity": 29.0,
+  "remaining_complexity": 22.0,
   "complexity_threshold": 15.0,
   "max_local_variables": 4,
   "source_file": "PricingEngine.java",
   "method_name": "calculateFinalPrice",
   "method_start_line": 11,
   "was_touched_by_pr": true,
-  "approximate_method_complexity": 28.0,
+  "approximate_method_complexity": 29.0,
   "trigger_reasons": [
+    "Analyze layer: risk_score 0.806 >= warning threshold",
     "Act layer: measured complexity_before 35.0 > per-method threshold 15.0"
   ],
   "note": "approximate_method_complexity is this framework's own reproduction of Campbell's (2018) rules, not SonarQube's proprietary engine \u2014 the complexity_before figure used for the risk PREDICTION above is the real SonarQube measurement; this number is only used to select and score the extraction candidate.",

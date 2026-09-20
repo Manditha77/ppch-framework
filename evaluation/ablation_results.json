@@ -1,59 +1,59 @@
 {
   "phase": "II_ANALYZE",
   "study": "ablation",
-  "row_count": 62,
+  "row_count": 334,
   "random_forest": {
-    "full_model_auc": 0.7976190476190477,
+    "full_model_auc": 0.678698752228164,
     "leave_one_family_out": {
       "baseline_complexity": {
-        "auc_without_family": 0.7261904761904762,
-        "delta_vs_full": -0.0714
+        "auc_without_family": 0.6588680926916222,
+        "delta_vs_full": -0.0198
       },
       "structural_size": {
-        "auc_without_family": 0.7023809523809523,
-        "delta_vs_full": -0.0952
+        "auc_without_family": 0.5496880570409982,
+        "delta_vs_full": -0.129
       },
       "process": {
-        "auc_without_family": 0.8928571428571429,
-        "delta_vs_full": 0.0952
+        "auc_without_family": 0.7103386809269162,
+        "delta_vs_full": 0.0316
       },
       "textual_proxy": {
-        "auc_without_family": 0.7738095238095237,
-        "delta_vs_full": -0.0238
+        "auc_without_family": 0.6951871657754011,
+        "delta_vs_full": 0.0165
       }
     },
     "family_alone": {
-      "baseline_complexity": 0.7261904761904763,
-      "structural_size": 0.7380952380952381,
-      "process": 0.6666666666666667,
-      "textual_proxy": 0.7142857142857143
+      "baseline_complexity": 0.55325311942959,
+      "structural_size": 0.6922905525846702,
+      "process": 0.5057932263814617,
+      "textual_proxy": 0.5111408199643493
     }
   },
   "xgboost": {
-    "full_model_auc": 0.7857142857142857,
+    "full_model_auc": 0.7107843137254901,
     "leave_one_family_out": {
       "baseline_complexity": {
-        "auc_without_family": 0.6785714285714286,
-        "delta_vs_full": -0.1071
+        "auc_without_family": 0.7023172905525846,
+        "delta_vs_full": -0.0085
       },
       "structural_size": {
-        "auc_without_family": 0.7261904761904763,
-        "delta_vs_full": -0.0595
+        "auc_without_family": 0.5980392156862745,
+        "delta_vs_full": -0.1127
       },
       "process": {
-        "auc_without_family": 0.8690476190476191,
-        "delta_vs_full": 0.0833
+        "auc_without_family": 0.7058823529411765,
+        "delta_vs_full": -0.0049
       },
       "textual_proxy": {
-        "auc_without_family": 0.7619047619047619,
-        "delta_vs_full": -0.0238
+        "auc_without_family": 0.7450980392156863,
+        "delta_vs_full": 0.0343
       }
     },
     "family_alone": {
-      "baseline_complexity": 0.7321428571428572,
-      "structural_size": 0.8154761904761905,
-      "process": 0.5654761904761905,
-      "textual_proxy": 0.6547619047619048
+      "baseline_complexity": 0.5597147950089127,
+      "structural_size": 0.6951871657754011,
+      "process": 0.5848930481283423,
+      "textual_proxy": 0.47927807486631013
     }
   }
 }

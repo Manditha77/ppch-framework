@@ -1,8 +1,8 @@
 {
   "phase": "II_ANALYZE",
   "study": "out_of_sample_bootstrap_validation",
-  "warning": "Bootstrap validation on a 62-row dataset. The a-priori target AUC > 0.80 (Methodology \u00a73.5.1) is a pipeline-validation checkpoint here, not a dissertation-level claim - scale the Sense-phase sample before reporting these figures as final.",
-  "row_count": 62,
+  "warning": "Bootstrap validation on a 334-row dataset. The a-priori target AUC > 0.80 (Methodology \u00a73.5.1) is a pipeline-validation checkpoint here, not a dissertation-level claim - scale the Sense-phase sample before reporting these figures as final.",
+  "row_count": 334,
   "n_iterations_requested": 1000,
   "target_auc": 0.8,
   "models": {
@@ -11,22 +11,22 @@
       "valid_iterations": 1000,
       "skipped_iterations": 0,
       "skip_reason": "bag or out-of-bag set contained only one class",
-      "mean_auc": 0.6714914554450555,
-      "median_auc": 0.6746031746031746,
-      "std_auc": 0.10803875171257238,
-      "ci_95_low": 0.4472953216374269,
-      "ci_95_high": 0.8796626984126984
+      "mean_auc": 0.7659375260821147,
+      "median_auc": 0.7662616019097501,
+      "std_auc": 0.037279557346333876,
+      "ci_95_low": 0.6907293205591923,
+      "ci_95_high": 0.8388954705628507
     },
     "xgboost": {
       "requested_iterations": 1000,
       "valid_iterations": 1000,
       "skipped_iterations": 0,
       "skip_reason": "bag or out-of-bag set contained only one class",
-      "mean_auc": 0.6518036862942791,
-      "median_auc": 0.657142857142857,
-      "std_auc": 0.11762108288707901,
-      "ci_95_low": 0.41030103668261564,
-      "ci_95_high": 0.8651190476190475
+      "mean_auc": 0.7683714054816685,
+      "median_auc": 0.7701491091258601,
+      "std_auc": 0.036510173805292784,
+      "ci_95_low": 0.6916429249762582,
+      "ci_95_high": 0.8332871738241009
     }
   }
 }

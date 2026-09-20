@@ -6,16 +6,17 @@
     "percent_change": -11.4
   },
   "predicted_risk_score": {
-    "before": 0.3023858803510666,
-    "after": 0.3007192136843999,
-    "change": -0.002
+    "before": 0.8062700311342875,
+    "after": 0.8079018572966258,
+    "change": 0.002
   },
   "action": {
-    "before": "no_intervention",
-    "after": "no_intervention"
+    "before": "complexity_warning_and_refactoring_review",
+    "after": "complexity_warning_and_refactoring_review"
   },
   "refactoring_suggestion_applied": true,
   "act_trigger_reasons": [
+    "Analyze layer: risk_score 0.806 >= warning threshold",
     "Act layer: measured complexity_before 35.0 > per-method threshold 15.0"
   ]
 }

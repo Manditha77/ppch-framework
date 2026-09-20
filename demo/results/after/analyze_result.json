@@ -17,11 +17,11 @@
     "complexity_before": 31.0
   },
   "model_probabilities": {
-    "random_forest": 0.30666666666666664,
-    "xgboost": 0.2947717607021332
+    "random_forest": 0.6833333333333333,
+    "xgboost": 0.9324703812599182
   },
-  "risk_score": 0.3007192136843999,
-  "predicted_label": 0,
-  "action": "no_intervention",
-  "refactoring_suggestion_requested": false
+  "risk_score": 0.8079018572966258,
+  "predicted_label": 1,
+  "action": "complexity_warning_and_refactoring_review",
+  "refactoring_suggestion_requested": true
 }
