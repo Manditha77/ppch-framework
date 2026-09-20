@@ -85,15 +85,24 @@ def is_test_file(path: str) -> bool:
     return "/test/" in path or path.startswith("test/")
 
 
-def generate_refactoring_suggestion(pr_number: int) -> dict:
+def generate_refactoring_suggestion(pr_number: int, scan_record: dict = None) -> dict:
     """Fetch the real source of the PR's touched production files, find the
     method this PR actually modified with the highest complexity (falling
     back to the file's single most complex method only if no touched method
     can be identified - see java_statement_extractor.most_complex_method's
     diff-scoping fix), and run the ILP Extract Method solver on it. Falls
     back to a clear diagnostic status on any failure (network, parse error,
-    no suitable file) rather than crashing the whole pipeline."""
-    scan_record = load_scan_result(pr_number)
+    no suitable file) rather than crashing the whole pipeline.
+
+    `scan_record` (optional) - {"changed_java_files": [...], "base_sha":...,
+    "head_sha":...} - lets a caller supply this directly instead of it being
+    looked up from the pre-scanned historical dataset (pilot_scan_results.
+    jsonl). Used by act/github-action/live_predict.py for PRs that were
+    never part of that dataset at all (a genuinely live PR) - every EXISTING
+    caller is unaffected, since omitting this argument preserves the exact
+    original lookup behavior."""
+    if scan_record is None:
+        scan_record = load_scan_result(pr_number)
     if scan_record is None:
         return {"status": "skipped", "reason": "no_scan_record_found_for_pr"}
 
