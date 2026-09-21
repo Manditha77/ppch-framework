@@ -54,6 +54,13 @@ runs:
     - name: Run PPCH live prediction
       shell: bash
       env:
+        # Forces UTF-8 for stdin/stdout/filesystem and, critically, for the
+        # str->bytes encoding Python's stdlib falls back to at various layers
+        # (json/http) - without it, a Windows self-hosted runner can fall
+        # back to the system codepage and mangle non-ASCII characters (found
+        # via a real live test: the report's em-dash came through as "�" on
+        # a Windows runner). No effect on Linux/macOS runners.
+        PYTHONUTF8: "1"
         GITHUB_TOKEN: ${{ inputs.github-token }}
         SONAR_TOKEN: ${{ inputs.sonar-token }}
         SONAR_HOST_URL: ${{ inputs.sonar-host-url }}
