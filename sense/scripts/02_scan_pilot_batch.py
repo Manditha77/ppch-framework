@@ -117,32 +117,32 @@ def select_sample(sample_size: int, years: int, seed: int) -> list:
 # Step 2: ensure commits are present locally, and diff to find changed .java files
 # ---------------------------------------------------------------------------
 
-def ensure_commit_available(sha: str) -> bool:
+def ensure_commit_available(sha: str, repo_dir: Path = REPO_DIR) -> bool:
     check = subprocess.run(
-        ["git", "cat-file", "-e", f"{sha}^{{commit}}"], cwd=REPO_DIR, capture_output=True
+        ["git", "cat-file", "-e", f"{sha}^{{commit}}"], cwd=repo_dir, capture_output=True
     )
     if check.returncode == 0:
         return True
-    r = subprocess.run(["git", "fetch", "origin", sha], cwd=REPO_DIR, capture_output=True, text=True)
+    r = subprocess.run(["git", "fetch", "origin", sha], cwd=repo_dir, capture_output=True, text=True)
     return r.returncode == 0
 
 
-def get_changed_java_files(base_sha: str, head_sha: str) -> list:
-    if not (ensure_commit_available(base_sha) and ensure_commit_available(head_sha)):
+def get_changed_java_files(base_sha: str, head_sha: str, repo_dir: Path = REPO_DIR) -> list:
+    if not (ensure_commit_available(base_sha, repo_dir) and ensure_commit_available(head_sha, repo_dir)):
         return []
     r = subprocess.run(
         ["git", "diff", "--name-only", base_sha, head_sha],
-        cwd=REPO_DIR, capture_output=True, text=True,
+        cwd=repo_dir, capture_output=True, text=True,
     )
     if r.returncode != 0:
         return []
     return [f for f in r.stdout.splitlines() if f.endswith(".java")]
 
 
-def checkout_commit(sha: str) -> bool:
-    if not ensure_commit_available(sha):
+def checkout_commit(sha: str, repo_dir: Path = REPO_DIR) -> bool:
+    if not ensure_commit_available(sha, repo_dir):
         return False
-    r = subprocess.run(["git", "checkout", sha], cwd=REPO_DIR, capture_output=True, text=True)
+    r = subprocess.run(["git", "checkout", sha], cwd=repo_dir, capture_output=True, text=True)
     return r.returncode == 0
 
 
@@ -151,7 +151,7 @@ def checkout_commit(sha: str) -> bool:
 # scoping happens at the QUERY stage below, not the scan stage)
 # ---------------------------------------------------------------------------
 
-def run_scanner(project_key: str, sonar_token: str, sonar_host: str) -> bool:
+def run_scanner(project_key: str, sonar_token: str, sonar_host: str, repo_dir: Path = REPO_DIR) -> bool:
     env = os.environ.copy()
     env["SONAR_HOST_URL"] = sonar_host
     env["SONAR_TOKEN"] = sonar_token
@@ -164,7 +164,7 @@ def run_scanner(project_key: str, sonar_token: str, sonar_host: str) -> bool:
             "-Dsonar.sources=.",
             "-Dsonar.sourceEncoding=UTF-8",
         ],
-        cwd=REPO_DIR,
+        cwd=repo_dir,
         env=env,
         capture_output=True,
         text=True,
@@ -184,8 +184,8 @@ def run_scanner(project_key: str, sonar_token: str, sonar_host: str) -> bool:
 # the files this PR touched (this is the corrected, scoped query)
 # ---------------------------------------------------------------------------
 
-def read_ce_task_url() -> str | None:
-    report_file = REPO_DIR / ".scannerwork" / "report-task.txt"
+def read_ce_task_url(repo_dir: Path = REPO_DIR) -> str | None:
+    report_file = repo_dir / ".scannerwork" / "report-task.txt"
     if not report_file.exists():
         return None
     props = {}
@@ -290,17 +290,26 @@ def delete_project(project_key: str, sonar_token: str, sonar_host: str):
 # Per-snapshot pipeline: checkout -> scan -> scoped-query
 # ---------------------------------------------------------------------------
 
-def scan_snapshot(sha: str, project_key: str, changed_files: list, sonar_token: str, sonar_host: str) -> dict | None:
+def scan_snapshot(
+    sha: str, project_key: str, changed_files: list, sonar_token: str, sonar_host: str,
+    repo_dir: Path = REPO_DIR,
+) -> dict | None:
     """Returns {"complexity": float, "god_class_smells": int,
     "long_method_smells": int} for one snapshot, or None if the checkout/
     scan/processing failed. Both the complexity measure and the smell
-    issues come from the SAME completed analysis - no second scan needed."""
-    if not checkout_commit(sha):
+    issues come from the SAME completed analysis - no second scan needed.
+
+    `repo_dir` defaults to REPO_DIR (the commons-lang clone the historical
+    500-PR batch pipeline below always uses) so every existing call site
+    is unaffected; live_predict.py passes a different repo's local clone
+    explicitly when predicting against a non-commons-lang PR - see its own
+    module docstring for why this parameter exists at all."""
+    if not checkout_commit(sha, repo_dir):
         print(f"    [skip] could not check out {sha[:10]}")
         return None
-    if not run_scanner(project_key, sonar_token, sonar_host):
+    if not run_scanner(project_key, sonar_token, sonar_host, repo_dir):
         return None
-    ce_task_url = read_ce_task_url()
+    ce_task_url = read_ce_task_url(repo_dir)
     if not ce_task_url or not wait_for_processing(ce_task_url, sonar_token):
         print(f"    [skip] analysis processing did not complete for {project_key}")
         return None

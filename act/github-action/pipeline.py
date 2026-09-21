@@ -85,7 +85,9 @@ def is_test_file(path: str) -> bool:
     return "/test/" in path or path.startswith("test/")
 
 
-def generate_refactoring_suggestion(pr_number: int, scan_record: dict = None) -> dict:
+def generate_refactoring_suggestion(
+    pr_number: int, scan_record: dict = None, owner: str = GITHUB_OWNER, repo: str = GITHUB_REPO,
+) -> dict:
     """Fetch the real source of the PR's touched production files, find the
     method this PR actually modified with the highest complexity (falling
     back to the file's single most complex method only if no touched method
@@ -119,14 +121,14 @@ def generate_refactoring_suggestion(pr_number: int, scan_record: dict = None) ->
 
     for file_path in candidate_files:
         try:
-            head_source = fetch_file_at_commit(GITHUB_OWNER, GITHUB_REPO, head_sha, file_path)
+            head_source = fetch_file_at_commit(owner, repo, head_sha, file_path)
         except Exception as exc:  # network error, file doesn't exist at this commit, etc.
             fetch_errors.append({"file": file_path, "error": str(exc)})
             continue
 
         changed_lines = None
         try:
-            base_source = fetch_file_at_commit(GITHUB_OWNER, GITHUB_REPO, base_sha, file_path)
+            base_source = fetch_file_at_commit(owner, repo, base_sha, file_path)
             changed_lines = changed_line_numbers(base_source, head_source)
         except Exception as exc:
             # File may be new in this PR (no base version) or base fetch failed -

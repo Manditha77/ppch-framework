@@ -59,6 +59,37 @@ from pipeline import (  # noqa: E402
 
 TOKEN_RE = re.compile(r"[a-zA-Z]+")
 
+LIVE_REPOS_DIR = ROOT / "sense" / "data" / "raw" / "live_repos"
+
+
+def _ensure_local_clone(owner: str, repo: str) -> Path:
+    """02_scan_pilot_batch.py's scan_snapshot() operates on a local git
+    clone (checkout a commit, run sonar-scanner, read the report) - for the
+    historical batch pipeline that's always the pre-existing commons-lang
+    clone (REPO_DIR). A live PR can be on ANY repo, so this clones (once)
+    or fetches (on later calls) that repo's own working copy into a
+    dedicated directory, keyed by owner/repo - never touches or reuses
+    REPO_DIR itself, so the historical pipeline stays completely unaffected
+    regardless of what live_predict.py is pointed at."""
+    if owner == "apache" and repo == "commons-lang" and _scan.REPO_DIR.exists():
+        # Reuse the existing, already-present batch-pipeline clone instead of
+        # a redundant fresh clone of the same (large) repository - purely an
+        # optimization, not a behavior change (same repo, same commits).
+        return _scan.REPO_DIR
+
+    repo_dir = LIVE_REPOS_DIR / f"{owner}__{repo}"
+    if not repo_dir.exists():
+        LIVE_REPOS_DIR.mkdir(parents=True, exist_ok=True)
+        import subprocess
+        subprocess.run(
+            ["git", "clone", f"https://github.com/{owner}/{repo}.git", str(repo_dir)],
+            check=True,
+        )
+    else:
+        import subprocess
+        subprocess.run(["git", "fetch", "origin"], cwd=repo_dir, check=True)
+    return repo_dir
+
 
 def _import_by_path(name: str, filename: str):
     """sense/scripts/02_scan_pilot_batch.py and 04_enrich_process_features.py
@@ -158,7 +189,10 @@ def compute_live_feature_row(pr_number: int, owner: str = GITHUB_OWNER, repo: st
     # training data.
     if changed_java_files:
         project_key = f"live-pred-{owner}-{repo}-{pr_number}-{base_sha[:10]}"
-        scan_result = _scan.scan_snapshot(base_sha, project_key, changed_java_files, sonar_token, sonar_host)
+        repo_dir = _ensure_local_clone(owner, repo)
+        scan_result = _scan.scan_snapshot(
+            base_sha, project_key, changed_java_files, sonar_token, sonar_host, repo_dir=repo_dir,
+        )
         _scan.delete_project(project_key, sonar_token, sonar_host)
         row["complexity_before"] = scan_result["complexity"] if scan_result else 0.0
     else:
@@ -239,7 +273,7 @@ def generate_live_act_report(pr_number: int, owner: str = GITHUB_OWNER, repo: st
     prediction = predict_risk(models, feature_row)
     payload = build_live_intervention(feature_row, prediction)
     payload["ilp"] = (
-        generate_refactoring_suggestion(pr_number, scan_record=scan_info)
+        generate_refactoring_suggestion(pr_number, scan_record=scan_info, owner=owner, repo=repo)
         if payload["refactoring_suggestion_requested"]
         else {"status": "not_requested"}
     )
