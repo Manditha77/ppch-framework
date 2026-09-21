@@ -202,7 +202,18 @@ def compute_live_feature_row(pr_number: int, owner: str = GITHUB_OWNER, repo: st
     # own local historical index (sense/data/raw/apache_commons-lang_prs.jsonl)
     # rather than re-deriving it; valid as long as this stays scoped to the
     # repo the model was trained on (see module docstring).
-    history = _enrich.load_full_history()
+    try:
+        history = _enrich.load_full_history()
+    except FileNotFoundError:
+        # sense/data/raw/apache_commons-lang_prs.jsonl is local research data,
+        # deliberately gitignored (see .gitignore's sense/data/raw/* rule) -
+        # a fresh checkout of this Action on a machine that never ran the
+        # Sense-phase scripts (e.g. the packaged Action running on someone
+        # else's runner) won't have it. contributor_index.get(login, [])
+        # already degrades to the same zero-stats prior_stats() returns for
+        # an unknown login, so an empty history here is a safe, honest
+        # fallback rather than crashing the whole prediction.
+        history = []
     contributor_index = _enrich.build_contributor_index(history)
     login = row["contributor"]
     if login:
