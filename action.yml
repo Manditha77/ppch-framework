@@ -34,6 +34,15 @@ runs:
   using: "composite"
   steps:
     - name: Set up Python
+      # continue-on-error: on a GitHub-hosted runner this always succeeds and
+      # pins the exact tested Python version. On a self-hosted runner that
+      # doesn't already have this version cached, the official action tries
+      # to download+install one, which needs admin rights the runner may not
+      # have - rather than hard-failing the whole job in that case, fall
+      # through to whatever `python`/`pip` are already on that runner's own
+      # PATH (the normal expectation for a self-hosted runner: the operator
+      # provisions the machine, not this Action).
+      continue-on-error: true
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
