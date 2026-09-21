@@ -144,15 +144,11 @@
       {
         "method": "parseToken",
         "complexity": 21.0
-      },
-      {
-        "method": "appendFullDigits",
-        "complexity": 18.0
       }
     ],
     "sonarqube": {
       "before": 133.0,
-      "after": 133.0,
+      "after": 123.0,
       "before_issues": [
         {
           "message": "Refactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.",
@@ -169,16 +165,12 @@
       ],
       "after_issues": [
         {
-          "message": "Refactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.",
-          "line": 927
-        },
-        {
           "message": "Refactor this method to reduce its Cognitive Complexity from 39 to the 15 allowed.",
-          "line": 1335
+          "line": 1339
         },
         {
           "message": "Refactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.",
-          "line": 1484
+          "line": 1488
         }
       ]
     },

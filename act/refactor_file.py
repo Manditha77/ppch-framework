@@ -53,6 +53,7 @@ from extract_method import solve_extract_method  # noqa: E402
 from java_statement_extractor import all_methods_by_complexity, render_extraction_suggestion  # noqa: E402
 from apply_extraction import apply_extraction_to_text  # noqa: E402
 from sonarqube_verify import verify_with_sonarqube  # noqa: E402
+from branch_split import find_branch_split_candidates, render_branch_split, apply_branch_split_to_text  # noqa: E402
 
 DEFAULT_THRESHOLD = 15.0
 DEFAULT_MAX_ITERATIONS = 8
@@ -86,6 +87,67 @@ def _disambiguate_suggestion(suggestion: dict, existing_names: set) -> dict:
     return suggestion
 
 
+def _apply_branch_splits_pass(source_text: str, effective_threshold: float) -> tuple:
+    """A SEPARATE, additive strategy (see act/ilp-engine/branch_split.py's
+    own module docstring for the full motivation), run as a complete PRE-
+    PASS before the main ILP-based loop below even starts - deliberately
+    NOT interleaved with that loop's logic, so it can only ever IMPROVE the
+    input (or leave it byte-for-byte unchanged if no candidate applies)
+    without risking any change to the main loop's already-verified
+    behavior. The main loop re-scans the file fresh every iteration
+    regardless, so it neither knows nor cares whether this pass ran first.
+
+    Confirmed on a real case (FastDatePrinter.appendFullDigits, PR #1470):
+    resolves methods whose complexity comes from one if/else statement
+    where BOTH branches are individually substantial - a shape the main
+    ILP strategy structurally cannot reach on its own (see branch_split.py).
+    """
+    log = []
+    for _ in range(8):  # generous cap; each application changes line numbers, so re-scan fresh each time
+        methods = all_methods_by_complexity(source_text)
+        over_threshold = [m for m in methods if m[2] > effective_threshold]
+        if not over_threshold:
+            break
+
+        tree = javalang.parse.parse(source_text)
+        applied_this_round = False
+        for method_name, statements, total, meta, start_line, type_map in over_threshold:
+            method_node = next(
+                (n for _, n in tree.filter(javalang.tree.MethodDeclaration)
+                 if n.name == method_name and getattr(n, "position", None) and n.position.line == start_line),
+                None,
+            )
+            if method_node is None:
+                continue
+            candidates = find_branch_split_candidates(source_text, method_node, meta)
+            if not candidates:
+                continue
+            suggestion = render_branch_split(source_text, method_name, candidates[0], type_map)
+            if not suggestion.get("rendered") or not suggestion.get("safe_to_auto_apply"):
+                continue
+            existing_names = _existing_method_names(source_text)
+            if suggestion["then_name"] in existing_names or suggestion["else_name"] in existing_names:
+                continue  # name collision on retry - skip rather than risk a duplicate-method error
+            try:
+                new_text, info = apply_branch_split_to_text(source_text, start_line, suggestion)
+                javalang.parse.parse(new_text)  # cheap sanity check before committing to this splice
+            except (RuntimeError, javalang.parser.JavaSyntaxError) as exc:
+                log.append({
+                    "method": method_name, "outcome": "branch_split_apply_failed", "error": str(exc),
+                })
+                continue
+            source_text = new_text
+            log.append({
+                "method": method_name, "outcome": "branch_split_applied",
+                "complexity_before": total, "then_method": info["then_method"], "else_method": info["else_method"],
+            })
+            applied_this_round = True
+            break  # source_text changed - re-scan from scratch before touching another method
+        if not applied_this_round:
+            break
+    return source_text, log
+
+
 def refactor_source(source_text: str, threshold: float, max_iterations: int, safety_margin: float = 2.0) -> dict:
     """Iteratively refactor `source_text` until no method exceeds
     `threshold` or no further safe progress can be made.
@@ -103,7 +165,12 @@ def refactor_source(source_text: str, threshold: float, max_iterations: int, saf
     on the margin alone."""
     effective_threshold = threshold - safety_margin
     stuck_methods = set()
-    log = []
+
+    # Separate, additive pre-pass - see _apply_branch_splits_pass's own
+    # docstring. Runs BEFORE the main loop below and does not alter that
+    # loop's logic in any way; if nothing applies, source_text is returned
+    # byte-for-byte unchanged and log is empty.
+    source_text, log = _apply_branch_splits_pass(source_text, effective_threshold)
 
     # Minimum genuine reduction (in complexity points) the newly created
     # method's own complexity must fall below the original method's

@@ -100,7 +100,14 @@ def verify_pr(number: int) -> dict:
         return result
 
     refactor_result = refactor_source(head_source, threshold=15.0, max_iterations=8, safety_margin=2.0)
-    extractions = [step for step in refactor_result["log"] if step["outcome"] == "extracted"]
+    # Two strategies can both apply real changes - the main ILP single-
+    # region extraction ("extracted") and the separate, additive branch-
+    # split pre-pass ("branch_split_applied", see act/refactor_file.py's
+    # _apply_branch_splits_pass) - both count as real, applied changes.
+    extractions = [
+        step for step in refactor_result["log"]
+        if step["outcome"] in ("extracted", "branch_split_applied")
+    ]
 
     result["status"] = "verified"
     result["method_name"] = ilp.get("method_name")
