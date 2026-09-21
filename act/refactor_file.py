@@ -105,6 +105,14 @@ def refactor_source(source_text: str, threshold: float, max_iterations: int, saf
     stuck_methods = set()
     log = []
 
+    # Minimum genuine reduction (in complexity points) the newly created
+    # method's own complexity must fall below the original method's
+    # complexity to count as "productive" - see the non-productive-
+    # extraction guard below. 0.5 tolerates float noise while still catching
+    # "effectively zero improvement" (Campbell/SonarQube complexity
+    # accumulates in +1 increments, so any REAL improvement is at least ~1.0).
+    MIN_PRODUCTIVE_REDUCTION = 0.5
+
     for iteration in range(max_iterations):
         methods = all_methods_by_complexity(source_text)
         candidates = [m for m in methods if m[2] > effective_threshold and m[0] not in stuck_methods]
@@ -145,6 +153,68 @@ def refactor_source(source_text: str, threshold: float, max_iterations: int, saf
         except RuntimeError as exc:
             stuck_methods.add(name)
             log.append({"iteration": iteration, "method": name, "outcome": "apply_failed", "error": str(exc)})
+            continue
+
+        # Non-productive-extraction guard: a VALID, "optimal"-status
+        # extraction can still fail to genuinely reduce complexity - it
+        # happens when a method's complexity comes from several separate,
+        # FLAT sibling constructs (guard-clause sequences) rather than one
+        # deep nested tree. The ILP's "at most one independent root"
+        # constraint (a deliberate fix for an earlier invalid-extraction
+        # bug - see extract_method.py) then has no choice but to move the
+        # WHOLE flat sibling group as one lump, and that lump - having the
+        # same internal shape - measures at essentially the SAME complexity
+        # once it's independently re-parsed as its own method. Nothing was
+        # actually reduced, just relocated under a new name - and left
+        # unchecked, this repeats identically every iteration until the
+        # iteration cap, producing a chain of pointless single-line
+        # delegating wrapper methods (confirmed on a real PR: `random` in
+        # RandomStringUtils.java chained 6 levels deep, 40.0 complexity
+        # measured identically at every level).
+        #
+        # NOT the right metric here: FILE-WIDE total complexity before vs.
+        # after. A first attempt at this guard used that and immediately
+        # broke a genuinely-working, previously-verified case
+        # (getCanonicalName in PR #1422): SonarQube's rule flags complexity
+        # PER METHOD, not as a file-wide sum - splitting one over-threshold
+        # method into two methods that are EACH individually under the
+        # ceiling is a completely valid win even when the file-wide total
+        # doesn't move at all (the complexity didn't vanish, it just landed
+        # somewhere that's no longer flagged). Checking the file total would
+        # reject that real, already-SonarQube-confirmed win.
+        #
+        # The metric that actually distinguishes the two cases: compare the
+        # NEWLY CREATED method's own complexity against what the ORIGINAL
+        # method (the one being extracted FROM) measured at, just before
+        # this step. A genuine partial extraction, or one that benefits from
+        # nesting-depth reduction, always leaves the new method with
+        # NOTICEABLY LESS complexity than the original had (nesting inside a
+        # fresh top-level method resets, and/or only part of the original
+        # was moved). A flat/wide structure with no nesting to shed and
+        # nothing left worth keeping behind hands the ENTIRE original
+        # complexity to the new method essentially unchanged - THAT's the
+        # signal to catch, not the file-wide total.
+        new_method_name = info["suggested_method_name"]
+        new_method_complexity = next(
+            (m[2] for m in all_methods_by_complexity(new_text) if m[0] == new_method_name),
+            None,
+        )
+        if new_method_complexity is not None and new_method_complexity >= total - MIN_PRODUCTIVE_REDUCTION:
+            stuck_methods.add(name)
+            log.append({
+                "iteration": iteration, "method": name, "outcome": "non_productive_extraction",
+                "complexity_before": total,
+                "new_method": new_method_name,
+                "new_method_complexity": new_method_complexity,
+                "reason": (
+                    "This extraction is valid Java but did not genuinely reduce complexity - "
+                    f"the newly created method ({new_method_name}, complexity "
+                    f"{new_method_complexity:.1f}) inherited essentially the SAME complexity "
+                    f"the original method had ({total:.1f}), meaning a flat sequence of "
+                    "sibling constructs (not a deep nested tree) was relocated wholesale, "
+                    "not genuinely reduced. Discarded rather than applied."
+                ),
+            })
             continue
 
         source_text = new_text

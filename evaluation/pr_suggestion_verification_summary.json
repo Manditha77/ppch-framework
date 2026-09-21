@@ -97,5 +97,165 @@
     },
     "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1392\\StrSubstitutor_before.java",
     "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1392\\StrSubstitutor_after.java"
+  },
+  {
+    "pr_number": 1470,
+    "risk_score": 0.8870913521448771,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "verified",
+    "method_name": "format",
+    "extractions_applied": 0,
+    "still_over_threshold_after": [
+      {
+        "method": "parseToken",
+        "complexity": 21.0
+      },
+      {
+        "method": "appendFullDigits",
+        "complexity": 18.0
+      }
+    ],
+    "sonarqube": {
+      "before": 133.0,
+      "after": 133.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.",
+          "line": 927
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 39 to the 15 allowed.",
+          "line": 1331
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.",
+          "line": 1480
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 29 to the 15 allowed.",
+          "line": 927
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 39 to the 15 allowed.",
+          "line": 1331
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.",
+          "line": 1480
+        }
+      ]
+    },
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1470\\FastDatePrinter_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1470\\FastDatePrinter_after.java"
+  },
+  {
+    "pr_number": 1638,
+    "risk_score": 0.8991000223159791,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "random",
+    "extractions_applied": 2,
+    "still_over_threshold_after": [
+      {
+        "method": "randomExtracted",
+        "complexity": 40.0
+      },
+      {
+        "method": "random",
+        "complexity": 32.0
+      },
+      {
+        "method": "randomExtracted2",
+        "complexity": 26.0
+      }
+    ],
+    "sonarqube": {
+      "before": 117.0,
+      "after": 117.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 115 to the 15 allowed.",
+          "line": 255
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 30 to the 15 allowed.",
+          "line": 255
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.",
+          "line": 351
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 49 to the 15 allowed.",
+          "line": 406
+        }
+      ]
+    },
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1638\\RandomStringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1638\\RandomStringUtils_after.java"
+  },
+  {
+    "pr_number": 1623,
+    "risk_score": 0.9522532753149668,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 707 to 708 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  },
+  {
+    "pr_number": 1548,
+    "risk_score": 0.9713431735833487,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 1106 to 1108 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying. Multiple variables (['fromTypeArg', 'toTypeArg']) are modified inside the extracted block AND used elsewhere in the method \u2014 a single return value can't carry all of them back. This suggestion is NOT safe to auto-apply; restructure manually (e.g. return a small result object, or keep this logic un-extracted)."
+  },
+  {
+    "pr_number": 1494,
+    "risk_score": 0.9597023204962413,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "verified",
+    "method_name": "toCanonicalName",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "isAssignable",
+        "complexity": 38.0
+      }
+    ],
+    "sonarqube": {
+      "before": 173.0,
+      "after": 172.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 483
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 38 to the 15 allowed.",
+          "line": 1288
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 38 to the 15 allowed.",
+          "line": 1292
+        }
+      ]
+    },
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1494\\ClassUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1494\\ClassUtils_after.java"
   }
 ]
