@@ -15,3 +15,4 @@ shap==0.46.0
 
 # Phase III — Act (installed later)
 pulp==2.9.0
+javalang==0.13.0
