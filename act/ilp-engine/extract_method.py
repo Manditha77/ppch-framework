@@ -4,6 +4,7 @@ The caller must provide method-level statement metadata. PR-level aggregate
 complexity values are intentionally insufficient for semantic refactoring.
 """
 
+from collections import defaultdict
 from dataclasses import dataclass
 
 import pulp
@@ -33,6 +34,30 @@ class Statement:
     # only its true-nested children (independently safe roots) are
     # selectable.
     is_chain_link: bool = False
+    # The TRUE structural parent's index (the chain-link's own index for an
+    # exempted chain-link child, the loop's own index for an exempted
+    # break/continue-free-loop child, None for genuine top-level statements)
+    # - NOT the same as depends_on, which is intentionally empty for exempted
+    # children even though they DO have a real parent. Statements sharing the
+    # SAME true_parent_index are genuine, physically-adjacent siblings from
+    # the SAME statement list - the only safe basis for grouping multiple
+    # independent roots together for combined selection (see _solve's
+    # contiguous-run constraint). nesting_depth is NOT safe for this: two
+    # independent roots can share a numeric depth by pure coincidence while
+    # coming from entirely different parents.
+    true_parent_index: int | None = None
+    # True if this statement's OWN swept text (itself plus everything
+    # brace-balancing would sweep in with it) contains a `return` anywhere.
+    # Used to keep multi-root combination away from the return-forwarding
+    # safety interaction entirely: combining siblings where any one of them
+    # contains a return proved harmful in testing (see _solve's contiguous-
+    # run constraint) - not because it's always unsafe, but because it can
+    # make the solver's FIRST/cheapest choice a return-containing combo
+    # instead of the smaller, safe, genuinely-reducing single-root
+    # extractions the solver would otherwise find. Conservative by design:
+    # a false positive here just means one fewer combination considered,
+    # never an unsafe one accepted.
+    contains_return: bool = False
 
 
 def _solve(statements, max_local_variables, complexity_threshold):
@@ -99,8 +124,62 @@ def _solve(statements, max_local_variables, complexity_threshold):
     # extracted text, i.e. invalid Java. Restricting to one independent
     # root keeps every selection confined to a single self-contained,
     # already-brace-balanced-when-read-alone subtree.
+    # Generalization of the above: siblings sharing the SAME true structural
+    # parent (see Statement.true_parent_index) may be combined into ONE
+    # contiguous run, instead of being restricted to exactly one - needed
+    # for methods whose complexity comes from several separate FLAT sibling
+    # constructs rather than one deep nested tree, where no single sibling
+    # alone can bring the method under threshold (confirmed on a real case:
+    # RandomStringUtils.random()). "Contiguous" (no gaps) is essential, not
+    # optional - see true_parent_index's own docstring for why grouping by
+    # anything looser (e.g. nesting depth) produces invalid Java.
+    #
+    # EXCLUDED from combination entirely: any group containing a statement
+    # whose own swept text carries a `return` (see Statement.contains_return)
+    # - falls back to the ORIGINAL strict "at most one, full stop" rule for
+    # that specific group. Not a correctness requirement on its own (a
+    # return-containing extraction is separately checked for safety by
+    # render_extraction_suggestion regardless), but an empirically-driven
+    # one: allowing such groups to combine let the solver's cheapest overall
+    # choice become a return-containing combination, which then correctly
+    # gets refused for safety - but at the cost of the smaller, genuinely
+    # productive, RETURN-FREE single-root extractions the solver would
+    # otherwise have found first. Keeping return-containing groups
+    # single-select-only preserves that existing, working behavior exactly.
     independent_roots = [s for s in statements if not s.depends_on and not s.is_chain_link]
-    problem += pulp.lpSum(selected[s.index] for s in independent_roots) <= 1
+    roots_by_parent = defaultdict(list)
+    for root in independent_roots:
+        roots_by_parent[root.true_parent_index].append(root)
+
+    group_active = {
+        parent: pulp.LpVariable(f"root_group_active_{parent}", cat="Binary")
+        for parent in roots_by_parent
+    }
+    problem += pulp.lpSum(group_active.values()) <= 1
+
+    for parent, roots in roots_by_parent.items():
+        roots_sorted = sorted(roots, key=lambda s: s.index)
+        for root in roots_sorted:
+            problem += selected[root.index] <= group_active[parent]
+
+        if any(root.contains_return for root in roots_sorted):
+            # Return-carrying group: fall back to the original strict rule -
+            # at most one member of this group selected, no combination.
+            problem += pulp.lpSum(selected[r.index] for r in roots_sorted) <= 1
+            continue
+
+        n = len(roots_sorted)
+        for i in range(n):
+            for j in range(i + 1, n):
+                for k in range(j + 1, n):
+                    # No internal gaps: if the i-th and k-th (i<j<k) roots in
+                    # this TRUE sibling sequence are both selected, the j-th
+                    # one (physically between them, same statement list)
+                    # must be too.
+                    problem += (
+                        selected[roots_sorted[i].index] + selected[roots_sorted[k].index]
+                        <= 1 + selected[roots_sorted[j].index]
+                    )
 
     problem += pulp.lpSum(local_flags.values()) <= max_local_variables
     problem += selected_count >= 2 * extracted

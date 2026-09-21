@@ -220,6 +220,22 @@ def _contains_break_continue(node) -> bool:
     return any(_contains_break_continue(getattr(node, attr, None)) for attr in node.attrs)
 
 
+def _contains_return(node) -> bool:
+    """True if `node`'s FULL subtree contains a `return` statement anywhere -
+    same shape as _contains_break_continue, used to keep the ILP's multi-root
+    sibling-combination rule (see extract_method.py's Statement.contains_
+    return) away from the return-forwarding safety interaction entirely."""
+    if node is None:
+        return False
+    if isinstance(node, (list, tuple, set)):
+        return any(_contains_return(item) for item in node)
+    if isinstance(node, javalang.tree.ReturnStatement):
+        return True
+    if not hasattr(node, "attrs"):
+        return False
+    return any(_contains_return(getattr(node, attr, None)) for attr in node.attrs)
+
+
 def _definitely_returns(node) -> bool:
     """True if `node` GUARANTEES control never falls through past it - every
     path reachable through `node` itself (and its own nested then/else
@@ -536,6 +552,8 @@ def method_to_statements(method_node):
             descendants=frozenset(descendants_of[i]),
             nesting_depth=fs.nesting_depth,
             is_chain_link=fs.is_chain_link,
+            true_parent_index=fs.parent_index,
+            contains_return=_contains_return(fs.node),
         ))
         meta[i] = {
             "source_line": fs.source_line,
@@ -589,16 +607,33 @@ def _extend_to_balanced_braces(source_lines: list, start_line: int, end_line: in
         depth += opens - line.count("}")
         seen_open = seen_open or opens > 0
 
+    # depth==0 with no brace seen at all is ambiguous between two real
+    # cases: (a) a genuinely brace-free sequence of plain statements -
+    # already complete, must NOT keep extending (there's no brace to ever
+    # balance against, so "keep extending until a brace appears" runs away
+    # and sweeps in unrelated later code - confirmed by a real crash: two
+    # loop-body statements selected without their loop header, containing
+    # no braces of their own, swept everything up to the next stray '}' in
+    # the file and corrupted the output), or (b) a genuinely wrapped multi-
+    # line signature/condition whose `{` hasn't appeared yet (the case this
+    # function was originally built for). Distinguished by whether the last
+    # considered line looks terminated (ends with `;` or `}`, ignoring a
+    # trailing line comment) - a real statement always does; a wrapped
+    # signature/header never does (it ends mid-parameter-list or mid-
+    # condition, e.g. with `,` or `(`).
+    last_line = source_lines[min(end_line, len(source_lines)) - 1].split("//")[0].rstrip()
+    looks_complete = last_line.endswith((";", "}"))
+
     extended_end = end_line
     max_line = len(source_lines)
-    while (depth > 0 or not seen_open) and extended_end < max_line:
+    while (depth > 0 or (not seen_open and not looks_complete)) and extended_end < max_line:
         extended_end += 1
         line = source_lines[extended_end - 1]
         opens = line.count("{")
         depth += opens - line.count("}")
         seen_open = seen_open or opens > 0
 
-    return extended_end, depth == 0 and seen_open
+    return extended_end, depth == 0 and (seen_open or looks_complete)
 
 
 def render_extraction_suggestion(
