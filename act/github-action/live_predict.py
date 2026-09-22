@@ -50,6 +50,7 @@ ROOT = THIS_DIR.parents[1]
 sys.path.insert(0, str(THIS_DIR))
 sys.path.insert(0, str(ROOT / "act" / "ilp-engine"))
 sys.path.insert(0, str(ROOT / "refactor"))
+sys.path.insert(0, str(ROOT / "act"))
 
 from pipeline import (  # noqa: E402
     FEATURES, MODEL_DIR, GITHUB_OWNER, GITHUB_REPO,
@@ -58,6 +59,7 @@ from pipeline import (  # noqa: E402
 )
 from fetch_source import fetch_file_at_commit  # noqa: E402
 from java_statement_extractor import max_complexity_across_sources  # noqa: E402
+from refactor_file import refactor_source  # noqa: E402
 
 TOKEN_RE = re.compile(r"[a-zA-Z]+")
 
@@ -282,16 +284,59 @@ def build_live_intervention(feature_row: dict, prediction: dict) -> dict:
     }
 
 
+def _generate_full_refactor(ilp_result: dict, scan_info: dict, owner: str, repo: str) -> dict | None:
+    """Runs the SAME full, iterative, multi-strategy refactor engine
+    (branch-split + iterative ILP - see act/refactor_file.py::
+    refactor_source) that verify_pr_suggestion.py already uses to rigorously
+    verify the historical case-study PRs, against the SAME file
+    generate_refactoring_suggestion identified - as an ADDITIONAL, richer
+    result for the live comment, not a replacement for
+    generate_refactoring_suggestion's own return shape (verify_pr_
+    suggestion.py and the historical regression suite depend on that shape
+    staying exactly as-is).
+
+    Found necessary via a real live test (2026-09-22, Manditha77/commons-
+    text PR #2): generate_refactoring_suggestion's single solve_extract_
+    method call picks ONE target method and extracts ONE region - for a
+    method whose complexity comes from one long, deeply-nested if/else
+    chain (not independent siblings), that single-region extraction can
+    legitimately just relocate almost the entire method body into a
+    differently-named method that is itself still highly complex - a
+    real, structural limitation of that strategy alone, not a bug (see
+    branch_split.py's own docstring: this is exactly the shape it exists
+    for). refactor_source already tries branch-split FIRST, then iterates
+    the ILP loop across every over-threshold method, so it shows what the
+    framework's FULL capability actually achieves on this file - not just
+    its first single-region attempt."""
+    source_file = ilp_result.get("source_file")
+    if not source_file:
+        return None
+    try:
+        head_source = fetch_file_at_commit(owner, repo, scan_info["head_sha"], source_file)
+    except Exception as exc:  # noqa: BLE001 — same file generate_refactoring_suggestion already fetched; a failure here is a real, reportable network/availability issue
+        return {"status": "fetch_failed", "source_file": source_file, "error": str(exc)}
+
+    result = refactor_source(head_source, threshold=15.0, max_iterations=8, safety_margin=2.0)
+    applied = [step for step in result["log"] if step["outcome"] in ("extracted", "branch_split_applied")]
+    return {
+        "status": "ok",
+        "source_file": source_file,
+        "extractions_applied": len(applied),
+        "log": result["log"],
+        "still_over_threshold": result["still_over_threshold"],
+    }
+
+
 def generate_live_act_report(pr_number: int, owner: str = GITHUB_OWNER, repo: str = GITHUB_REPO) -> dict:
     feature_row, scan_info = compute_live_feature_row(pr_number, owner, repo)
     models = load_models()
     prediction = predict_risk(models, feature_row)
     payload = build_live_intervention(feature_row, prediction)
-    payload["ilp"] = (
-        generate_refactoring_suggestion(pr_number, scan_record=scan_info, owner=owner, repo=repo)
-        if payload["refactoring_suggestion_requested"]
-        else {"status": "not_requested"}
-    )
+    if payload["refactoring_suggestion_requested"]:
+        payload["ilp"] = generate_refactoring_suggestion(pr_number, scan_record=scan_info, owner=owner, repo=repo)
+        payload["full_refactor"] = _generate_full_refactor(payload["ilp"], scan_info, owner, repo)
+    else:
+        payload["ilp"] = {"status": "not_requested"}
     return payload
 
 

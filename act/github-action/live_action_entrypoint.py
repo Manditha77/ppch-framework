@@ -107,7 +107,55 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
         ]
 
     ilp = payload.get("ilp", {})
-    if ilp.get("status") in ("optimal", "threshold_unreachable"):
+    full_refactor = payload.get("full_refactor")
+    if full_refactor and full_refactor.get("status") == "ok":
+        # Preferred rendering: the FULL multi-strategy engine (branch-split,
+        # then iterative Extract Method - see live_predict.py::
+        # _generate_full_refactor's own docstring for why a single ILP
+        # snippet alone can be misleading for deeply-chained if/else
+        # methods). Falls through to the single-snippet rendering below
+        # only if this isn't available (e.g. a fetch failure).
+        lines += [
+            f"### Refactoring analysis — `{full_refactor['source_file']}`",
+            "",
+            "Ran the framework's full engine (branch-split, then iterative Extract Method - "
+            "the same engine used to verify the historical case-study PRs) on this file, "
+            "not just a single best-effort attempt:",
+            "",
+        ]
+        applied_steps = [s for s in full_refactor["log"] if s["outcome"] in ("extracted", "branch_split_applied")]
+        rejected_steps = [s for s in full_refactor["log"] if s["outcome"] == "non_productive_extraction"]
+        if applied_steps:
+            lines.append(f"**Applied {len(applied_steps)} genuine improvement(s):**")
+            for step in applied_steps:
+                if step["outcome"] == "extracted":
+                    lines.append(
+                        f"- `{step['method']}` (complexity {step['complexity_before']:.0f}) — "
+                        f"extracted into `{step['new_method']}`"
+                    )
+                else:
+                    lines.append(
+                        f"- `{step['method']}` (complexity {step['complexity_before']:.0f}) — "
+                        f"split if/else into `{step['then_method']}`/`{step['else_method']}`"
+                    )
+            lines.append("")
+        if rejected_steps:
+            lines.append(
+                "**Rejected as non-productive** (would relocate complexity without reducing "
+                "it - discarded rather than applied):"
+            )
+            for step in rejected_steps:
+                lines.append(f"- `{step['method']}` (complexity {step['complexity_before']:.0f}) — {step['reason']}")
+            lines.append("")
+        if full_refactor["still_over_threshold"]:
+            names = ", ".join(f"`{e['method']}` ({e['complexity']:.0f})" for e in full_refactor["still_over_threshold"])
+            lines += [
+                f"**Still over the per-method threshold, needs manual restructuring:** {names}",
+                "",
+            ]
+        elif applied_steps:
+            lines += ["All methods in this file are now under the complexity threshold.", ""]
+    elif ilp.get("status") in ("optimal", "threshold_unreachable"):
         suggestion = ilp.get("suggestion")
         lines += [
             f"### Suggested extraction — `{ilp.get('method_name')}` in `{ilp.get('source_file')}`",
