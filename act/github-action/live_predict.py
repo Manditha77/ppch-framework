@@ -53,8 +53,8 @@ sys.path.insert(0, str(ROOT / "refactor"))
 
 from pipeline import (  # noqa: E402
     FEATURES, MODEL_DIR, GITHUB_OWNER, GITHUB_REPO,
-    WARNING_THRESHOLD, NOTICE_THRESHOLD,
-    load_models, predict_risk, generate_refactoring_suggestion,
+    WARNING_THRESHOLD, NOTICE_THRESHOLD, STRUCTURAL_COMPLEXITY_THRESHOLD,
+    load_models, predict_risk, generate_refactoring_suggestion, decide_intervention,
 )
 from fetch_source import fetch_file_at_commit  # noqa: E402
 from java_statement_extractor import max_complexity_across_sources  # noqa: E402
@@ -266,30 +266,17 @@ def build_live_intervention(feature_row: dict, prediction: dict) -> dict:
     rest of the framework's post-hoc validation exists to check against, not
     a case that itself has ground truth to check."""
     risk_score = prediction["risk_score"]
-
-    if risk_score >= WARNING_THRESHOLD:
-        action = "complexity_warning_and_refactoring_review"
-        message = (
-            "PREDICTED high risk of exceeding the cognitive-complexity threshold; "
-            "review an Extract Method refactoring before merge."
-        )
-    elif risk_score >= NOTICE_THRESHOLD:
-        action = "complexity_increase_notice"
-        message = "PREDICTED moderate risk of a cognitive-complexity increase; review the modified logic before merging."
-    else:
-        action = "no_intervention"
-        message = "PREDICTED low risk of a cognitive-complexity increase."
+    decision = decide_intervention(risk_score, feature_row.get("max_touched_method_complexity", 0.0))
 
     return {
         "pr_number": feature_row["pr_number"],
         "stage": "predicted_at_submission_time_LIVE",
-        "action": action,
-        "message": message,
+        **decision,
         "risk_score": risk_score,
         "model_probabilities": prediction["model_probabilities"],
         "warning_threshold": WARNING_THRESHOLD,
         "notice_threshold": NOTICE_THRESHOLD,
-        "refactoring_suggestion_requested": risk_score >= WARNING_THRESHOLD,
+        "structural_complexity_threshold": STRUCTURAL_COMPLEXITY_THRESHOLD,
         "predicted_label": int(risk_score >= 0.5),
         "evidence_pre_submission_features": {f: feature_row[f] for f in FEATURES},
     }

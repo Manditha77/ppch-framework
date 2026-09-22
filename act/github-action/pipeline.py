@@ -74,6 +74,100 @@ FEATURES = [
 WARNING_THRESHOLD = 0.7
 NOTICE_THRESHOLD = 0.4
 
+# Matches extract_method.py::solve_extract_method's own default and
+# refactor_file.py::refactor_source's threshold - SonarQube's S3776
+# per-method cognitive-complexity rule (15). Used below as a SECOND,
+# INDEPENDENT trigger for refactoring_suggestion_requested, alongside the
+# predictive risk_score.
+STRUCTURAL_COMPLEXITY_THRESHOLD = 15.0
+
+
+def decide_intervention(risk_score: float, max_touched_method_complexity: float) -> dict:
+    """Single, shared decision logic for BOTH the historical-replay path
+    (build_intervention, below) and the live path
+    (live_predict.py::build_live_intervention) - kept as ONE function
+    specifically so the two paths can never silently drift apart on what
+    counts as "this PR needs a refactoring suggestion".
+
+    Found via a real live test (2026-09-22, Manditha77/commons-text PR #2):
+    a brand-new file with deliberately deep, high-complexity methods
+    (max_touched_method_complexity=79.0, more than 5x the per-method
+    threshold) still scored "low risk" and got no suggestion, because
+    risk_score alone - a trained classifier's PROBABILISTIC estimate from
+    PR metadata patterns (diff size, contributor history, text embeddings)
+    - is not the same question as "does this PR's own code already,
+    factually, violate the project's complexity policy". A PR can score low
+    on the predictive signal (a small diff, an unknown contributor) while
+    still introducing a method that deterministically exceeds the same
+    threshold SonarQube/the ILP solver enforce everywhere else in this
+    framework.
+
+    Two INDEPENDENT triggers, deliberately kept separate rather than merged
+    into risk_score itself (which stays exactly what the trained model
+    output - never inflated or overridden, so reported model-performance
+    metrics like AUC/predicted_label stay honest):
+      - predictive_hit: risk_score >= WARNING_THRESHOLD.
+      - structural_hit: max_touched_method_complexity >=
+        STRUCTURAL_COMPLEXITY_THRESHOLD - a DIRECT, deterministic
+        measurement of the PR's own code, not a proxy.
+    trigger_reason reports exactly which one(s) fired, so a reader (or a
+    dissertation panel) can see WHY a suggestion was or wasn't requested,
+    rather than the ML score and the suggestion silently disagreeing."""
+    predictive_hit = risk_score >= WARNING_THRESHOLD
+    structural_hit = max_touched_method_complexity >= STRUCTURAL_COMPLEXITY_THRESHOLD
+
+    if predictive_hit and structural_hit:
+        return {
+            "action": "complexity_warning_and_refactoring_review",
+            "trigger_reason": "predicted_risk_and_structural_threshold",
+            "message": (
+                "PREDICTED high risk of exceeding the cognitive-complexity threshold, AND this "
+                f"PR already introduces a method whose complexity ({max_touched_method_complexity:.0f}) "
+                f"exceeds the per-method threshold ({STRUCTURAL_COMPLEXITY_THRESHOLD:.0f}) - "
+                "review an Extract Method refactoring before merge."
+            ),
+            "refactoring_suggestion_requested": True,
+        }
+    if predictive_hit:
+        return {
+            "action": "complexity_warning_and_refactoring_review",
+            "trigger_reason": "predicted_risk",
+            "message": (
+                "PREDICTED high risk of exceeding the cognitive-complexity threshold; "
+                "review an Extract Method refactoring before merge."
+            ),
+            "refactoring_suggestion_requested": True,
+        }
+    if structural_hit:
+        return {
+            "action": "structural_complexity_threshold_exceeded",
+            "trigger_reason": "structural_threshold_exceeded",
+            "message": (
+                f"This PR's own code already introduces a method whose complexity "
+                f"({max_touched_method_complexity:.0f}) exceeds this project's per-method "
+                f"threshold ({STRUCTURAL_COMPLEXITY_THRESHOLD:.0f}) - independent of the "
+                f"predictive model's risk score ({risk_score:.3f}), a refactoring suggestion "
+                "is provided regardless."
+            ),
+            "refactoring_suggestion_requested": True,
+        }
+    if risk_score >= NOTICE_THRESHOLD:
+        return {
+            "action": "complexity_increase_notice",
+            "trigger_reason": "predicted_moderate_risk",
+            "message": (
+                "PREDICTED moderate risk of a cognitive-complexity increase; "
+                "review the modified logic before merging."
+            ),
+            "refactoring_suggestion_requested": False,
+        }
+    return {
+        "action": "no_intervention",
+        "trigger_reason": "none",
+        "message": "PREDICTED low risk of a cognitive-complexity increase.",
+        "refactoring_suggestion_requested": False,
+    }
+
 
 def load_scan_result(pr_number: int) -> dict | None:
     """Look up a PR's changed_java_files (the actual list of paths, not just
@@ -222,22 +316,7 @@ def predict_risk(models: dict, feature_row: dict) -> dict:
 
 def build_intervention(feature_row: dict, prediction: dict) -> dict:
     risk_score = prediction["risk_score"]
-
-    if risk_score >= WARNING_THRESHOLD:
-        action = "complexity_warning_and_refactoring_review"
-        message = (
-            "PREDICTED high risk of exceeding the cognitive-complexity threshold; "
-            "review an Extract Method refactoring before merge."
-        )
-    elif risk_score >= NOTICE_THRESHOLD:
-        action = "complexity_increase_notice"
-        message = (
-            "PREDICTED moderate risk of a cognitive-complexity increase; "
-            "review the modified logic before merging."
-        )
-    else:
-        action = "no_intervention"
-        message = "PREDICTED low risk of a cognitive-complexity increase."
+    decision = decide_intervention(risk_score, feature_row.get("max_touched_method_complexity", 0.0))
 
     predicted_label = int(risk_score >= 0.5)
     actual_label = feature_row["exceeds_significant_complexity_increase"]
@@ -245,13 +324,12 @@ def build_intervention(feature_row: dict, prediction: dict) -> dict:
     return {
         "pr_number": feature_row["pr_number"],
         "stage": "predicted_at_submission_time",
-        "action": action,
-        "message": message,
+        **decision,
         "risk_score": risk_score,
         "model_probabilities": prediction["model_probabilities"],
         "warning_threshold": WARNING_THRESHOLD,
         "notice_threshold": NOTICE_THRESHOLD,
-        "refactoring_suggestion_requested": risk_score >= WARNING_THRESHOLD,
+        "structural_complexity_threshold": STRUCTURAL_COMPLEXITY_THRESHOLD,
         "predicted_label": predicted_label,
         "evidence_pre_submission_features": {f: feature_row[f] for f in FEATURES},
         "post_hoc_validation": {

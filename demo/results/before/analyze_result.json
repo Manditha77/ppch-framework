@@ -10,18 +10,31 @@
     "review_comments": 1,
     "body_character_count": 174,
     "title_word_count": 9,
+    "w2v_embed_0": 0.7579225840762822,
+    "bert_embed_0": 0.46940204514505124,
+    "w2v_embed_1": 0.718941787489783,
+    "bert_embed_1": 0.5653598137399432,
+    "w2v_embed_2": 0.7832130166181529,
+    "bert_embed_2": 0.40913235820005067,
+    "w2v_embed_3": 0.5772181606467117,
+    "bert_embed_3": 0.303231197008126,
+    "w2v_embed_4": 0.48626183222842523,
+    "bert_embed_4": 0.2775753264504922,
     "contributor_prior_pr_count": 3,
     "contributor_prior_acceptance_rate": 0.67,
     "contributor_tenure_days": 90.0,
     "contributor_follower_count": 5,
-    "complexity_before": 35.0
+    "complexity_before": 35.0,
+    "max_touched_method_complexity": 29.0
   },
   "model_probabilities": {
-    "random_forest": 0.6833333333333333,
-    "xgboost": 0.9292067289352417
+    "random_forest": 0.7833333333333333,
+    "xgboost": 0.9691022038459778
   },
-  "risk_score": 0.8062700311342875,
+  "risk_score": 0.8762177685896555,
   "predicted_label": 1,
   "action": "complexity_warning_and_refactoring_review",
+  "trigger_reason": "predicted_risk_and_structural_threshold",
+  "message": "PREDICTED high risk of exceeding the cognitive-complexity threshold, AND this PR already introduces a method whose complexity (29) exceeds the per-method threshold (15) - review an Extract Method refactoring before merge.",
   "refactoring_suggestion_requested": true
 }
