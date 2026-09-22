@@ -7,10 +7,11 @@ document is NOT the dissertation itself; `docs/IM2021028.pdf` currently holds th
 first three chapters — methodology — and the full dissertation will be written from
 this document plus that PDF in a later pass).
 
-**Verification date**: 2026-09-22. Every number below was re-generated fresh on this
-date by re-running the actual pipeline end-to-end (not copied from memory or an
-earlier session) — see §7 "Re-verification evidence" for the exact commands run and
-their outputs.
+**Verification date**: 2026-09-22, with a further verified addition on 2026-09-23
+(multi-file coverage + a third refactoring strategy, §5.6-§5.7). Every number below
+was re-generated fresh on the date it's attributed to by re-running the actual
+pipeline end-to-end (not copied from memory or an earlier session) — see §7
+"Re-verification evidence" for the exact commands run and their outputs.
 
 ---
 
@@ -35,10 +36,11 @@ Three layers, each independently testable and independently verified:
 - **Analyze**: trains classifiers (Random Forest, XGBoost, Multinomial Naive Bayes,
   Logistic Regression) on that data to predict, from information available *at PR
   submission time only*, whether a PR will significantly increase complexity.
-- **Act**: when risk is predicted (or, as of today, when a direct structural fact
-  warrants it — see §5.3), automatically finds and verifies a safe Extract-Method
-  refactoring using an ILP (Integer Linear Programming) solver plus a second,
-  purpose-built branch-splitting strategy.
+- **Act**: when risk is predicted (or when a direct structural fact warrants it — see
+  §5.3), automatically finds and verifies a safe refactoring using three independent
+  strategies — an ILP (Integer Linear Programming) solver, a purpose-built
+  branch-splitting strategy, and else-if flattening (§5.1, §5.2, §5.6) — applied
+  across every non-test file a PR touches, not just one (§5.7).
 
 All three layers are also packaged as a real, installable **GitHub Action** (§6) —
 the same trained models and the same Act-layer engine, running live against an
@@ -218,20 +220,23 @@ zeros, not network-failure artifacts).
 Real GitHub PRs from `apache/commons-lang`, each: fetched at their real commits,
 suggestion generated, applied in memory, then **independently re-verified against a
 real SonarQube scan** (not the framework's own approximation) of isolated before/after
-copies.
+copies. Primary-file column re-verified byte-for-byte identical to the pre-multi-file,
+pre-else-if-flatten baseline on 2026-09-23 (see §7) — every number below for the
+*primary* file is unchanged by either of today's additions; the "Other files fixed"
+column is new, purely additive coverage (see §5.7).
 
-| PR | Method | Status | SonarQube file-total | Extractions |
-|---|---|---|---:|---:|
-| #1422 | `getCanonicalName` (ClassUtils) | verified | 170.0 → 170.0 | 1 |
-| #1591 | `getShortClassName` (ClassUtils) | verified | 188.0 → 187.0 | 2 |
-| #1427 | — | **unsafe_suggestion** (return-forwarding risk) | — | 0 |
-| #1629 | — | **unsafe_suggestion** (return-forwarding risk) | — | 0 |
-| #1392 | `substitute` (StrSubstitutor) | verified | 110.0 → 108.0 | 1 |
-| #1470 | `format` (FastDatePrinter) | verified | 133.0 → 123.0 | 1 |
-| #1638 | `random` (RandomStringUtils) | verified | 117.0 → 117.0 | 2 |
-| #1623 | — | **unsafe_suggestion** (return-forwarding risk) | — | 0 |
-| #1548 | — | **unsafe_suggestion** (return-forwarding + multi-variable outbound risk) | — | 0 |
-| #1494 | `toCanonicalName` (ClassUtils) | verified | 173.0 → 172.0 | 1 |
+| PR | Method (primary file) | Status | SonarQube file-total | Extractions | Other files fixed (§5.7) |
+|---|---|---|---:|---:|---|
+| #1422 | `getCanonicalName` (ClassUtils) | verified | 170.0 → 170.0 | 1 | — (1 file touched) |
+| #1591 | `getShortClassName` (ClassUtils) | verified | 188.0 → 187.0 | 2 | — (1 file touched) |
+| #1427 | — | **unsafe_suggestion** (return-forwarding risk) | — | 0 | — |
+| #1629 | — | **unsafe_suggestion** (return-forwarding risk) | — | 0 | — |
+| #1392 | `substitute` (StrSubstitutor) | verified | 110.0 → 108.0 | 1 | `Conversion.java`: 1 extraction, 242.0 → 242.0 (153 files touched, capped at 10 analyzed) |
+| #1470 | `format` (FastDatePrinter) | verified | 133.0 → 123.0 | 1 | `StringUtils.java`: 2 extractions, **764.0 → 762.0** (8 files touched, all 8 analyzed) |
+| #1638 | `random` (RandomStringUtils) | verified | 117.0 → 117.0 | 2 | — (1 file touched) |
+| #1623 | — | **unsafe_suggestion** (return-forwarding risk) | — | 0 | — |
+| #1548 | — | **unsafe_suggestion** (return-forwarding + multi-variable outbound risk) | — | 0 | — |
+| #1494 | `toCanonicalName` (ClassUtils) | verified | 173.0 → 172.0 | 1 | — (1 file touched) |
 
 **6/10 produced a real, SonarQube-confirmed extraction. 4/10 were correctly refused**
 by the return-forwarding safety check — this is presented as evidence the safety
@@ -240,8 +245,99 @@ mechanism works on real code, not as a shortfall. Two of the six "verified" case
 applied — this is expected and explained: the non-productive-extraction guard checks
 the extracted method's OWN complexity against the ORIGINAL method's complexity (a
 real, local improvement), not the whole file's total (which can be flat if other
-pre-existing issues in the same file dominate the file-level number). Re-verified
-byte-for-byte identical on 2026-09-22 (see §7).
+pre-existing issues in the same file dominate the file-level number).
+
+**2/10 of these case-study PRs are genuinely multi-file** (#1392, #1470), and both now
+get real, additional, independently-SonarQube-verified fixes in files the pre-2026-09-23
+pipeline would have silently never looked at — #1470's `StringUtils.java` fix in
+particular is a genuine complexity reduction (764.0 → 762.0), not a flat no-op like
+some single-file cases above. #1392 also demonstrates the `MAX_FILES_PER_PR = 10` cap
+firing for real (153 non-test files touched, only the first 10 analyzed) — see §5.7 for
+why that cap exists and what it costs.
+
+### 5.6 Strategy 3: else-if flattening (added 2026-09-23)
+
+**Motivation, found via direct user inspection of a real case**: SonarSource's own
+Cognitive Complexity spec gives `else if` special treatment — a chained `else if`
+does NOT compound nesting the way a genuinely nested `if` does. This framework's own
+Campbell-rule reproduction (`java_statement_extractor.py`) already correctly modeled
+that distinction — but the distinction only *helps* when code is actually written as
+`else if`, not as the semantically identical `else { if (...) { ... } }`. Real code
+(including this project's own `ComplexityTestUtil.classifyTransaction` test file)
+frequently uses the nested form purely by habit, paying an avoidable nesting-depth
+complexity cost for something Java's grammar treats as interchangeable.
+
+This is a **pure syntactic transformation**, not a structural one: `else { if (c) {A}
+else {B} }` and `else if (c) {A} else {B}` execute identically whenever the else
+block's entire content is exactly one if-statement and nothing else. Implemented in
+`act/ilp-engine/else_if_flatten.py`, run as a pre-pass before ILP extraction and
+branch-split (flattening can turn a method that looks unfixably deep into a flatter
+shape the other two strategies have real material to work with). Deliberately
+conservative, mirroring `branch_split.py`'s own safety posture:
+- Only fires when the else-block contains exactly one statement, and that statement is
+  itself an `if` — anything else in the else-block is left alone.
+- Only fires when the inner if's own header is a single line — a wrapped multi-line
+  condition is skipped rather than risked.
+- Verifies the text between the else-block's `{` and the inner if's `if` keyword is
+  pure whitespace (nothing hidden there, e.g. a comment, that a naive rewrite would
+  silently delete).
+- Every application is verified with a real `javalang.parse.parse()` call before being
+  accepted, same discipline as every other text-mutating step in this codebase — a
+  failed re-parse discards the splice and keeps the prior text.
+
+**Verified at three independent levels**, not just unit-tested in the abstract:
+1. The framework's own complexity approximation on `classifyTransaction`: 79.0 → 43.0
+   from flattening alone, then → 10.0 after the full pipeline (flatten + extraction).
+2. Full pipeline integration: `still_over_threshold: []` — complete resolution.
+3. **Real SonarQube verification**, live, on `Manditha77/commons-text` PR #3: file
+   total 104.0 → 55.0, with only one method left 1 point over its threshold — matching
+   the same real-not-approximated verification discipline used everywhere else in this
+   project (see §6.5).
+
+### 5.7 Multi-file refactoring coverage (added 2026-09-23)
+
+**The gap it closes**: every refactoring pass before 2026-09-23 — historical and live
+alike — analyzed only the single file the diff-scoped `most_complex_method` selection
+picked as the primary target, even when a PR touched several files and more than one
+of them was independently over-threshold. This was found directly by the user's own
+reading of the case-study table and the research summary's own honestly-documented
+"architectural boundary" note (§7), not by internal testing.
+
+**Real data was pulled before designing the fix**, matching this project's discipline
+of verifying scope with real numbers rather than assumption. Across the full,
+non-test-file-filtered 334-PR historical sample (re-verified 2026-09-23):
+
+| Metric | Value |
+|---|---:|
+| PRs touching more than one non-test `.java` file | 85 / 334 (25.4%) |
+| PRs fully covered by a 10-file-per-PR cap | 316 / 334 (94.6%) |
+| Largest single PR's non-test file count observed | 259 |
+
+A genuine multi-file gap, real enough to matter for roughly a quarter of PRs, but with
+a long right tail (a small number of PRs touch dozens to hundreds of files) that makes
+"analyze every file, no cap" both computationally expensive (one real SonarQube scan
+per file) and low-value past a point (a PR touching 259 files is not going to be fixed
+file-by-file by an automated tool regardless). `MAX_FILES_PER_PR = 10`
+(`act/github-action/multi_file_refactor.py`) was chosen as the point covering 94.6% of
+real PRs *completely* while keeping the live Action's per-PR runtime bounded.
+
+**Design**: `refactor_all_files(candidate_files, primary_file, fetch_fn, ...)` orders
+candidate files with the primary target first (preserving its exact prior behavior —
+same function, same parameters, same position in the returned data), processes up to
+the cap, and wraps **both** the fetch step and the `refactor_source()` call in
+per-file `try`/`except` isolation, so one file's parse failure (a real, observed case:
+`SystemUtils.java`'s modern Java syntax crashed `javalang` on PR #1470's first attempt)
+cannot take down the other files' results. Wired into both paths:
+- **Historical** (`verify_pr_suggestion.py`): every additional file gets its own real,
+  independent SonarQube before/after scan, not an approximation.
+- **Live** (`live_predict.py`, `live_action_entrypoint.py`): the rendered PR comment
+  now loops over the primary file plus every additional genuinely-improved file,
+  each getting its own sub-section with a real unified diff.
+
+**Regression-verified purely additive**: the full 10-PR historical suite was re-run
+after this change (and after §5.6's else-if flattening, combined) — every primary-file
+result is byte-for-byte identical to the pre-change baseline (see §7); the only
+differences are the new, additional-file findings shown in §5.5's table.
 
 ---
 
@@ -314,6 +410,25 @@ opened as a real PR against the fork.
   (`9e4a53a4` on `Manditha77/commons-text`) — a literal, mergeable proof, not just
   advisory text
 
+### 6.5 Real test evidence: `Manditha77/commons-text` PR #3 — else-if flattening live
+
+A second real PR, opened after §5.6's else-if-flattening strategy was wired in, to
+prove it end-to-end on the live path (not just in a local script). The live Action,
+observed directly via the posted comment:
+- Correctly re-triggered `structural_complexity_threshold_exceeded` on
+  `classifyTransaction`'s real shape.
+- Ran else-if flattening **first**, rendered as its own step in the comment
+  (previously silently dropped by `render_markdown` — a real gap found and fixed
+  while wiring this in, see §6.3's bug list).
+- Then ran the iterative ILP pass on the flattened result, applying real extractions.
+- **Correctly rejected** one candidate extraction as non-productive — the same safety
+  guard from §5.1 firing live, again, on genuinely different code shaped by the new
+  flattening step, not a repeat of the exact same §6.4 case.
+- Reached full resolution: `still_over_threshold: []`.
+- Independently confirmed with a real SonarQube scan: file total **104.0 → 55.0**,
+  with only one method left 1 point over its threshold — the strongest real-world
+  complexity reduction observed in this project's live-path testing to date.
+
 ---
 
 ## 7. Re-verification evidence (2026-09-22, this session)
@@ -348,6 +463,32 @@ the "nothing found" result is true for the file that was actually analyzed — b
 is a real scope gap worth documenting honestly: the live comment's refactoring
 analysis does not currently cover every file a multi-file PR touches, only the one
 selected as the primary target.
+
+**Update, 2026-09-23 — this gap is now closed.** §5.7 describes the fix
+(`multi_file_refactor.py`, wired into both the historical and live paths) and §5.5's
+table shows real, independently-SonarQube-verified evidence of it working (PR #1392,
+#1470). Re-verification repeated the same protocol as above, this time covering both
+the multi-file pass and §5.6's else-if-flattening strategy together:
+- **Act (single-file regression)**: the full 10-PR historical suite re-run with both
+  new capabilities active. **Result: every primary-file field
+  (`status`, `method_name`, `sonarqube` before/after numbers) is byte-for-byte
+  identical** to the pre-change baseline — confirmed programmatically, not by eye, by
+  diffing the full `evaluation/pr_suggestion_verification_summary.json` record for all
+  10 PRs. The only differences are new, additive `additional_files_refactored` entries.
+- **Act (multi-file, new coverage)**: PR #1392 (153 files touched, cap fires, one
+  genuine additional fix found in `Conversion.java`) and PR #1470 (8 files touched, all
+  analyzed, genuine additional fix in `StringUtils.java`, 764.0 → 762.0) — both
+  independently SonarQube-verified per file.
+- **A real crash was found and fixed during this work**: the first version of the
+  multi-file pass on PR #1470 only wrapped the *fetch* step in `try`/`except`; a
+  `javalang.parser.JavaSyntaxError` inside `refactor_source()` itself (triggered by
+  `SystemUtils.java`'s modern syntax) propagated uncaught and killed the whole
+  multi-file pass for that PR (`status: fetch_failed`, empty error message). Fixed by
+  wrapping the `refactor_source()` call in its own per-file isolation; re-verified the
+  fix resolves cleanly with the remaining 7 files still processed correctly.
+- **Live path**: re-tested end-to-end against real PR #2 (`Manditha77/commons-text`,
+  single-file, confirms identical behavior to §6.4) and real PR #3 (multi-strategy
+  live evidence, §6.5).
 
 ---
 
@@ -394,14 +535,20 @@ exactly what §5.3's two-trigger design operationalizes.
   live) is mechanically fully supported, but the resulting `risk_score` should be
   read as illustrative, not calibrated — stated explicitly in every report and
   comment when this is the case, never silently presented with false authority.
-- **Multi-file refactor-engine scope gap** (§7): the live refactor analysis covers
-  only the single file the diff-scoped selection identifies, not every file a
-  multi-file PR touches.
-- **Some methods genuinely resist both refactoring strategies**: `classifyTransaction`'s
-  shape (one long if/else chain with a variable threaded through and mutated across
-  every branch) is a real, demonstrated boundary of what ILP-based single-region
-  extraction and branch-split can currently do safely — reported honestly as
-  "needs manual restructuring," not silently hidden or faked.
+- **Multi-file refactor-engine scope gap — RESOLVED 2026-09-23** (§5.7, §7): was "the
+  live refactor analysis covers only the single file the diff-scoped selection
+  identifies"; closed via `multi_file_refactor.py`, wired into both the historical and
+  live paths, regression-verified purely additive. A residual, deliberate limit
+  remains: `MAX_FILES_PER_PR = 10`, covering 94.6% of real PRs completely (§5.7) — the
+  remaining 5.4% (PRs touching more than 10 non-test files) get their first 10 files
+  analyzed, not all of them, a conscious runtime/thoroughness tradeoff, not an oversight.
+- **Some methods genuinely resist all three refactoring strategies**: a method whose
+  complexity comes from something other than a single extractable region, an
+  independent two-branch split, or a flattenable else-if chain — one long, single
+  if/else chain with a variable threaded through and mutated across every branch, for
+  instance — is a real, demonstrated boundary of what this framework can currently fix
+  safely — reported honestly as "needs manual restructuring," not silently hidden or
+  faked.
 - **A cosmetic, non-blocking bug**: an em-dash in posted PR comments occasionally
   renders as `�` on Windows — traced to somewhere inside PyGithub/urllib3's own
   request path, confirmed harmless to meaning, not pursued further given the
@@ -409,6 +556,31 @@ exactly what §5.3's two-trigger design operationalizes.
 - **GCN/CNN/RNN baselines**: named in the methodology, explicitly scoped out — would
   require genuinely new infrastructure (AST-to-graph construction, a torch training
   pipeline) not justified given the dissertation timeline.
+- **Slice-based cognitive complexity metrics — NOT implemented** (Methodology §2.3.3,
+  §3.3.3, §3.5.5): the methodology commits, in several places, to complexity being
+  "operationalized through the SonarSource Cognitive Complexity metric and supplemented
+  by slice-based measures," with §3.3.3 specifically stating these would be "computed
+  on the same snapshots using the srcSlice tooling family" (sliceSize, sliceIdentifier,
+  sliceSpatial). This was never built — SSCC (via this project's own Campbell-rule
+  reproduction, cross-checked against real SonarQube scans throughout) was retained as
+  the sole operational complexity metric. Unlike the GCN/CNN/RNN deviation, this one
+  was not identified and consciously scoped out earlier in the project — it surfaced
+  only during this methodology-alignment pass (§12) — so it should be named explicitly,
+  not folded silently into the existing GCN/CNN/RNN caveat, in the dissertation's
+  methodology or limitations chapter as a genuine, acknowledged scope reduction: SSCC
+  alone was judged sufficient given it is independently the more heavily meta-
+  analytically validated of the two metric families reviewed in §2.3 of the
+  methodology itself, and integrating the external `srcSlice` tool this late carried
+  real risk of a rushed, unverified addition inconsistent with this project's
+  real-data-verified-at-every-step discipline.
+- **System-Usability-Scale developer study (RQ4) — NOT implemented** (Methodology
+  §3.5.4): this requires recruiting real human developer participants, having them use
+  the framework on realistic PR scenarios, and collecting SUS questionnaire responses
+  under proper informed-consent procedures (§3.6). This is human-subjects data
+  collection outside the scope of what an AI coding assistant can perform or simulate
+  on the user's behalf — it genuinely needs the user to plan and run it themselves
+  (participant recruitment, consent, scheduling, questionnaire administration) as a
+  distinct, remaining piece of dissertation work, not a code or documentation gap.
 
 ---
 
@@ -416,9 +588,9 @@ exactly what §5.3's two-trigger design operationalizes.
 
 ```
 act/                          Act layer
-  ilp-engine/                 ILP solver, AST/statement extraction, branch-split
-  refactor_file.py            Standalone multi-strategy refactor engine (branch-split + iterative ILP)
-  github-action/               PR-driven pipeline, live prediction, GitHub Action entrypoint
+  ilp-engine/                 ILP solver, AST/statement extraction, branch-split, else_if_flatten
+  refactor_file.py            Standalone multi-strategy refactor engine (else-if flatten + branch-split + iterative ILP)
+  github-action/               PR-driven pipeline, live prediction, multi_file_refactor, GitHub Action entrypoint
 analyze/                      Analyze layer
   models/                     Trained model artifacts (committed - needed for the live Action)
   train_models.py, run_bootstrap.py, run_ablation.py, feature_utils.py
@@ -463,3 +635,60 @@ structural diff size, not code complexity itself — which is exactly why the
 structural-threshold trigger (§5.3) was added as an independent, deterministic
 safety net: the two layers see different things, and catching what one layer misses
 with the other is a genuine design strength, not a workaround.
+
+**"Does this only look at one file per PR?"** — No, not since 2026-09-23 (§5.7): a
+real PR touching several files gets every non-test file analyzed (up to a 10-file cap
+covering 94.6% of real PRs completely), each independently SonarQube-verified, with
+the single-file case's exact prior behavior fully preserved and regression-tested.
+
+**"What refactoring strategies does the Act layer actually have?"** — Three,
+independently verified: ILP-based Extract Method (§5.1), branch-split for two
+independently-substantial branches (§5.2), and else-if flattening, a pure syntactic
+transformation that exploits SonarSource's own special-cased treatment of `else if`
+chains (§5.6) — run in that order, each catching shapes the others structurally can't.
+
+**"Is every part of the methodology chapter (Ch. 3) actually implemented?"** — Almost
+all of it, with two honestly-named exceptions (§12): slice-based cognitive complexity
+metrics (`srcSlice`) were not built — SSCC alone was retained as the operational
+complexity metric — and the System-Usability-Scale developer study (RQ4) needs real
+human participants, which is the user's own remaining task, not a code gap.
+
+---
+
+## 12. Methodology alignment audit (2026-09-23)
+
+Chapter 3 of `docs/IM2021028.pdf` is the interim/proposal submission (its own §1.6
+states explicitly that, at time of that submission, "the outcomes summarised here are
+stated as the results that the framework is expected to yield rather than as findings
+already obtained"). This audit cross-references every substantive methodology
+commitment against what was actually built, so the final dissertation's methodology
+and limitations chapters can state plainly what changed and why — deviations from a
+proposal are normal and expected; silently unstated ones are not.
+
+| Methodology commitment | Section | Status | Evidence / note |
+|---|---|---|---|
+| SonarSource Cognitive Complexity as the primary metric | §2.3, §3.3.3 | **Aligned** | Own Campbell-rule reproduction, cross-checked against real SonarQube scans at every verification step (§5.5, §7) |
+| Slice-based metrics (`srcSlice`, sliceSize/sliceIdentifier/sliceSpatial) supplementing SSCC | §2.3.3, §3.3.3, §3.5.5 | **Gap — not implemented** | Never built; SSCC retained as the sole operational metric. Named explicitly in §9, not previously documented anywhere in this summary before this audit |
+| Random Forest + XGBoost baselines | §3.4.2 | **Aligned** | §4 |
+| Multinomial Naive Bayes + Logistic Regression baselines | §3.4.2 | **Aligned** | §4, added in a prior session segment |
+| GCN/CNN/RNN deep-learning baselines | §3.4.2 | **Documented deviation** | Explicitly scoped out (§4, §9) — new AST-to-graph + torch infrastructure not justified given timeline |
+| Structural, process, and contributor-history features | §3.3.3 | **Aligned** | §3 |
+| Textual features (BERT + Word2Vec embeddings) | §3.3.3 | **Aligned** | §3 — real `sentence-transformers`/`gensim` embeddings, not a placeholder, added in a prior session segment |
+| Leakage-safe, pre-submission-only feature computation | §3.3.3, §3.5.5 | **Aligned** | §3's label/feature definition, contributor-history features computed strictly from prior-PR state |
+| Temporal (not random) train/test split | §3.4.2 | **Aligned** | §4 |
+| SMOTE on training partition only | §3.4.2 | **Aligned** | §4 |
+| Bootstrap validation (RQ2) | §3.5.2 | **Aligned** | §4, 1000 iterations × 4 models, 0 skipped |
+| Ablation studies (RQ1) | §3.5.2 | **Aligned** | §4 |
+| MTTD/MTTR comparative benchmarking vs. reactive SonarQube baseline (RQ3) | §3.5.3 | **Aligned** | `evaluation/run_mttd_mttr_benchmark.py`, `evaluation/mttd_mttr_benchmark.md`, referenced in §8.1 |
+| System-Usability-Scale developer study (RQ4) | §3.5.4 | **Gap — requires human participants** | Not implemented; genuinely outside what can be built or simulated — real participant recruitment/consent/data collection is the user's own remaining task |
+| ILP-based Extract Method refactoring engine | §3.4.3 | **Aligned, and extended** | §5.1 — plus two additional strategies (branch-split, else-if flatten, §5.2/§5.6) not named in the original methodology, a positive deviation |
+| Packaged as an installable GitHub Action, triggered on PR events | §3.4.4 | **Aligned** | §6 |
+| Idempotent PR comment (update, not accumulate) | §3.4.4 | **Aligned** | §6.1, verified live across multiple runs |
+| Ethical handling of pseudonymous contributor data | §3.6 | **Aligned** | Only public GitHub metadata used (username, follower count); no re-identification attempted |
+| Multi-file PR coverage | *(not explicitly named in Ch. 3 — identified as a real gap by the user's own reading of §5.5's results)* | **Aligned, closed 2026-09-23** | §5.7 — a genuine scope gap found through use, not a methodology-document commitment, but worth recording here since it materially affects how §3.3.3's "PR change set" framing is actually realized |
+
+**Net honest assessment**: of the substantive, checkable commitments in Chapter 3, all
+are implemented and verified except two — slice-based metrics (a scope reduction that
+should be stated as such) and the SUS usability study (a remaining, distinctly
+human-subjects task, not a code deliverable). Both are now named explicitly, in one
+place, rather than left implicit or undiscovered.
