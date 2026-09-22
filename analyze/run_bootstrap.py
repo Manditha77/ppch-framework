@@ -44,6 +44,9 @@ FEATURES = [
     "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
     "contributor_tenure_days", "contributor_follower_count",
     "complexity_before",
+    # See train_models.py's own comment on this feature (added 2026-09-22 to
+    # close the "brand-new file invisible to complexity_before" gap).
+    "max_touched_method_complexity",
 ]
 LABEL = "exceeds_significant_complexity_increase"
 N_ITERATIONS = 1000

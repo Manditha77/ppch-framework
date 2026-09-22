@@ -35,6 +35,7 @@ FEATURES = [
     "contributor_prior_pr_count", "contributor_prior_acceptance_rate",
     "contributor_tenure_days", "contributor_follower_count",
     "complexity_before",
+    "max_touched_method_complexity",
 ]
 
 # Same thresholds as act/github-action/pipeline.py, for a consistent demo narrative.

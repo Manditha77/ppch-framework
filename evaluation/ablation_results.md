@@ -13,72 +13,72 @@ sense/scripts/05_compute_textual_embeddings.py).
 
 ## random_forest
 
-Full-model AUC: **0.657**
+Full-model AUC: **0.674**
 
 | Family removed | AUC without family | Δ vs full |
 |---|---:|---:|
-| baseline_complexity | 0.686 | +0.029 |
-| structural_size | 0.589 | -0.068 |
-| process | 0.692 | +0.035 |
-| textual_semantic | 0.695 | +0.038 |
+| baseline_complexity | 0.686 | +0.012 |
+| structural_size | 0.612 | -0.062 |
+| process | 0.695 | +0.022 |
+| textual_semantic | 0.708 | +0.034 |
 
 | Family alone | Standalone AUC |
 |---|---:|
-| baseline_complexity | 0.553 |
+| baseline_complexity | 0.603 |
 | structural_size | 0.692 |
 | process | 0.506 |
 | textual_semantic | 0.589 |
 
 ## xgboost
 
-Full-model AUC: **0.705**
+Full-model AUC: **0.703**
 
 | Family removed | AUC without family | Δ vs full |
 |---|---:|---:|
-| baseline_complexity | 0.682 | -0.023 |
-| structural_size | 0.574 | -0.131 |
-| process | 0.687 | -0.018 |
-| textual_semantic | 0.745 | +0.040 |
+| baseline_complexity | 0.682 | -0.021 |
+| structural_size | 0.582 | -0.120 |
+| process | 0.699 | -0.004 |
+| textual_semantic | 0.724 | +0.021 |
 
 | Family alone | Standalone AUC |
 |---|---:|
-| baseline_complexity | 0.560 |
+| baseline_complexity | 0.623 |
 | structural_size | 0.695 |
 | process | 0.585 |
 | textual_semantic | 0.525 |
 
 ## naive_bayes
 
-Full-model AUC: **0.691**
+Full-model AUC: **0.698**
 
 | Family removed | AUC without family | Δ vs full |
 |---|---:|---:|
-| baseline_complexity | 0.702 | +0.011 |
-| structural_size | 0.664 | -0.027 |
-| process | 0.599 | -0.092 |
-| textual_semantic | 0.595 | -0.096 |
+| baseline_complexity | 0.702 | +0.004 |
+| structural_size | 0.672 | -0.026 |
+| process | 0.612 | -0.086 |
+| textual_semantic | 0.584 | -0.114 |
 
 | Family alone | Standalone AUC |
 |---|---:|
-| baseline_complexity | 0.500 |
+| baseline_complexity | 0.606 |
 | structural_size | 0.695 |
 | process | 0.513 |
 | textual_semantic | 0.487 |
 
 ## logistic_regression
 
-Full-model AUC: **0.739**
+Full-model AUC: **0.753**
 
 | Family removed | AUC without family | Δ vs full |
 |---|---:|---:|
-| baseline_complexity | 0.735 | -0.004 |
-| structural_size | 0.729 | -0.010 |
-| process | 0.722 | -0.017 |
-| textual_semantic | 0.720 | -0.019 |
+| baseline_complexity | 0.735 | -0.018 |
+| structural_size | 0.712 | -0.041 |
+| process | 0.738 | -0.015 |
+| textual_semantic | 0.744 | -0.009 |
 
 | Family alone | Standalone AUC |
 |---|---:|
-| baseline_complexity | 0.576 |
+| baseline_complexity | 0.628 |
 | structural_size | 0.678 |
 | process | 0.683 |
 | textual_semantic | 0.580 |

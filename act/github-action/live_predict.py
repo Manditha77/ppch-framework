@@ -56,6 +56,8 @@ from pipeline import (  # noqa: E402
     WARNING_THRESHOLD, NOTICE_THRESHOLD,
     load_models, predict_risk, generate_refactoring_suggestion,
 )
+from fetch_source import fetch_file_at_commit  # noqa: E402
+from java_statement_extractor import max_complexity_across_sources  # noqa: E402
 
 TOKEN_RE = re.compile(r"[a-zA-Z]+")
 
@@ -197,6 +199,21 @@ def compute_live_feature_row(pr_number: int, owner: str = GITHUB_OWNER, repo: st
         row["complexity_before"] = scan_result["complexity"] if scan_result else 0.0
     else:
         row["complexity_before"] = 0.0
+
+    # max_touched_method_complexity: the highest single-method Campbell-rule
+    # complexity found across this PR's own HEAD content - independent of
+    # complexity_before, and computed the SAME way
+    # sense/scripts/06_compute_touched_code_complexity.py backfilled it for
+    # the training set (fetch HEAD content, run the same AST approximation,
+    # take the max). Closes the gap where a brand-new file's own complexity
+    # was otherwise invisible to the model - see that script's own docstring.
+    head_sources = []
+    for file_path in changed_java_files:
+        try:
+            head_sources.append(fetch_file_at_commit(owner, repo, head_sha, file_path))
+        except Exception as exc:  # noqa: BLE001 — file removed/renamed by a later commit, network hiccup
+            print(f"  [warn] could not fetch {file_path}@{head_sha[:10]} for complexity scoring: {exc}")
+    row["max_touched_method_complexity"] = max_complexity_across_sources(head_sources)
 
     # Contributor process features - reuses 04_enrich_process_features.py's
     # own local historical index (sense/data/raw/apache_commons-lang_prs.jsonl)

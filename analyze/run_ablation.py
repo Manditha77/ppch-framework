@@ -9,7 +9,13 @@ Family definitions here reflect what is actually implemented in the current
 feature table:
 
   - baseline_complexity: complexity_before (the target file's pre-existing
-    complexity — legitimate pre-submission signal, NOT a leakage field)
+    complexity — legitimate pre-submission signal, NOT a leakage field) PLUS
+    max_touched_method_complexity (the highest single-method complexity in
+    the PR's own HEAD content, added 2026-09-22 to close a real gap:
+    complexity_before is always 0 for a brand-new file, so a genuinely
+    complex new file was invisible to the model regardless of its actual
+    structure — found via a live self-hosted-runner test, not by inspection.
+    See sense/scripts/06_compute_touched_code_complexity.py.)
   - structural_size: additions, deletions, changed_files, changed_java_files
   - process: commits, comments, review_comments (+ contributor process
     features — see sense/scripts/04_enrich_process_features.py)
@@ -42,7 +48,12 @@ PROCESSED_DIR = ROOT / "sense" / "data" / "processed"
 EVALUATION_DIR = ROOT / "evaluation"
 
 FAMILIES = {
-    "baseline_complexity": ["complexity_before"],
+    # max_touched_method_complexity (added 2026-09-22) joins complexity_before
+    # here rather than as its own family: both are pre-submission complexity
+    # signals, just scoped differently (existing-file baseline vs. the actual
+    # code being introduced, which complexity_before cannot see for a
+    # brand-new file — see train_models.py's own comment on this feature).
+    "baseline_complexity": ["complexity_before", "max_touched_method_complexity"],
     "structural_size": ["additions", "deletions", "changed_files", "changed_java_files"],
     # "process" now includes the PR's own activity (commits/comments/review_
     # comments) AND the contributor-level process features Methodology §3.3.3

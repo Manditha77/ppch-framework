@@ -1,7 +1,7 @@
 [
   {
     "pr_number": 1422,
-    "risk_score": 0.9803782904148102,
+    "risk_score": 0.9760438704490662,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "optimal",
@@ -39,7 +39,7 @@
   },
   {
     "pr_number": 1591,
-    "risk_score": 0.947363672653834,
+    "risk_score": 0.9327257788181305,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "optimal",
@@ -81,7 +81,7 @@
   },
   {
     "pr_number": 1427,
-    "risk_score": 0.9357449030876159,
+    "risk_score": 0.9378152374426524,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "optimal",
@@ -90,7 +90,7 @@
   },
   {
     "pr_number": 1629,
-    "risk_score": 0.8888871943950654,
+    "risk_score": 0.8577307375272115,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "threshold_unreachable",
@@ -99,7 +99,7 @@
   },
   {
     "pr_number": 1392,
-    "risk_score": 0.9284874979654948,
+    "risk_score": 0.931774750550588,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "threshold_unreachable",
@@ -133,7 +133,7 @@
   },
   {
     "pr_number": 1470,
-    "risk_score": 0.8870913521448771,
+    "risk_score": 0.9054578991731008,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "optimal",
@@ -179,7 +179,7 @@
   },
   {
     "pr_number": 1638,
-    "risk_score": 0.8991000223159791,
+    "risk_score": 0.9244532001018524,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "threshold_unreachable",
@@ -229,7 +229,7 @@
   },
   {
     "pr_number": 1623,
-    "risk_score": 0.9522532753149668,
+    "risk_score": 0.9653391269842784,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "threshold_unreachable",
@@ -238,7 +238,7 @@
   },
   {
     "pr_number": 1548,
-    "risk_score": 0.9713431735833487,
+    "risk_score": 0.9737965321540832,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "optimal",
@@ -247,7 +247,7 @@
   },
   {
     "pr_number": 1494,
-    "risk_score": 0.9597023204962413,
+    "risk_score": 0.9595717251300812,
     "action": "complexity_warning_and_refactoring_review",
     "refactoring_suggestion_requested": true,
     "ilp_status": "optimal",

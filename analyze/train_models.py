@@ -83,6 +83,19 @@ FEATURES = [
     # It stays in FEATURES because it's still a legitimate, leakage-free
     # pre-submission signal — not because it's load-bearing anymore.
     "complexity_before",
+    # max_touched_method_complexity: the highest single-method Campbell-rule
+    # complexity (this framework's own AST approximation, see
+    # java_statement_extractor.py::max_complexity_across_sources) found
+    # across every file the PR touches, at the PR's own HEAD state — added
+    # 2026-09-22 to close a real gap complexity_before cannot see: a
+    # brand-new file has no "before" state (complexity_before is always 0
+    # for it), so a genuinely complex new file was invisible to the model
+    # regardless of its actual structure. Leakage-safe: HEAD is the PR's own
+    # proposed diff, exactly what a pre-merge reviewer sees — not different
+    # in kind from additions/deletions. See
+    # sense/scripts/06_compute_touched_code_complexity.py for the historical
+    # backfill.
+    "max_touched_method_complexity",
 ]
 LABEL = "exceeds_significant_complexity_increase"
 

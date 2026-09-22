@@ -26,6 +26,7 @@ LOG_TRANSFORM_FEATURES = [
     "commits", "comments", "review_comments", "body_character_count",
     "contributor_prior_pr_count", "contributor_tenure_days",
     "contributor_follower_count", "complexity_before",
+    "max_touched_method_complexity",
 ]
 
 

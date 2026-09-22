@@ -993,3 +993,34 @@ def all_methods_by_complexity(source_text: str) -> list:
         entries.append((method_node.name, statements, total, meta, start_line, type_map))
     entries.sort(key=lambda entry: entry[2], reverse=True)
     return entries
+
+
+def max_complexity_across_sources(sources: list) -> float:
+    """Given raw Java source texts (typically every file a PR touched, at
+    HEAD/post-PR state), returns the highest single-method Campbell-rule
+    complexity found across ALL of them.
+
+    Exists to close a real gap found via a live self-hosted-runner test
+    (2026-09-22): the Analyze layer's only complexity-related feature,
+    complexity_before, is computed by scanning a file's PRE-PR state - for a
+    brand-new file that didn't exist before the PR, this is always 0
+    (see 02_scan_pilot_batch.py::get_scoped_complexity's own "404 -> 0"
+    handling), regardless of how complex the new file's own code actually
+    is. A genuinely complex brand-new file was therefore invisible to the
+    model. This function measures the code actually being INTRODUCED,
+    independent of whether any prior baseline exists - see
+    sense/scripts/06_compute_touched_code_complexity.py for the historical
+    backfill and act/github-action/live_predict.py for the live equivalent.
+
+    Unparseable files are skipped, not fatal (a PR's diff can include
+    non-Java-parseable edge cases - e.g. a file mid-rename). Returns 0.0 if
+    nothing parseable is found."""
+    best = 0.0
+    for source in sources:
+        try:
+            methods = all_methods_by_complexity(source)
+        except (javalang.parser.JavaSyntaxError, javalang.tokenizer.LexerError):
+            continue
+        if methods:
+            best = max(best, methods[0][2])
+    return best

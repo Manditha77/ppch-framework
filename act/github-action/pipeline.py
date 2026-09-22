@@ -60,6 +60,13 @@ FEATURES = [
     # branch independently of the incoming PR (even continuously) - it is not
     # derived from this PR's outcome, unlike complexity_after/delta below.
     "complexity_before",
+    # See analyze/train_models.py's own comment on this feature (added
+    # 2026-09-22 — closes the gap where a brand-new file's own complexity
+    # was invisible to complexity_before, which is always 0 for a file that
+    # didn't exist before the PR). Computed live in live_predict.py via the
+    # same java_statement_extractor.max_complexity_across_sources used for
+    # the historical backfill.
+    "max_touched_method_complexity",
 ]
 
 # Risk-score bands for the intervention decision. risk_score is the average of

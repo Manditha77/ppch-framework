@@ -3,108 +3,108 @@
   "study": "ablation",
   "row_count": 334,
   "random_forest": {
-    "full_model_auc": 0.6568627450980392,
+    "full_model_auc": 0.6735739750445633,
     "leave_one_family_out": {
       "baseline_complexity": {
         "auc_without_family": 0.6856060606060607,
-        "delta_vs_full": 0.0287
+        "delta_vs_full": 0.012
       },
       "structural_size": {
-        "auc_without_family": 0.5886809269162211,
-        "delta_vs_full": -0.0682
+        "auc_without_family": 0.6116310160427808,
+        "delta_vs_full": -0.0619
       },
       "process": {
-        "auc_without_family": 0.6918449197860962,
-        "delta_vs_full": 0.035
+        "auc_without_family": 0.695187165775401,
+        "delta_vs_full": 0.0216
       },
       "textual_semantic": {
-        "auc_without_family": 0.6951871657754011,
-        "delta_vs_full": 0.0383
+        "auc_without_family": 0.7078877005347594,
+        "delta_vs_full": 0.0343
       }
     },
     "family_alone": {
-      "baseline_complexity": 0.55325311942959,
+      "baseline_complexity": 0.6031639928698752,
       "structural_size": 0.6922905525846702,
       "process": 0.5057932263814617,
       "textual_semantic": 0.588903743315508
     }
   },
   "xgboost": {
-    "full_model_auc": 0.7049910873440286,
+    "full_model_auc": 0.7027629233511586,
     "leave_one_family_out": {
       "baseline_complexity": {
         "auc_without_family": 0.6822638146167558,
-        "delta_vs_full": -0.0227
+        "delta_vs_full": -0.0205
       },
       "structural_size": {
-        "auc_without_family": 0.5739750445632797,
-        "delta_vs_full": -0.131
+        "auc_without_family": 0.5824420677361853,
+        "delta_vs_full": -0.1203
       },
       "process": {
-        "auc_without_family": 0.6867201426024955,
-        "delta_vs_full": -0.0183
+        "auc_without_family": 0.6991978609625669,
+        "delta_vs_full": -0.0036
       },
       "textual_semantic": {
-        "auc_without_family": 0.7450980392156863,
-        "delta_vs_full": 0.0401
+        "auc_without_family": 0.7237076648841354,
+        "delta_vs_full": 0.0209
       }
     },
     "family_alone": {
-      "baseline_complexity": 0.5597147950089127,
+      "baseline_complexity": 0.6234402852049911,
       "structural_size": 0.6951871657754011,
       "process": 0.5848930481283423,
       "textual_semantic": 0.5254010695187166
     }
   },
   "naive_bayes": {
-    "full_model_auc": 0.6911764705882353,
+    "full_model_auc": 0.6983065953654188,
     "leave_one_family_out": {
       "baseline_complexity": {
         "auc_without_family": 0.7023172905525847,
-        "delta_vs_full": 0.0111
+        "delta_vs_full": 0.004
       },
       "structural_size": {
-        "auc_without_family": 0.6644385026737968,
-        "delta_vs_full": -0.0267
+        "auc_without_family": 0.6720142602495545,
+        "delta_vs_full": -0.0263
       },
       "process": {
-        "auc_without_family": 0.5993761140819964,
-        "delta_vs_full": -0.0918
+        "auc_without_family": 0.6118538324420677,
+        "delta_vs_full": -0.0865
       },
       "textual_semantic": {
-        "auc_without_family": 0.5949197860962566,
-        "delta_vs_full": -0.0963
+        "auc_without_family": 0.5842245989304813,
+        "delta_vs_full": -0.1141
       }
     },
     "family_alone": {
-      "baseline_complexity": 0.5,
+      "baseline_complexity": 0.6056149732620321,
       "structural_size": 0.6947415329768271,
       "process": 0.5133689839572193,
       "textual_semantic": 0.48663101604278075
     }
   },
   "logistic_regression": {
-    "full_model_auc": 0.7388591800356507,
+    "full_model_auc": 0.7531194295900179,
     "leave_one_family_out": {
       "baseline_complexity": {
         "auc_without_family": 0.7352941176470589,
-        "delta_vs_full": -0.0036
+        "delta_vs_full": -0.0178
       },
       "structural_size": {
-        "auc_without_family": 0.7290552584670231,
-        "delta_vs_full": -0.0098
+        "auc_without_family": 0.7116755793226381,
+        "delta_vs_full": -0.0414
       },
       "process": {
-        "auc_without_family": 0.7223707664884136,
-        "delta_vs_full": -0.0165
+        "auc_without_family": 0.7384135472370766,
+        "delta_vs_full": -0.0147
       },
       "textual_semantic": {
-        "auc_without_family": 0.7201426024955437,
-        "delta_vs_full": -0.0187
+        "auc_without_family": 0.7442067736185383,
+        "delta_vs_full": -0.0089
       }
     },
     "family_alone": {
-      "baseline_complexity": 0.5757575757575759,
+      "baseline_complexity": 0.6278966131907309,
       "structural_size": 0.67825311942959,
       "process": 0.6831550802139037,
       "textual_semantic": 0.5797682709447415
