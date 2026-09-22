@@ -31,6 +31,7 @@ real apache/commons-lang upstream - it stays verified-by-code-review only
 until tested against a repository the user actually controls.
 """
 
+import difflib
 import json
 import os
 import sys
@@ -139,6 +140,17 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
                         f"split if/else into `{step['then_method']}`/`{step['else_method']}`"
                     )
             lines.append("")
+
+            before_text = full_refactor.get("before_text")
+            after_text = full_refactor.get("after_text")
+            if before_text is not None and after_text is not None:
+                diff_lines = list(difflib.unified_diff(
+                    before_text.splitlines(), after_text.splitlines(),
+                    fromfile=full_refactor["source_file"], tofile=full_refactor["source_file"],
+                    lineterm="",
+                ))
+                if diff_lines:
+                    lines += ["**Actual applied diff:**", "", "```diff"] + diff_lines + ["```", ""]
         if rejected_steps:
             lines.append(
                 "**Rejected as non-productive** (would relocate complexity without reducing "
@@ -190,7 +202,36 @@ def write_local_report(payload: dict, owner: str, repo: str) -> Path:
     out_dir = ROOT / "evaluation" / "live_action_runs"
     out_dir.mkdir(parents=True, exist_ok=True)
     stem = out_dir / f"pr_{payload['pr_number']}_live"
-    stem.with_suffix(".json").write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+    # Same pattern verify_pr_suggestion.py already uses for the historical
+    # case-study PRs: write the full source blobs as real, openable
+    # before/after files, and keep them OUT of the JSON (they'd bloat it
+    # and duplicate what's now in these files). payload itself is left
+    # untouched (no destructive pop) - main() calls render_markdown a
+    # second time separately when posting the actual PR comment, and that
+    # call needs before_text/after_text to still be there too. Found
+    # missing here via direct user review of a real PR comment
+    # (2026-09-22): the comment only described what changed in words,
+    # never showed the actual refactored code.
+    full_refactor = payload.get("full_refactor") or {}
+    before_text = full_refactor.get("before_text")
+    after_text = full_refactor.get("after_text")
+    if before_text is not None and after_text is not None and full_refactor.get("extractions_applied", 0) > 0:
+        source_stem = Path(full_refactor["source_file"]).stem
+        before_path = out_dir / f"pr_{payload['pr_number']}_{source_stem}_before.java"
+        after_path = out_dir / f"pr_{payload['pr_number']}_{source_stem}_after.java"
+        before_path.write_text(before_text, encoding="utf-8")
+        after_path.write_text(after_text, encoding="utf-8")
+        print(f"Wrote {before_path}")
+        print(f"Wrote {after_path}")
+
+    json_payload = dict(payload)
+    if json_payload.get("full_refactor"):
+        json_payload["full_refactor"] = {
+            k: v for k, v in json_payload["full_refactor"].items() if k not in ("before_text", "after_text")
+        }
+    stem.with_suffix(".json").write_text(json.dumps(json_payload, indent=2) + "\n", encoding="utf-8")
+
     markdown = render_markdown(payload, owner, repo)
     stem.with_suffix(".md").write_text(markdown, encoding="utf-8")
     print(f"Wrote {stem.with_suffix('.json')}")

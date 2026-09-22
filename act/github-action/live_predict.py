@@ -324,6 +324,14 @@ def _generate_full_refactor(ilp_result: dict, scan_info: dict, owner: str, repo:
         "extractions_applied": len(applied),
         "log": result["log"],
         "still_over_threshold": result["still_over_threshold"],
+        # The ACTUAL before/after code, not just a text description of what
+        # happened - found missing via direct user review of a real PR
+        # comment (2026-09-22): refactor_source already computes this
+        # (final_text), it just wasn't being surfaced anywhere. Mirrors the
+        # exact before/after .java file pattern verify_pr_suggestion.py
+        # already writes for the historical case-study PRs.
+        "before_text": head_source,
+        "after_text": result["final_text"],
     }
 
 
