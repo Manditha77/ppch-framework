@@ -55,8 +55,9 @@ sys.path.insert(0, str(ROOT / "act"))
 from pipeline import (  # noqa: E402
     FEATURES, MODEL_DIR, GITHUB_OWNER, GITHUB_REPO,
     WARNING_THRESHOLD, NOTICE_THRESHOLD, STRUCTURAL_COMPLEXITY_THRESHOLD,
-    load_models, predict_risk, generate_refactoring_suggestion, decide_intervention,
+    load_models, predict_risk, generate_refactoring_suggestion, decide_intervention, is_test_file,
 )
+from multi_file_refactor import refactor_all_files  # noqa: E402
 from fetch_source import fetch_file_at_commit  # noqa: E402
 from java_statement_extractor import max_complexity_across_sources  # noqa: E402
 from refactor_file import refactor_source  # noqa: E402
@@ -311,27 +312,70 @@ def _generate_full_refactor(ilp_result: dict, scan_info: dict, owner: str, repo:
     source_file = ilp_result.get("source_file")
     if not source_file:
         return None
+
+    # Multi-file coverage (added 2026-09-23 - see multi_file_refactor.py's
+    # own module docstring): the PRIMARY file (source_file, what this
+    # function always treated as "the" file) is always processed first and
+    # always included - its own result fields (source_file/before_text/
+    # after_text/log/still_over_threshold/extractions_applied) keep the
+    # exact same meaning as before this change, unaffected by construction.
+    # Every OTHER non-test Java file this PR also touched now gets the same
+    # real multi-strategy refactor pass too, instead of being silently
+    # never looked at - matches the same fix already applied to the
+    # historical verification path (verify_pr_suggestion.py).
+    candidate_files = [f for f in scan_info.get("changed_java_files", []) if not is_test_file(f)]
+    if not candidate_files:
+        candidate_files = [source_file]
+
+    def fetch_fn(fp: str) -> str:
+        return fetch_file_at_commit(owner, repo, scan_info["head_sha"], fp)
+
     try:
-        head_source = fetch_file_at_commit(owner, repo, scan_info["head_sha"], source_file)
-    except Exception as exc:  # noqa: BLE001 — same file generate_refactoring_suggestion already fetched; a failure here is a real, reportable network/availability issue
+        multi = refactor_all_files(candidate_files, source_file, fetch_fn,
+                                    threshold=15.0, max_iterations=8, safety_margin=2.0)
+    except Exception as exc:  # noqa: BLE001 — primary-file fetch failure
         return {"status": "fetch_failed", "source_file": source_file, "error": str(exc)}
 
-    result = refactor_source(head_source, threshold=15.0, max_iterations=8, safety_margin=2.0)
-    applied = [step for step in result["log"] if step["outcome"] in ("extracted", "branch_split_applied")]
+    primary = multi["per_file"].get(source_file)
+    if primary is None or primary.get("status") != "ok":
+        return {"status": "fetch_failed", "source_file": source_file,
+                "error": (primary or {}).get("error", "primary file not processed")}
+
+    additional_files = []
+    for fp in multi["files_analyzed"]:
+        if fp == source_file:
+            continue
+        entry = multi["per_file"].get(fp)
+        if not entry or entry.get("status") != "ok" or entry.get("extractions_applied", 0) == 0:
+            continue  # nothing genuinely applied to this file - not worth reporting
+        additional_files.append({
+            "source_file": fp,
+            "extractions_applied": entry["extractions_applied"],
+            "log": entry["log"],
+            "still_over_threshold": entry["still_over_threshold"],
+            "before_text": entry["before_text"],
+            "after_text": entry["after_text"],
+        })
+
+    applied = [step for step in primary["log"] if step["outcome"] in ("extracted", "branch_split_applied")]
     return {
         "status": "ok",
         "source_file": source_file,
         "extractions_applied": len(applied),
-        "log": result["log"],
-        "still_over_threshold": result["still_over_threshold"],
+        "log": primary["log"],
+        "still_over_threshold": primary["still_over_threshold"],
         # The ACTUAL before/after code, not just a text description of what
         # happened - found missing via direct user review of a real PR
         # comment (2026-09-22): refactor_source already computes this
         # (final_text), it just wasn't being surfaced anywhere. Mirrors the
         # exact before/after .java file pattern verify_pr_suggestion.py
         # already writes for the historical case-study PRs.
-        "before_text": head_source,
-        "after_text": result["final_text"],
+        "before_text": primary["before_text"],
+        "after_text": primary["after_text"],
+        "additional_files": additional_files,
+        "files_touched_by_pr": len(candidate_files),
+        "files_analyzed": multi["files_analyzed"],
+        "files_skipped_due_to_cap": multi["files_skipped_due_to_cap"],
     }
 
 

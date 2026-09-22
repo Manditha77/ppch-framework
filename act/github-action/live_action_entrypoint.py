@@ -110,25 +110,43 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
     ilp = payload.get("ilp", {})
     full_refactor = payload.get("full_refactor")
     if full_refactor and full_refactor.get("status") == "ok":
-        # Preferred rendering: the FULL multi-strategy engine (branch-split,
-        # then iterative Extract Method - see live_predict.py::
-        # _generate_full_refactor's own docstring for why a single ILP
-        # snippet alone can be misleading for deeply-chained if/else
-        # methods). Falls through to the single-snippet rendering below
-        # only if this isn't available (e.g. a fetch failure).
-        lines += [
-            f"### Refactoring analysis — `{full_refactor['source_file']}`",
-            "",
-            "Ran the framework's full engine (branch-split, then iterative Extract Method - "
-            "the same engine used to verify the historical case-study PRs) on this file, "
-            "not just a single best-effort attempt:",
-            "",
-        ]
-        applied_steps = [s for s in full_refactor["log"] if s["outcome"] in ("extracted", "branch_split_applied")]
-        rejected_steps = [s for s in full_refactor["log"] if s["outcome"] == "non_productive_extraction"]
-        if applied_steps:
-            lines.append(f"**Applied {len(applied_steps)} genuine improvement(s):**")
+        # Preferred rendering: the FULL multi-strategy engine (else-if
+        # flattening, then branch-split, then iterative Extract Method -
+        # see live_predict.py::_generate_full_refactor's own docstring for
+        # why a single ILP snippet alone can be misleading for deeply-
+        # chained if/else methods). Falls through to the single-snippet
+        # rendering below only if this isn't available (e.g. a fetch
+        # failure). Covers every non-test file the PR touched (added
+        # 2026-09-23 - see multi_file_refactor.py), not just the one
+        # generate_refactoring_suggestion picked as the primary target.
+        files_touched = full_refactor.get("files_touched_by_pr", 1)
+        skipped = full_refactor.get("files_skipped_due_to_cap", [])
+        header = "Ran the framework's full engine (else-if flattening, branch-split, then iterative Extract Method - the same engine used to verify the historical case-study PRs)"
+        if files_touched > 1:
+            header += f" across all {len(full_refactor.get('files_analyzed', [full_refactor['source_file']]))} non-test file(s) this PR touched"
+            if skipped:
+                header += f" ({len(skipped)} additional file(s) skipped past the analysis cap)"
+        else:
+            header += " on this file"
+        lines += [header + ", not just a single best-effort attempt on one file:", ""]
+
+        any_applied_anywhere = False
+        for file_result in [full_refactor] + full_refactor.get("additional_files", []):
+            log = file_result["log"]
+            flatten_steps = [s for s in log if s["outcome"] == "else_if_flattened"]
+            applied_steps = [s for s in log if s["outcome"] in ("extracted", "branch_split_applied")]
+            rejected_steps = [s for s in log if s["outcome"] == "non_productive_extraction"]
+            if not (flatten_steps or applied_steps or rejected_steps):
+                continue  # nothing happened in this file - don't clutter the comment with an empty section
+
+            lines.append(f"#### `{file_result['source_file']}`")
+            lines.append("")
+            if flatten_steps:
+                lines.append(f"- Flattened {flatten_steps[0]['count']} `else {{ if }}` block(s) into `else if` "
+                              "(a pure syntax simplification SonarQube's own rules treat as less complex - "
+                              "no behavior change).")
             for step in applied_steps:
+                any_applied_anywhere = True
                 if step["outcome"] == "extracted":
                     lines.append(
                         f"- `{step['method']}` (complexity {step['complexity_before']:.0f}) — "
@@ -139,34 +157,33 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
                         f"- `{step['method']}` (complexity {step['complexity_before']:.0f}) — "
                         f"split if/else into `{step['then_method']}`/`{step['else_method']}`"
                     )
+            for step in rejected_steps:
+                lines.append(
+                    f"- ⚠️ `{step['method']}` (complexity {step['complexity_before']:.0f}) — "
+                    f"**rejected as non-productive** (would relocate complexity without reducing it): "
+                    f"{step['reason']}"
+                )
             lines.append("")
 
-            before_text = full_refactor.get("before_text")
-            after_text = full_refactor.get("after_text")
-            if before_text is not None and after_text is not None:
+            before_text = file_result.get("before_text")
+            after_text = file_result.get("after_text")
+            if before_text is not None and after_text is not None and (flatten_steps or applied_steps):
                 diff_lines = list(difflib.unified_diff(
                     before_text.splitlines(), after_text.splitlines(),
-                    fromfile=full_refactor["source_file"], tofile=full_refactor["source_file"],
+                    fromfile=file_result["source_file"], tofile=file_result["source_file"],
                     lineterm="",
                 ))
                 if diff_lines:
                     lines += ["**Actual applied diff:**", "", "```diff"] + diff_lines + ["```", ""]
-        if rejected_steps:
-            lines.append(
-                "**Rejected as non-productive** (would relocate complexity without reducing "
-                "it - discarded rather than applied):"
-            )
-            for step in rejected_steps:
-                lines.append(f"- `{step['method']}` (complexity {step['complexity_before']:.0f}) — {step['reason']}")
-            lines.append("")
-        if full_refactor["still_over_threshold"]:
-            names = ", ".join(f"`{e['method']}` ({e['complexity']:.0f})" for e in full_refactor["still_over_threshold"])
-            lines += [
-                f"**Still over the per-method threshold, needs manual restructuring:** {names}",
-                "",
-            ]
-        elif applied_steps:
-            lines += ["All methods in this file are now under the complexity threshold.", ""]
+
+            if file_result["still_over_threshold"]:
+                names = ", ".join(f"`{e['method']}` ({e['complexity']:.0f})" for e in file_result["still_over_threshold"])
+                lines += [f"**Still over the per-method threshold, needs manual restructuring:** {names}", ""]
+            elif applied_steps or flatten_steps:
+                lines += ["All methods in this file are now under the complexity threshold.", ""]
+
+        if not any_applied_anywhere and not full_refactor["still_over_threshold"]:
+            lines += ["No safe automatic improvement found in the analyzed file(s).", ""]
     elif ilp.get("status") in ("optimal", "threshold_unreachable"):
         suggestion = ilp.get("suggestion")
         lines += [
