@@ -54,6 +54,7 @@ from java_statement_extractor import all_methods_by_complexity, render_extractio
 from apply_extraction import apply_extraction_to_text  # noqa: E402
 from sonarqube_verify import verify_with_sonarqube  # noqa: E402
 from branch_split import find_branch_split_candidates, render_branch_split, apply_branch_split_to_text  # noqa: E402
+from else_if_flatten import flatten_else_if_chains  # noqa: E402
 
 DEFAULT_THRESHOLD = 15.0
 DEFAULT_MAX_ITERATIONS = 8
@@ -166,11 +167,23 @@ def refactor_source(source_text: str, threshold: float, max_iterations: int, saf
     effective_threshold = threshold - safety_margin
     stuck_methods = set()
 
+    # THIRD strategy, added 2026-09-23 - see else_if_flatten.py's own module
+    # docstring for the full motivation (a real case: 79.0 -> 43.0 on a
+    # method that otherwise resisted both existing strategies). Runs FIRST,
+    # before branch-split: flattening can turn a deeply-nested method into a
+    # genuinely independent top-level dispatch, giving branch-split (and the
+    # main ILP loop below) real material to work with that wasn't visible
+    # before. Pure syntax, verified by real javalang parsing on every
+    # application - if nothing applies, source_text is unchanged.
+    source_text, flatten_count = flatten_else_if_chains(source_text)
+    log = [{"outcome": "else_if_flattened", "count": flatten_count}] if flatten_count else []
+
     # Separate, additive pre-pass - see _apply_branch_splits_pass's own
     # docstring. Runs BEFORE the main loop below and does not alter that
     # loop's logic in any way; if nothing applies, source_text is returned
-    # byte-for-byte unchanged and log is empty.
-    source_text, log = _apply_branch_splits_pass(source_text, effective_threshold)
+    # byte-for-byte unchanged and no new log entries are added.
+    source_text, branch_split_log = _apply_branch_splits_pass(source_text, effective_threshold)
+    log += branch_split_log
 
     # Minimum genuine reduction (in complexity points) the newly created
     # method's own complexity must fall below the original method's
