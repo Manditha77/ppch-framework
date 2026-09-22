@@ -41,11 +41,11 @@ sys.path.insert(0, str(ROOT / "refactor"))
 from pipeline import (  # noqa: E402
     PROCESSED_DIR, GITHUB_OWNER, GITHUB_REPO,
     load_models, predict_risk, build_intervention, generate_refactoring_suggestion,
-    load_scan_result,
+    load_scan_result, is_test_file,
 )
 from fetch_source import fetch_file_at_commit  # noqa: E402
 from sonarqube_verify import verify_with_sonarqube  # noqa: E402
-from refactor_file import refactor_source  # noqa: E402
+from multi_file_refactor import refactor_all_files  # noqa: E402
 
 
 def verify_pr(number: int) -> dict:
@@ -92,34 +92,75 @@ def verify_pr(number: int) -> dict:
 
     scan_record = load_scan_result(number)
     file_path = ilp["source_file"]
+
+    # Multi-file coverage (added 2026-09-23 - see multi_file_refactor.py's
+    # own module docstring for the full motivation): the PRIMARY file
+    # (file_path, what the code below always treated as "the" file) is
+    # always processed FIRST and always included, so its own result is
+    # unchanged from before this change - regression-verified, not just
+    # true by construction. Every OTHER non-test Java file this PR also
+    # touched now gets the SAME real refactor + real SonarQube verification,
+    # instead of being silently never looked at.
+    candidate_files = [f for f in scan_record.get("changed_java_files", []) if not is_test_file(f)]
+
+    def fetch_fn(fp: str) -> str:
+        return fetch_file_at_commit(GITHUB_OWNER, GITHUB_REPO, scan_record["head_sha"], fp)
+
     try:
-        head_source = fetch_file_at_commit(GITHUB_OWNER, GITHUB_REPO, scan_record["head_sha"], file_path)
-    except Exception as exc:  # noqa: BLE001
+        multi = refactor_all_files(candidate_files, file_path, fetch_fn,
+                                    threshold=15.0, max_iterations=8, safety_margin=2.0)
+    except Exception as exc:  # noqa: BLE001 — primary-file fetch failure, same as the old code's behavior
         result["status"] = "fetch_failed"
         result["error"] = str(exc)
         return result
 
-    refactor_result = refactor_source(head_source, threshold=15.0, max_iterations=8, safety_margin=2.0)
-    # Two strategies can both apply real changes - the main ILP single-
-    # region extraction ("extracted") and the separate, additive branch-
-    # split pre-pass ("branch_split_applied", see act/refactor_file.py's
-    # _apply_branch_splits_pass) - both count as real, applied changes.
+    primary = multi["per_file"].get(file_path)
+    if primary is None or primary.get("status") != "ok":
+        result["status"] = "fetch_failed"
+        result["error"] = (primary or {}).get("error", "primary file not processed")
+        return result
+
+    # --- Fields below are UNCHANGED in meaning from before this change:
+    # they describe the PRIMARY file only, exactly as they always did. ---
     extractions = [
-        step for step in refactor_result["log"]
+        step for step in primary["log"]
         if step["outcome"] in ("extracted", "branch_split_applied")
     ]
-
     result["status"] = "verified"
     result["method_name"] = ilp.get("method_name")
     result["extractions_applied"] = len(extractions)
-    result["still_over_threshold_after"] = refactor_result["still_over_threshold"]
-    result["sonarqube"] = verify_with_sonarqube(Path(file_path).name, head_source, refactor_result["final_text"])
-    # The actual Java, not just numbers about it - written by write_outputs()
-    # below, in sense/data/processed/pr_<number>/, so you can open a real
-    # before/after diff in your editor instead of only reading JSON.
-    result["_original_source"] = head_source
-    result["_refactored_source"] = refactor_result["final_text"]
+    result["still_over_threshold_after"] = primary["still_over_threshold"]
+    result["sonarqube"] = verify_with_sonarqube(Path(file_path).name, primary["before_text"], primary["after_text"])
+    result["_original_source"] = primary["before_text"]
+    result["_refactored_source"] = primary["after_text"]
     result["_filename"] = Path(file_path).name
+
+    # --- NEW: every additional file, real SonarQube-verified the same way. ---
+    additional_results = []
+    additional_file_texts = {}  # file_path -> (before, after, filename) for main() to write out
+    for fp in multi["files_analyzed"]:
+        if fp == file_path:
+            continue
+        entry = multi["per_file"].get(fp)
+        if not entry or entry.get("status") != "ok" or entry.get("extractions_applied", 0) == 0:
+            continue  # nothing genuinely applied to this file - no point re-scanning it
+        sq = verify_with_sonarqube(Path(fp).name, entry["before_text"], entry["after_text"], quiet=True)
+        additional_results.append({
+            "file": fp,
+            "extractions_applied": entry["extractions_applied"],
+            "still_over_threshold_after": entry["still_over_threshold"],
+            "sonarqube": sq,
+        })
+        additional_file_texts[fp] = (entry["before_text"], entry["after_text"], Path(fp).name)
+
+    result["additional_files_refactored"] = additional_results
+    result["total_extractions_applied_all_files"] = (
+        result["extractions_applied"] + sum(r["extractions_applied"] for r in additional_results)
+    )
+    result["files_touched_by_pr"] = len(candidate_files)
+    result["files_analyzed"] = multi["files_analyzed"]
+    result["files_skipped_due_to_cap"] = multi["files_skipped_due_to_cap"]
+    result["_additional_file_texts"] = additional_file_texts
     return result
 
 
@@ -145,6 +186,18 @@ def main() -> None:
                         print(f"    - line {issue['line']}: {issue['message']}")
                 else:
                     print("  SonarQube confirms: clean after refactoring.")
+            print(f"  PR touched {result['files_touched_by_pr']} non-test Java file(s); "
+                  f"{len(result['files_analyzed'])} analyzed"
+                  + (f", {len(result['files_skipped_due_to_cap'])} skipped (cap)"
+                     if result['files_skipped_due_to_cap'] else ""))
+            for extra in result["additional_files_refactored"]:
+                esq = extra["sonarqube"]
+                line = f"  + {extra['file']}: {extra['extractions_applied']} extraction(s)"
+                if esq.get("before") is not None and esq.get("after") is not None:
+                    line += f", SonarQube {esq['before']} -> {esq['after']}"
+                print(line)
+            print(f"  TOTAL extractions applied across all analyzed files: "
+                  f"{result['total_extractions_applied_all_files']}")
         out_dir = PROCESSED_DIR / f"pr_{number}"
         out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -154,6 +207,7 @@ def main() -> None:
         original_source = result.pop("_original_source", None)
         refactored_source = result.pop("_refactored_source", None)
         filename = result.pop("_filename", None)
+        additional_texts = result.pop("_additional_file_texts", {})
         if original_source is not None:
             stem = Path(filename).stem
             suffix = Path(filename).suffix
@@ -165,6 +219,17 @@ def main() -> None:
             result["refactored_file"] = str(refactored_path)
             print(f"  Wrote {original_path}")
             print(f"  Wrote {refactored_path}")
+
+        # Same, for every additional file that had a real extraction applied.
+        for fp, (before_text, after_text, fname) in additional_texts.items():
+            stem = Path(fname).stem
+            suffix = Path(fname).suffix
+            before_path = out_dir / f"{stem}_before{suffix}"
+            after_path = out_dir / f"{stem}_after{suffix}"
+            before_path.write_text(before_text, encoding="utf-8")
+            after_path.write_text(after_text, encoding="utf-8")
+            print(f"  Wrote {before_path}")
+            print(f"  Wrote {after_path}")
 
         all_results.append(result)
         (out_dir / "suggestion_verification.json").write_text(
