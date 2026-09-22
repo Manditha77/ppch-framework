@@ -88,6 +88,15 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
         f"- Refactoring suggestion requested: `{payload['refactoring_suggestion_requested']}`",
         "",
     ]
+    evidence = payload.get("evidence_pre_submission_features", {})
+    if "complexity_before" in evidence or "max_touched_method_complexity" in evidence:
+        lines += [
+            "**Complexity signals:**",
+            f"- complexity_before (target file's pre-existing complexity): {evidence.get('complexity_before', 'n/a')}",
+            f"- max_touched_method_complexity (highest complexity among this PR's own new/changed methods): "
+            f"{evidence.get('max_touched_method_complexity', 'n/a')}",
+            "",
+        ]
     if out_of_distribution:
         lines += [
             "> **Scope caveat:** the trained models were fit only on `apache/commons-lang` "
