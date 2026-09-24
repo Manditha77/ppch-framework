@@ -41,9 +41,13 @@ THIS_DIR = Path(__file__).resolve().parent
 ROOT = THIS_DIR.parents[1]
 sys.path.insert(0, str(THIS_DIR))
 
+sys.path.insert(0, str(ROOT / "act" / "ilp-engine"))
+
 from live_predict import generate_live_act_report  # noqa: E402
+from java_statement_extractor import all_methods_by_complexity  # noqa: E402
 
 COMMENT_MARKER = "<!-- ppch-framework-action -->"
+COMPLEXITY_THRESHOLD = 15.0
 
 
 def read_event() -> dict:
@@ -74,28 +78,60 @@ def resolve_pr_and_repo() -> tuple:
     return int(pr_number), owner, repo
 
 
+def _trigger_headline(payload: dict) -> list:
+    """A plain-English headline for WHY this PR was flagged, with the raw
+    trigger identifier kept as a technical aside rather than the first
+    thing a reader sees - found worth doing directly from watching a real
+    demo run: leading with a bare `structural_complexity_threshold_exceeded`
+    code identifier, followed immediately by a risk_score bullet list, reads
+    as if the predictive model was what triggered the comment even in cases
+    (like this one) where it was the deterministic structural check instead
+    - the two triggers are independent (see the two-trigger design) and the
+    rendering should make which one actually fired unambiguous at a glance."""
+    action = payload["action"]
+    if action == "structural_complexity_threshold_exceeded":
+        headline = "**Why this PR was flagged:** a structural complexity threshold was exceeded."
+    elif action in ("high_risk_flagged", "refactoring_suggested"):
+        headline = "**Why this PR was flagged:** the predictive model's risk score crossed the warning threshold."
+    else:
+        headline = "**Why this PR was flagged:**"
+    return [
+        headline,
+        payload["message"],
+        f"*(trigger: `{action}`)*",
+        "",
+    ]
+
+
 def render_markdown(payload: dict, owner: str, repo: str) -> str:
     out_of_distribution = not (owner == "apache" and repo == "commons-lang")
     lines = [
         COMMENT_MARKER,
         f"## PPCH Framework — PR #{payload['pr_number']} Cognitive Complexity Prediction",
         "",
-        f"**Action:** `{payload['action']}`  ",
-        payload["message"],
-        "",
-        f"- Risk score (average of model probabilities): {payload['risk_score']:.3f}",
-        f"- Random Forest: {payload['model_probabilities']['random_forest']:.3f}  ",
-        f"- XGBoost: {payload['model_probabilities']['xgboost']:.3f}",
+    ]
+    lines += _trigger_headline(payload)
+    lines += [
+        "**Predictive model output** (shown for reference - see above for what actually triggered this comment):",
+        f"- Risk score (average of model probabilities): {payload['risk_score']:.3f} "
+        f"— Random Forest: {payload['model_probabilities']['random_forest']:.3f}, "
+        f"XGBoost: {payload['model_probabilities']['xgboost']:.3f}",
         f"- Refactoring suggestion requested: `{payload['refactoring_suggestion_requested']}`",
         "",
     ]
     evidence = payload.get("evidence_pre_submission_features", {})
     if "complexity_before" in evidence or "max_touched_method_complexity" in evidence:
+        complexity_before_val = evidence.get("complexity_before", "n/a")
+        complexity_before_note = (
+            " (a brand-new file, so there was nothing to compare against)"
+            if complexity_before_val in (0, 0.0) else ""
+        )
         lines += [
             "**Complexity signals:**",
-            f"- complexity_before (target file's pre-existing complexity): {evidence.get('complexity_before', 'n/a')}",
-            f"- max_touched_method_complexity (highest complexity among this PR's own new/changed methods): "
-            f"{evidence.get('max_touched_method_complexity', 'n/a')}",
+            f"- `complexity_before` — this file's pre-existing complexity: "
+            f"{complexity_before_val}{complexity_before_note}",
+            f"- `max_touched_method_complexity` — the highest complexity among this PR's own "
+            f"new/changed methods, across every file it touches: {evidence.get('max_touched_method_complexity', 'n/a')}",
             "",
         ]
     if out_of_distribution:
@@ -130,8 +166,43 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
             header += " on this file"
         lines += [header + ", not just a single best-effort attempt on one file:", ""]
 
+        # Before-complexity summary, computed fresh here (not stored on
+        # file_result - all_methods_by_complexity is a pure function over
+        # before_text, so no new plumbing is needed in multi_file_refactor.py).
+        # Added 2026-09-24 directly from a supervisor-facing request: show
+        # the file's real pre-PR complexity picture BEFORE the flatten/
+        # extraction log and the diff, both overall (across every file this
+        # PR touches) and per file - so a reader sees what was wrong before
+        # seeing what the engine did about it, in every scenario including
+        # multi-file PRs, not just the single-file case.
+        file_results_list = [full_refactor] + full_refactor.get("additional_files", [])
+        per_file_before = {}
+        overall_before_total = 0.0
+        overall_over_count = 0
+        for fr in file_results_list:
+            bt = fr.get("before_text")
+            if bt is None:
+                continue
+            try:
+                methods_before = all_methods_by_complexity(bt)
+            except Exception:
+                methods_before = []
+            file_total = sum(m[2] for m in methods_before)
+            over = [m for m in methods_before if m[2] >= COMPLEXITY_THRESHOLD]
+            per_file_before[fr["source_file"]] = (file_total, over)
+            overall_before_total += file_total
+            overall_over_count += len(over)
+
+        if len(file_results_list) > 1:
+            lines += [
+                f"**Before this PR, overall:** {len(file_results_list)} file(s) analyzed, summing to "
+                f"{overall_before_total:.0f} cognitive complexity, with {overall_over_count} method(s) "
+                f"already over the per-method threshold ({COMPLEXITY_THRESHOLD:.0f}) across all of them.",
+                "",
+            ]
+
         any_applied_anywhere = False
-        for file_result in [full_refactor] + full_refactor.get("additional_files", []):
+        for file_result in file_results_list:
             log = file_result["log"]
             flatten_steps = [s for s in log if s["outcome"] == "else_if_flattened"]
             applied_steps = [s for s in log if s["outcome"] in ("extracted", "branch_split_applied")]
@@ -141,6 +212,19 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
 
             lines.append(f"#### `{file_result['source_file']}`")
             lines.append("")
+
+            file_total_before, over_before = per_file_before.get(file_result["source_file"], (None, []))
+            if file_total_before is not None:
+                lines.append(
+                    f"**Before this PR:** this file summed to {file_total_before:.0f} cognitive complexity."
+                )
+                if over_before:
+                    names = ", ".join(f"`{m[0]}` ({m[2]:.0f})" for m in over_before)
+                    lines.append(
+                        f"- Already over the per-method threshold ({COMPLEXITY_THRESHOLD:.0f}) before this PR: {names}"
+                    )
+                lines.append("")
+
             if flatten_steps:
                 lines.append(f"- Flattened {flatten_steps[0]['count']} `else {{ if }}` block(s) into `else if` "
                               "(a pure syntax simplification SonarQube's own rules treat as less complex - "
