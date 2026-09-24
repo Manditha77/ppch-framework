@@ -65,7 +65,7 @@ def _branch_profile(stmts_list: list) -> dict:
     to 0) - the same question render_extraction_suggestion asks about an
     ILP-selected range, asked here about a WHOLE if/else branch instead."""
     flat = _flatten_method_body(stmts_list, nesting_depth=0)
-    complexity = sum(_complexity_of_node(fs.node, fs.nesting_depth) for fs in flat)
+    complexity = sum(_complexity_of_node(fs.node, fs.nesting_depth, fs.is_chain_link) for fs in flat)
     declared, used, assigned = set(), set(), set()
     for fs in flat:
         declared |= _collect_declared_vars(fs.node)

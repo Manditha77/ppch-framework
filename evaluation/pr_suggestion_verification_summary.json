@@ -61,7 +61,7 @@
     ],
     "sonarqube": {
       "before": 188.0,
-      "after": 187.0,
+      "after": 188.0,
       "before_issues": [
         {
           "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
@@ -79,7 +79,7 @@
       "after_issues": [
         {
           "message": "Refactor this method to reduce its Cognitive Complexity from 38 to the 15 allowed.",
-          "line": 1340
+          "line": 1341
         }
       ]
     },
@@ -123,7 +123,7 @@
     "still_over_threshold_after": [
       {
         "method": "substitute",
-        "complexity": 78.0
+        "complexity": 79.0
       }
     ],
     "sonarqube": {
@@ -364,7 +364,7 @@
     "still_over_threshold_after": [
       {
         "method": "parseToken",
-        "complexity": 21.0
+        "complexity": 24.0
       }
     ],
     "sonarqube": {
@@ -402,19 +402,19 @@
         "still_over_threshold_after": [
           {
             "method": "splitWorker",
-            "complexity": 52.0
+            "complexity": 53.0
           },
           {
             "method": "replaceEach",
-            "complexity": 38.0
+            "complexity": 35.0
           },
           {
             "method": "splitByWholeSeparatorWorker",
-            "complexity": 23.0
+            "complexity": 27.0
           },
           {
             "method": "matches",
-            "complexity": 20.0
+            "complexity": 21.0
           },
           {
             "method": "getLevenshteinDistance",
@@ -514,16 +514,16 @@
     "extractions_applied": 2,
     "still_over_threshold_after": [
       {
-        "method": "randomExtracted",
+        "method": "randomExtracted2",
         "complexity": 40.0
       },
       {
         "method": "random",
-        "complexity": 32.0
+        "complexity": 30.0
       },
       {
-        "method": "randomExtracted2",
-        "complexity": 26.0
+        "method": "randomExtracted",
+        "complexity": 28.0
       }
     ],
     "sonarqube": {
@@ -541,12 +541,12 @@
           "line": 255
         },
         {
-          "message": "Refactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 49 to the 15 allowed.",
           "line": 351
         },
         {
-          "message": "Refactor this method to reduce its Cognitive Complexity from 49 to the 15 allowed.",
-          "line": 406
+          "message": "Refactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.",
+          "line": 399
         }
       ]
     },
@@ -595,7 +595,7 @@
     ],
     "sonarqube": {
       "before": 173.0,
-      "after": 172.0,
+      "after": 173.0,
       "before_issues": [
         {
           "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
@@ -609,7 +609,7 @@
       "after_issues": [
         {
           "message": "Refactor this method to reduce its Cognitive Complexity from 38 to the 15 allowed.",
-          "line": 1292
+          "line": 1293
         }
       ]
     },
