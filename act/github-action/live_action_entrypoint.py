@@ -207,7 +207,22 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
             flatten_steps = [s for s in log if s["outcome"] == "else_if_flattened"]
             applied_steps = [s for s in log if s["outcome"] in ("extracted", "branch_split_applied")]
             rejected_steps = [s for s in log if s["outcome"] == "non_productive_extraction"]
-            if not (flatten_steps or applied_steps or rejected_steps):
+            # unsafe_steps: a safety check declined the candidate outright
+            # (e.g. a non-exhaustive return - see java_statement_extractor.py's
+            # return_forwarding logic). no_extraction_steps: the ILP solver
+            # couldn't find any extractable region at all. apply_failed_steps:
+            # a candidate looked safe but the actual text splice raised. All
+            # three are real, distinct "nothing safe could be done" outcomes
+            # that were previously silently dropped here - the file section
+            # was skipped entirely and the still_over_threshold guard below
+            # then also suppressed the fallback message, leaving the comment
+            # with no explanation at all (found via a live PR showing an
+            # empty body between the header and the closing disclaimer).
+            unsafe_steps = [s for s in log if s["outcome"] == "unsafe_suggestion"]
+            no_extraction_steps = [s for s in log if s["outcome"] == "no_extraction_found"]
+            apply_failed_steps = [s for s in log if s["outcome"] in ("apply_failed", "branch_split_apply_failed")]
+            if not (flatten_steps or applied_steps or rejected_steps or unsafe_steps
+                    or no_extraction_steps or apply_failed_steps):
                 continue  # nothing happened in this file - don't clutter the comment with an empty section
 
             lines.append(f"#### `{file_result['source_file']}`")
@@ -246,6 +261,21 @@ def render_markdown(payload: dict, owner: str, repo: str) -> str:
                     f"- ⚠️ `{step['method']}` (complexity {step['complexity_before']:.0f}) — "
                     f"**rejected as non-productive** (would relocate complexity without reducing it): "
                     f"{step['reason']}"
+                )
+            for step in unsafe_steps:
+                lines.append(
+                    f"- ⚠️ `{step['method']}` (complexity {step['complexity_before']:.0f}) — "
+                    f"**declined, not safe to auto-apply**: {step.get('reason') or 'a safety check failed.'}"
+                )
+            for step in no_extraction_steps:
+                lines.append(
+                    f"- ⚠️ `{step['method']}` (complexity {step['complexity_before']:.0f}) — "
+                    f"no extractable region found; this method needs manual restructuring."
+                )
+            for step in apply_failed_steps:
+                lines.append(
+                    f"- ⚠️ `{step['method']}` — a candidate extraction was found but could not be "
+                    f"applied cleanly: {step.get('error', 'unknown error')}"
                 )
             lines.append("")
 
