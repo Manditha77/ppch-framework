@@ -622,5 +622,2807 @@
     "files_skipped_due_to_cap": [],
     "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1494\\ClassUtils_before.java",
     "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1494\\ClassUtils_after.java"
+  },
+  {
+    "pr_number": 1662,
+    "risk_score": 0.19939178188641865,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "random",
+    "extractions_applied": 2,
+    "still_over_threshold_after": [
+      {
+        "method": "randomExtracted2",
+        "complexity": 40.0
+      },
+      {
+        "method": "random",
+        "complexity": 30.0
+      },
+      {
+        "method": "randomExtracted",
+        "complexity": 28.0
+      }
+    ],
+    "sonarqube": {
+      "before": 117.0,
+      "after": 117.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 115 to the 15 allowed.",
+          "line": 255
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 30 to the 15 allowed.",
+          "line": 255
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 49 to the 15 allowed.",
+          "line": 351
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.",
+          "line": 399
+        }
+      ]
+    },
+    "additional_files_refactored": [
+      {
+        "file": "src/main/java/org/apache/commons/lang3/ClassUtils.java",
+        "extractions_applied": 2,
+        "still_over_threshold_after": [
+          {
+            "method": "isAssignable",
+            "complexity": 38.0
+          }
+        ],
+        "sonarqube": {
+          "before": 188.0,
+          "after": 188.0,
+          "before_issues": [
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+              "line": 502
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 38 to the 15 allowed.",
+              "line": 1336
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.",
+              "line": 1608
+            }
+          ],
+          "after_issues": [
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 38 to the 15 allowed.",
+              "line": 1341
+            }
+          ]
+        }
+      }
+    ],
+    "total_extractions_applied_all_files": 4,
+    "files_touched_by_pr": 82,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/AnnotationUtils.java",
+      "src/main/java/org/apache/commons/lang3/ArrayUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharRange.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java",
+      "src/main/java/org/apache/commons/lang3/ClassLoaderUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassUtils.java",
+      "src/main/java/org/apache/commons/lang3/DoubleRange.java",
+      "src/main/java/org/apache/commons/lang3/Functions.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commons/lang3/IntegerRange.java",
+      "src/main/java/org/apache/commons/lang3/LongRange.java",
+      "src/main/java/org/apache/commons/lang3/NotImplementedException.java",
+      "src/main/java/org/apache/commons/lang3/NumberRange.java",
+      "src/main/java/org/apache/commons/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commons/lang3/Range.java",
+      "src/main/java/org/apache/commons/lang3/RuntimeEnvironment.java",
+      "src/main/java/org/apache/commons/lang3/SerializationException.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/SystemProperties.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/Validate.java",
+      "src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/Diff.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffResult.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/RecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/compare/ObjectToStringComparator.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AtomicSafeInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BasicThreadFactory.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CircuitBreakingException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConstantInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedExecutionException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedTimeoutException.java",
+      "src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java",
+      "src/main/java/org/apache/commons/lang3/exception/CloneFailedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/exception/DefaultExceptionContext.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionUtils.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedIllegalAccessException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedInterruptedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedReflectiveOperationException.java",
+      "src/main/java/org/apache/commons/lang3/function/Failable.java",
+      "src/main/java/org/apache/commons/lang3/math/Fraction.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableBoolean.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableByte.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableInt.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableLong.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableObject.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableShort.java",
+      "src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/TypeLiteral.java",
+      "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/CompositeFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/FormattableUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/StrBuilder.java",
+      "src/main/java/org/apache/commons/lang3/time/DateUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateFormat.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/StopWatch.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutablePair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutablePair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/Pair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/Triple.java",
+      "src/main/java/org/apache/commons/lang3/util/FluentBitSet.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1662\\RandomStringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1662\\RandomStringUtils_after.java"
+  },
+  {
+    "pr_number": 1328,
+    "risk_score": 0.9200889054934184,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "substitute",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "substitute",
+        "complexity": 79.0
+      }
+    ],
+    "sonarqube": {
+      "before": 110.0,
+      "after": 108.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 84 to the 15 allowed.",
+          "line": 1112
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 81 to the 15 allowed.",
+          "line": 1112
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 1,
+    "files_touched_by_pr": 259,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
+      "src/main/java/org/apache/commons/lang3/AnnotationUtils.java",
+      "src/main/java/org/apache/commons/lang3/AppendableJoiner.java",
+      "src/main/java/org/apache/commons/lang3/ArchUtils.java",
+      "src/main/java/org/apache/commons/lang3/ArrayFill.java",
+      "src/main/java/org/apache/commons/lang3/ArraySorter.java",
+      "src/main/java/org/apache/commons/lang3/ArrayUtils.java",
+      "src/main/java/org/apache/commons/lang3/BitField.java",
+      "src/main/java/org/apache/commons/lang3/BooleanUtils.java",
+      "src/main/java/org/apache/commons/lang3/CachedRandomBits.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commons/lang3/CharEncoding.java",
+      "src/main/java/org/apache/commons/lang3/CharRange.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java",
+      "src/main/java/org/apache/commons/lang3/CharSetUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharUtils.java",
+      "src/main/java/org/apache/commons/lang3/Charsets.java",
+      "src/main/java/org/apache/commons/lang3/ClassLoaderUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassPathUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassUtils.java",
+      "src/main/java/org/apache/commons/lang3/Conversion.java",
+      "src/main/java/org/apache/commons/lang3/DoubleRange.java",
+      "src/main/java/org/apache/commons/lang3/EnumUtils.java",
+      "src/main/java/org/apache/commons/lang3/Functions.java",
+      "src/main/java/org/apache/commons/lang3/IntegerRange.java",
+      "src/main/java/org/apache/commons/lang3/JavaVersion.java",
+      "src/main/java/org/apache/commons/lang3/LocaleUtils.java",
+      "src/main/java/org/apache/commons/lang3/LongRange.java",
+      "src/main/java/org/apache/commons/lang3/NotImplementedException.java",
+      "src/main/java/org/apache/commons/lang3/NumberRange.java",
+      "src/main/java/org/apache/commons/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomUtils.java",
+      "src/main/java/org/apache/commons/lang3/Range.java",
+      "src/main/java/org/apache/commons/lang3/RegExUtils.java",
+      "src/main/java/org/apache/commons/lang3/RuntimeEnvironment.java",
+      "src/main/java/org/apache/commons/lang3/SerializationException.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/Streams.java",
+      "src/main/java/org/apache/commons/lang3/StringEscapeUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/Strings.java",
+      "src/main/java/org/apache/commons/lang3/SystemProperties.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/ThreadUtils.java",
+      "src/main/java/org/apache/commons/lang3/Validate.java",
+      "src/main/java/org/apache/commons/lang3/arch/Processor.java",
+      "src/main/java/org/apache/commons/lang3/arch/package-info.java",
+      "src/main/java/org/apache/commons/lang3/builder/AbstractSupplier.java",
+      "src/main/java/org/apache/commons/lang3/builder/Builder.java",
+      "src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/Diff.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffExclude.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffResult.java",
+      "src/main/java/org/apache/commons/lang3/builder/Diffable.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsExclude.java",
+      "src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/HashCodeExclude.java",
+      "src/main/java/org/apache/commons/lang3/builder/IDKey.java",
+      "src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/RecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/Reflection.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionDiffBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringExclude.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringSummary.java",
+      "src/main/java/org/apache/commons/lang3/builder/package-info.java",
+      "src/main/java/org/apache/commons/lang3/compare/ComparableUtils.java",
+      "src/main/java/org/apache/commons/lang3/compare/ObjectToStringComparator.java",
+      "src/main/java/org/apache/commons/lang3/compare/package-info.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractFutureProxy.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AtomicInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AtomicSafeInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BasicThreadFactory.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CallableBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CircuitBreakingException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/Computable.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentUtils.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConstantInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/EventCountCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/FutureTasks.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/LazyInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/Memoizer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ThresholdCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/TimedSemaphore.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedExecutionException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedFuture.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedFutureImpl.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedTimeoutException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/locks/LockingVisitors.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/locks/package-info.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/package-info.java",
+      "src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java",
+      "src/main/java/org/apache/commons/lang3/event/EventUtils.java",
+      "src/main/java/org/apache/commons/lang3/event/package-info.java",
+      "src/main/java/org/apache/commons/lang3/exception/CloneFailedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/exception/DefaultExceptionContext.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionContext.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionUtils.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedIllegalAccessException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedInterruptedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedReflectiveOperationException.java",
+      "src/main/java/org/apache/commons/lang3/exception/package-info.java",
+      "src/main/java/org/apache/commons/lang3/function/BooleanConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/ByteConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/ByteSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/Consumers.java",
+      "src/main/java/org/apache/commons/lang3/function/Failable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBooleanSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableByteConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableByteSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableCallable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoublePredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToFloatFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjDoubleConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjIntConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjLongConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailablePredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableRunnable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableShortSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToBooleanFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToDoubleBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToIntBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToLongBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/Functions.java",
+      "src/main/java/org/apache/commons/lang3/function/IntToCharFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/MethodInvokers.java",
+      "src/main/java/org/apache/commons/lang3/function/Predicates.java",
+      "src/main/java/org/apache/commons/lang3/function/Suppliers.java",
+      "src/main/java/org/apache/commons/lang3/function/ToBooleanBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/TriConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/TriFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/package-info.java",
+      "src/main/java/org/apache/commons/lang3/math/Fraction.java",
+      "src/main/java/org/apache/commons/lang3/math/IEEE754rUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/package-info.java",
+      "src/main/java/org/apache/commons/lang3/mutable/Mutable.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableBoolean.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableByte.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableInt.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableLong.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableObject.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableShort.java",
+      "src/main/java/org/apache/commons/lang3/mutable/package-info.java",
+      "src/main/java/org/apache/commons/lang3/package-info.java",
+      "src/main/java/org/apache/commons/lang3/reflect/AccessibleObjects.java",
+      "src/main/java/org/apache/commons/lang3/reflect/ConstructorUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/InheritanceUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/TypeLiteral.java",
+      "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/Typed.java",
+      "src/main/java/org/apache/commons/lang3/reflect/package-info.java",
+      "src/main/java/org/apache/commons/lang3/stream/IntStreams.java",
+      "src/main/java/org/apache/commons/lang3/stream/LangCollectors.java",
+      "src/main/java/org/apache/commons/lang3/stream/Streams.java",
+      "src/main/java/org/apache/commons/lang3/stream/package-info.java",
+      "src/main/java/org/apache/commons/lang3/text/CompositeFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/FormatFactory.java",
+      "src/main/java/org/apache/commons/lang3/text/FormattableUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/StrBuilder.java",
+      "src/main/java/org/apache/commons/lang3/text/StrLookup.java",
+      "src/main/java/org/apache/commons/lang3/text/StrMatcher.java",
+      "src/main/java/org/apache/commons/lang3/text/StrTokenizer.java",
+      "src/main/java/org/apache/commons/lang3/text/WordUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/package-info.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/AggregateTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/CodePointTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/JavaUnicodeEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/NumericEntityEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/OctalUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeUnpairedSurrogateRemover.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/package-info.java",
+      "src/main/java/org/apache/commons/lang3/time/AbstractFormatCache.java",
+      "src/main/java/org/apache/commons/lang3/time/CalendarUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateFormatUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/DatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/DateUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DurationUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateFormat.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/FastTimeZone.java",
+      "src/main/java/org/apache/commons/lang3/time/GmtTimeZone.java",
+      "src/main/java/org/apache/commons/lang3/time/StopWatch.java",
+      "src/main/java/org/apache/commons/lang3/time/TimeZones.java",
+      "src/main/java/org/apache/commons/lang3/time/package-info.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutablePair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutablePair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/Pair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/Triple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/package-info.java",
+      "src/main/java/org/apache/commons/lang3/util/FluentBitSet.java",
+      "src/main/java/org/apache/commons/lang3/util/IterableStringTokenizer.java",
+      "src/main/java/org/apache/commons/lang3/util/package-info.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1328\\StrSubstitutor_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1328\\StrSubstitutor_after.java"
+  },
+  {
+    "pr_number": 1287,
+    "risk_score": 0.8354046662648519,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "substitute",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "substitute",
+        "complexity": 79.0
+      }
+    ],
+    "sonarqube": {
+      "before": 110.0,
+      "after": 108.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 84 to the 15 allowed.",
+          "line": 1112
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 81 to the 15 allowed.",
+          "line": 1112
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 1,
+    "files_touched_by_pr": 259,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
+      "src/main/java/org/apache/commons/lang3/AnnotationUtils.java",
+      "src/main/java/org/apache/commons/lang3/AppendableJoiner.java",
+      "src/main/java/org/apache/commons/lang3/ArchUtils.java",
+      "src/main/java/org/apache/commons/lang3/ArrayFill.java",
+      "src/main/java/org/apache/commons/lang3/ArraySorter.java",
+      "src/main/java/org/apache/commons/lang3/ArrayUtils.java",
+      "src/main/java/org/apache/commons/lang3/BitField.java",
+      "src/main/java/org/apache/commons/lang3/BooleanUtils.java",
+      "src/main/java/org/apache/commons/lang3/CachedRandomBits.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commons/lang3/CharEncoding.java",
+      "src/main/java/org/apache/commons/lang3/CharRange.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java",
+      "src/main/java/org/apache/commons/lang3/CharSetUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharUtils.java",
+      "src/main/java/org/apache/commons/lang3/Charsets.java",
+      "src/main/java/org/apache/commons/lang3/ClassLoaderUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassPathUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassUtils.java",
+      "src/main/java/org/apache/commons/lang3/Conversion.java",
+      "src/main/java/org/apache/commons/lang3/DoubleRange.java",
+      "src/main/java/org/apache/commons/lang3/EnumUtils.java",
+      "src/main/java/org/apache/commons/lang3/Functions.java",
+      "src/main/java/org/apache/commons/lang3/IntegerRange.java",
+      "src/main/java/org/apache/commons/lang3/JavaVersion.java",
+      "src/main/java/org/apache/commons/lang3/LocaleUtils.java",
+      "src/main/java/org/apache/commons/lang3/LongRange.java",
+      "src/main/java/org/apache/commons/lang3/NotImplementedException.java",
+      "src/main/java/org/apache/commons/lang3/NumberRange.java",
+      "src/main/java/org/apache/commons/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomUtils.java",
+      "src/main/java/org/apache/commons/lang3/Range.java",
+      "src/main/java/org/apache/commons/lang3/RegExUtils.java",
+      "src/main/java/org/apache/commons/lang3/RuntimeEnvironment.java",
+      "src/main/java/org/apache/commons/lang3/SerializationException.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/Streams.java",
+      "src/main/java/org/apache/commons/lang3/StringEscapeUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/Strings.java",
+      "src/main/java/org/apache/commons/lang3/SystemProperties.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/ThreadUtils.java",
+      "src/main/java/org/apache/commons/lang3/Validate.java",
+      "src/main/java/org/apache/commons/lang3/arch/Processor.java",
+      "src/main/java/org/apache/commons/lang3/arch/package-info.java",
+      "src/main/java/org/apache/commons/lang3/builder/AbstractSupplier.java",
+      "src/main/java/org/apache/commons/lang3/builder/Builder.java",
+      "src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/Diff.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffExclude.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffResult.java",
+      "src/main/java/org/apache/commons/lang3/builder/Diffable.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsExclude.java",
+      "src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/HashCodeExclude.java",
+      "src/main/java/org/apache/commons/lang3/builder/IDKey.java",
+      "src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/RecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/Reflection.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionDiffBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringExclude.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringSummary.java",
+      "src/main/java/org/apache/commons/lang3/builder/package-info.java",
+      "src/main/java/org/apache/commons/lang3/compare/ComparableUtils.java",
+      "src/main/java/org/apache/commons/lang3/compare/ObjectToStringComparator.java",
+      "src/main/java/org/apache/commons/lang3/compare/package-info.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractFutureProxy.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AtomicInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AtomicSafeInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BasicThreadFactory.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CallableBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CircuitBreakingException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/Computable.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentUtils.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConstantInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/EventCountCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/FutureTasks.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/LazyInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/Memoizer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ThresholdCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/TimedSemaphore.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedExecutionException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedFuture.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedFutureImpl.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedTimeoutException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/locks/LockingVisitors.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/locks/package-info.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/package-info.java",
+      "src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java",
+      "src/main/java/org/apache/commons/lang3/event/EventUtils.java",
+      "src/main/java/org/apache/commons/lang3/event/package-info.java",
+      "src/main/java/org/apache/commons/lang3/exception/CloneFailedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/exception/DefaultExceptionContext.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionContext.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionUtils.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedIllegalAccessException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedInterruptedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/UncheckedReflectiveOperationException.java",
+      "src/main/java/org/apache/commons/lang3/exception/package-info.java",
+      "src/main/java/org/apache/commons/lang3/function/BooleanConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/ByteConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/ByteSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/Consumers.java",
+      "src/main/java/org/apache/commons/lang3/function/Failable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBooleanSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableByteConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableByteSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableCallable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoublePredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToFloatFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjDoubleConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjIntConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjLongConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailablePredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableRunnable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableShortSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToBooleanFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToDoubleBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToIntBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToLongBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/Functions.java",
+      "src/main/java/org/apache/commons/lang3/function/IntToCharFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/MethodInvokers.java",
+      "src/main/java/org/apache/commons/lang3/function/Predicates.java",
+      "src/main/java/org/apache/commons/lang3/function/Suppliers.java",
+      "src/main/java/org/apache/commons/lang3/function/ToBooleanBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/TriConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/TriFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/package-info.java",
+      "src/main/java/org/apache/commons/lang3/math/Fraction.java",
+      "src/main/java/org/apache/commons/lang3/math/IEEE754rUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/package-info.java",
+      "src/main/java/org/apache/commons/lang3/mutable/Mutable.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableBoolean.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableByte.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableInt.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableLong.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableObject.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableShort.java",
+      "src/main/java/org/apache/commons/lang3/mutable/package-info.java",
+      "src/main/java/org/apache/commons/lang3/package-info.java",
+      "src/main/java/org/apache/commons/lang3/reflect/AccessibleObjects.java",
+      "src/main/java/org/apache/commons/lang3/reflect/ConstructorUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/InheritanceUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/TypeLiteral.java",
+      "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/Typed.java",
+      "src/main/java/org/apache/commons/lang3/reflect/package-info.java",
+      "src/main/java/org/apache/commons/lang3/stream/IntStreams.java",
+      "src/main/java/org/apache/commons/lang3/stream/LangCollectors.java",
+      "src/main/java/org/apache/commons/lang3/stream/Streams.java",
+      "src/main/java/org/apache/commons/lang3/stream/package-info.java",
+      "src/main/java/org/apache/commons/lang3/text/CompositeFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/FormatFactory.java",
+      "src/main/java/org/apache/commons/lang3/text/FormattableUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/StrBuilder.java",
+      "src/main/java/org/apache/commons/lang3/text/StrLookup.java",
+      "src/main/java/org/apache/commons/lang3/text/StrMatcher.java",
+      "src/main/java/org/apache/commons/lang3/text/StrTokenizer.java",
+      "src/main/java/org/apache/commons/lang3/text/WordUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/package-info.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/AggregateTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/CodePointTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/JavaUnicodeEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/LookupTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/NumericEntityEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/OctalUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeUnpairedSurrogateRemover.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/package-info.java",
+      "src/main/java/org/apache/commons/lang3/time/AbstractFormatCache.java",
+      "src/main/java/org/apache/commons/lang3/time/CalendarUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateFormatUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/DatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/DateUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DurationUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateFormat.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/FastTimeZone.java",
+      "src/main/java/org/apache/commons/lang3/time/GmtTimeZone.java",
+      "src/main/java/org/apache/commons/lang3/time/StopWatch.java",
+      "src/main/java/org/apache/commons/lang3/time/TimeZones.java",
+      "src/main/java/org/apache/commons/lang3/time/package-info.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutablePair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutablePair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/Pair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/Triple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/package-info.java",
+      "src/main/java/org/apache/commons/lang3/util/FluentBitSet.java",
+      "src/main/java/org/apache/commons/lang3/util/IterableStringTokenizer.java",
+      "src/main/java/org/apache/commons/lang3/util/package-info.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1287\\StrSubstitutor_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1287\\StrSubstitutor_after.java"
+  },
+  {
+    "pr_number": 1599,
+    "risk_score": 0.16090911378463107,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "substitute",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "substitute",
+        "complexity": 79.0
+      }
+    ],
+    "sonarqube": {
+      "before": 110.0,
+      "after": 108.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 84 to the 15 allowed.",
+          "line": 1114
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 81 to the 15 allowed.",
+          "line": 1114
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 1,
+    "files_touched_by_pr": 208,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
+      "src/main/java/org/apache/commons/lang3/AnnotationUtils.java",
+      "src/main/java/org/apache/commons/lang3/AppendableJoiner.java",
+      "src/main/java/org/apache/commons/lang3/ArchUtils.java",
+      "src/main/java/org/apache/commons/lang3/ArrayFill.java",
+      "src/main/java/org/apache/commons/lang3/ArraySorter.java",
+      "src/main/java/org/apache/commons/lang3/ArrayUtils.java",
+      "src/main/java/org/apache/commons/lang3/BitField.java",
+      "src/main/java/org/apache/commons/lang3/BooleanUtils.java",
+      "src/main/java/org/apache/commons/lang3/CachedRandomBits.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commons/lang3/CharRange.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java",
+      "src/main/java/org/apache/commons/lang3/CharSetUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharUtils.java",
+      "src/main/java/org/apache/commons/lang3/Charsets.java",
+      "src/main/java/org/apache/commons/lang3/ClassLoaderUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassPathUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassUtils.java",
+      "src/main/java/org/apache/commons/lang3/Conversion.java",
+      "src/main/java/org/apache/commons/lang3/DoubleRange.java",
+      "src/main/java/org/apache/commons/lang3/EnumUtils.java",
+      "src/main/java/org/apache/commons/lang3/Functions.java",
+      "src/main/java/org/apache/commons/lang3/IntegerRange.java",
+      "src/main/java/org/apache/commons/lang3/JavaVersion.java",
+      "src/main/java/org/apache/commons/lang3/LocaleUtils.java",
+      "src/main/java/org/apache/commons/lang3/LongRange.java",
+      "src/main/java/org/apache/commons/lang3/NumberRange.java",
+      "src/main/java/org/apache/commons/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomUtils.java",
+      "src/main/java/org/apache/commons/lang3/Range.java",
+      "src/main/java/org/apache/commons/lang3/RegExUtils.java",
+      "src/main/java/org/apache/commons/lang3/RuntimeEnvironment.java",
+      "src/main/java/org/apache/commons/lang3/SerializationException.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/Streams.java",
+      "src/main/java/org/apache/commons/lang3/StringEscapeUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/Strings.java",
+      "src/main/java/org/apache/commons/lang3/SystemProperties.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/ThreadUtils.java",
+      "src/main/java/org/apache/commons/lang3/Validate.java",
+      "src/main/java/org/apache/commons/lang3/arch/Processor.java",
+      "src/main/java/org/apache/commons/lang3/builder/AbstractSupplier.java",
+      "src/main/java/org/apache/commons/lang3/builder/Builder.java",
+      "src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/Diff.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffResult.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/IDKey.java",
+      "src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/RecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/Reflection.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionDiffBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/compare/ComparableUtils.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractFutureProxy.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AtomicInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AtomicSafeInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BasicThreadFactory.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CallableBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConstantInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/FutureTasks.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/LazyInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ThresholdCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/TimedSemaphore.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedFuture.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/UncheckedFutureImpl.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/locks/LockingVisitors.java",
+      "src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java",
+      "src/main/java/org/apache/commons/lang3/event/EventUtils.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionUtils.java",
+      "src/main/java/org/apache/commons/lang3/function/BooleanConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/ByteConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/ByteSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/Consumers.java",
+      "src/main/java/org/apache/commons/lang3/function/Failable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBiPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableBooleanSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableByteConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableByteSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableCallable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoublePredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableDoubleUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToFloatFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableIntUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongBinaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongPredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableLongUnaryOperator.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjDoubleConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjIntConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableObjLongConsumer.java",
+      "src/main/java/org/apache/commons/lang3/function/FailablePredicate.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableRunnable.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableShortSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableSupplier.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToBooleanFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToDoubleBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToDoubleFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToIntBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToIntFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToLongBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/FailableToLongFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/Functions.java",
+      "src/main/java/org/apache/commons/lang3/function/IntToCharFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/MethodInvokers.java",
+      "src/main/java/org/apache/commons/lang3/function/Predicates.java",
+      "src/main/java/org/apache/commons/lang3/function/Suppliers.java",
+      "src/main/java/org/apache/commons/lang3/function/ToBooleanBiFunction.java",
+      "src/main/java/org/apache/commons/lang3/function/TriConsumer.java",
+      "src/main/java/org/apache/commons/lang3/math/Fraction.java",
+      "src/main/java/org/apache/commons/lang3/math/IEEE754rUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
+      "src/main/java/org/apache/commons/lang3/mutable/Mutable.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableBoolean.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableByte.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableInt.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableLong.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableObject.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableShort.java",
+      "src/main/java/org/apache/commons/lang3/reflect/AccessibleObjects.java",
+      "src/main/java/org/apache/commons/lang3/reflect/ConstructorUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/Typed.java",
+      "src/main/java/org/apache/commons/lang3/stream/IntStreams.java",
+      "src/main/java/org/apache/commons/lang3/stream/LangCollectors.java",
+      "src/main/java/org/apache/commons/lang3/stream/Streams.java",
+      "src/main/java/org/apache/commons/lang3/text/CompositeFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/FormatFactory.java",
+      "src/main/java/org/apache/commons/lang3/text/FormattableUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/StrBuilder.java",
+      "src/main/java/org/apache/commons/lang3/text/StrLookup.java",
+      "src/main/java/org/apache/commons/lang3/text/StrMatcher.java",
+      "src/main/java/org/apache/commons/lang3/text/StrTokenizer.java",
+      "src/main/java/org/apache/commons/lang3/text/WordUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/CharSequenceTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/CodePointTranslator.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/JavaUnicodeEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/NumericEntityEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/OctalUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeUnpairedSurrogateRemover.java",
+      "src/main/java/org/apache/commons/lang3/time/AbstractFormatCache.java",
+      "src/main/java/org/apache/commons/lang3/time/CalendarUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateFormatUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/DatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/DateUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DurationUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateFormat.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/FastTimeZone.java",
+      "src/main/java/org/apache/commons/lang3/time/StopWatch.java",
+      "src/main/java/org/apache/commons/lang3/time/TimeZones.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutablePair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutablePair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/Pair.java",
+      "src/main/java/org/apache/commons/lang3/tuple/Triple.java",
+      "src/main/java/org/apache/commons/lang3/util/FluentBitSet.java",
+      "src/main/java/org/apache/commons/lang3/util/IterableStringTokenizer.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1599\\StrSubstitutor_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1599\\StrSubstitutor_after.java"
+  },
+  {
+    "pr_number": 1571,
+    "risk_score": 0.15675991584857304,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "verified",
+    "method_name": "unrollVariables",
+    "extractions_applied": 4,
+    "still_over_threshold_after": [
+      {
+        "method": "isAssignable",
+        "complexity": 28.0
+      },
+      {
+        "method": "isAssignable",
+        "complexity": 19.0
+      },
+      {
+        "method": "isAssignable",
+        "complexity": 16.0
+      },
+      {
+        "method": "getTypeArguments",
+        "complexity": 15.0
+      },
+      {
+        "method": "unrollVariables",
+        "complexity": 14.0
+      }
+    ],
+    "sonarqube": {
+      "before": 313.0,
+      "after": 308.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+          "line": 884
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 935
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 990
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.",
+          "line": 1186
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 1660
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+          "line": 889
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 940
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 995
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.",
+          "line": 1191
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 4,
+    "files_touched_by_pr": 95,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
+      "src/main/java/org/apache/commons/lang3/AnnotationUtils.java",
+      "src/main/java/org/apache/commons/lang3/ArraySorter.java",
+      "src/main/java/org/apache/commons/lang3/ArrayUtils.java",
+      "src/main/java/org/apache/commons/lang3/BitField.java",
+      "src/main/java/org/apache/commons/lang3/BooleanUtils.java",
+      "src/main/java/org/apache/commons/lang3/CachedRandomBits.java",
+      "src/main/java/org/apache/commons/lang3/CharRange.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commons/lang3/CharSetUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassUtils.java",
+      "src/main/java/org/apache/commons/lang3/DoubleRange.java",
+      "src/main/java/org/apache/commons/lang3/Functions.java",
+      "src/main/java/org/apache/commons/lang3/IntegerRange.java",
+      "src/main/java/org/apache/commons/lang3/JavaVersion.java",
+      "src/main/java/org/apache/commons/lang3/LongRange.java",
+      "src/main/java/org/apache/commons/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomUtils.java",
+      "src/main/java/org/apache/commons/lang3/Range.java",
+      "src/main/java/org/apache/commons/lang3/RegExUtils.java",
+      "src/main/java/org/apache/commons/lang3/SerializationException.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/Streams.java",
+      "src/main/java/org/apache/commons/lang3/StringEscapeUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/ThreadUtils.java",
+      "src/main/java/org/apache/commons/lang3/Validate.java",
+      "src/main/java/org/apache/commons/lang3/arch/package-info.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffResult.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionDiffBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CallableBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CircuitBreakingException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentUtils.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/EventCountCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ThresholdCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionUtils.java",
+      "src/main/java/org/apache/commons/lang3/function/Failable.java",
+      "src/main/java/org/apache/commons/lang3/math/Fraction.java",
+      "src/main/java/org/apache/commons/lang3/math/IEEE754rUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableBoolean.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableByte.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableInt.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableLong.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableObject.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableShort.java",
+      "src/main/java/org/apache/commons/lang3/reflect/AccessibleObjects.java",
+      "src/main/java/org/apache/commons/lang3/reflect/ConstructorUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java",
+      "src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/CompositeFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/StrBuilder.java",
+      "src/main/java/org/apache/commons/lang3/text/StrLookup.java",
+      "src/main/java/org/apache/commons/lang3/text/StrMatcher.java",
+      "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
+      "src/main/java/org/apache/commons/lang3/text/StrTokenizer.java",
+      "src/main/java/org/apache/commons/lang3/text/WordUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/NumericEntityEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/OctalUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeEscaper.java",
+      "src/main/java/org/apache/commons/lang3/time/CalendarUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/DatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/DateUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateFormat.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/FastTimeZone.java",
+      "src/main/java/org/apache/commons/lang3/time/StopWatch.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/util/FluentBitSet.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1571\\TypeUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1571\\TypeUtils_after.java"
+  },
+  {
+    "pr_number": 1555,
+    "risk_score": 0.08286166774729888,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "verified",
+    "method_name": "unrollVariables",
+    "extractions_applied": 4,
+    "still_over_threshold_after": [
+      {
+        "method": "isAssignable",
+        "complexity": 28.0
+      },
+      {
+        "method": "isAssignable",
+        "complexity": 19.0
+      },
+      {
+        "method": "isAssignable",
+        "complexity": 16.0
+      },
+      {
+        "method": "getTypeArguments",
+        "complexity": 15.0
+      },
+      {
+        "method": "unrollVariables",
+        "complexity": 14.0
+      }
+    ],
+    "sonarqube": {
+      "before": 313.0,
+      "after": 308.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+          "line": 884
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 935
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 990
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.",
+          "line": 1186
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 1660
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+          "line": 889
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 940
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 995
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.",
+          "line": 1191
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 4,
+    "files_touched_by_pr": 86,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
+      "src/main/java/org/apache/commons/lang3/AnnotationUtils.java",
+      "src/main/java/org/apache/commons/lang3/ArraySorter.java",
+      "src/main/java/org/apache/commons/lang3/ArrayUtils.java",
+      "src/main/java/org/apache/commons/lang3/BitField.java",
+      "src/main/java/org/apache/commons/lang3/BooleanUtils.java",
+      "src/main/java/org/apache/commons/lang3/CachedRandomBits.java",
+      "src/main/java/org/apache/commons/lang3/CharRange.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commons/lang3/CharSetUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassUtils.java",
+      "src/main/java/org/apache/commons/lang3/DoubleRange.java",
+      "src/main/java/org/apache/commons/lang3/Functions.java",
+      "src/main/java/org/apache/commons/lang3/IntegerRange.java",
+      "src/main/java/org/apache/commons/lang3/JavaVersion.java",
+      "src/main/java/org/apache/commons/lang3/LongRange.java",
+      "src/main/java/org/apache/commons/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomUtils.java",
+      "src/main/java/org/apache/commons/lang3/Range.java",
+      "src/main/java/org/apache/commons/lang3/SerializationException.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/Streams.java",
+      "src/main/java/org/apache/commons/lang3/StringEscapeUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/ThreadUtils.java",
+      "src/main/java/org/apache/commons/lang3/Validate.java",
+      "src/main/java/org/apache/commons/lang3/arch/package-info.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffResult.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/AbstractCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/BackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CallableBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/CircuitBreakingException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentUtils.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/EventCountCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ThresholdCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ContextedRuntimeException.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionUtils.java",
+      "src/main/java/org/apache/commons/lang3/function/Failable.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableBoolean.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableByte.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableInt.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableLong.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableObject.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableShort.java",
+      "src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/CompositeFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/StrBuilder.java",
+      "src/main/java/org/apache/commons/lang3/text/StrLookup.java",
+      "src/main/java/org/apache/commons/lang3/text/StrMatcher.java",
+      "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
+      "src/main/java/org/apache/commons/lang3/text/StrTokenizer.java",
+      "src/main/java/org/apache/commons/lang3/text/WordUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/NumericEntityEscaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/OctalUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/UnicodeEscaper.java",
+      "src/main/java/org/apache/commons/lang3/time/CalendarUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/DatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/DateUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateFormat.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/FastTimeZone.java",
+      "src/main/java/org/apache/commons/lang3/tuple/ImmutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/tuple/MutableTriple.java",
+      "src/main/java/org/apache/commons/lang3/util/FluentBitSet.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1555\\TypeUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1555\\TypeUtils_after.java"
+  },
+  {
+    "pr_number": 1551,
+    "risk_score": 0.15399929255247116,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "verified",
+    "method_name": "unrollVariables",
+    "extractions_applied": 4,
+    "still_over_threshold_after": [
+      {
+        "method": "isAssignable",
+        "complexity": 28.0
+      },
+      {
+        "method": "isAssignable",
+        "complexity": 19.0
+      },
+      {
+        "method": "isAssignable",
+        "complexity": 16.0
+      },
+      {
+        "method": "getTypeArguments",
+        "complexity": 15.0
+      },
+      {
+        "method": "unrollVariables",
+        "complexity": 14.0
+      }
+    ],
+    "sonarqube": {
+      "before": 313.0,
+      "after": 308.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+          "line": 884
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 935
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 990
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.",
+          "line": 1186
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 1660
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+          "line": 889
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 940
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 995
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.",
+          "line": 1191
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 4,
+    "files_touched_by_pr": 65,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
+      "demo-app/src/main/java/com/demo/web/DemoApplication.java",
+      "demo-app/src/main/java/com/demo/web/StringUtilsController.java",
+      "src/main/java/org/apache/commons/lang3/AnnotationUtils.java",
+      "src/main/java/org/apache/commons/lang3/ArraySorter.java",
+      "src/main/java/org/apache/commons/lang3/ArrayUtils.java",
+      "src/main/java/org/apache/commons/lang3/BooleanUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharRange.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commons/lang3/CharSetUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassUtils.java",
+      "src/main/java/org/apache/commons/lang3/DoubleRange.java",
+      "src/main/java/org/apache/commons/lang3/Functions.java",
+      "src/main/java/org/apache/commons/lang3/IntegerRange.java",
+      "src/main/java/org/apache/commons/lang3/JavaVersion.java",
+      "src/main/java/org/apache/commons/lang3/LongRange.java",
+      "src/main/java/org/apache/commons/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/RandomUtils.java",
+      "src/main/java/org/apache/commons/lang3/Range.java",
+      "src/main/java/org/apache/commons/lang3/SerializationException.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/Streams.java",
+      "src/main/java/org/apache/commons/lang3/StringEscapeUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/ThreadUtils.java",
+      "src/main/java/org/apache/commons/lang3/Validate.java",
+      "src/main/java/org/apache/commons/lang3/arch/package-info.java",
+      "src/main/java/org/apache/commons/lang3/builder/DiffResult.java",
+      "src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java",
+      "src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ConcurrentUtils.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/EventCountCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/concurrent/ThresholdCircuitBreaker.java",
+      "src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java",
+      "src/main/java/org/apache/commons/lang3/exception/ExceptionUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableBoolean.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableByte.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableInt.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableLong.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableObject.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableShort.java",
+      "src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/CompositeFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java",
+      "src/main/java/org/apache/commons/lang3/text/StrBuilder.java",
+      "src/main/java/org/apache/commons/lang3/text/StrLookup.java",
+      "src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java",
+      "src/main/java/org/apache/commons/lang3/text/StrTokenizer.java",
+      "src/main/java/org/apache/commons/lang3/text/WordUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java",
+      "src/main/java/org/apache/commons/lang3/text/translate/OctalUnescaper.java",
+      "src/main/java/org/apache/commons/lang3/time/CalendarUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/DateParser.java",
+      "src/main/java/org/apache/commons/lang3/time/DateUtils.java",
+      "src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java",
+      "src/main/java/org/apache/commons/lang3/time/FastTimeZone.java",
+      "src/main/java/org/apache/commons/lang3/util/FluentBitSet.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1551\\TypeUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1551\\TypeUtils_after.java"
+  },
+  {
+    "pr_number": 1742,
+    "risk_score": 0.45710598111152645,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "(Extended from the naive line 702 to 703 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying. Multiple variables (['endOfWrapAt', 'offset', 'spaceToWrapAt']) are modified inside the extracted block AND used elsewhere in the method \u2014 a single return value can't carry all of them back. This suggestion is NOT safe to auto-apply; restructure manually (e.g. return a small result object, or keep this logic un-extracted)."
+  },
+  {
+    "pr_number": 1512,
+    "risk_score": 0.19546396553516387,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 316 to 317 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  },
+  {
+    "pr_number": 1388,
+    "risk_score": 0.8800478303432464,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "substitute",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "substitute",
+        "complexity": 79.0
+      }
+    ],
+    "sonarqube": {
+      "before": 110.0,
+      "after": 108.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 84 to the 15 allowed.",
+          "line": 1112
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 81 to the 15 allowed.",
+          "line": 1112
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 1,
+    "files_touched_by_pr": 254,
+    "files_analyzed": [
+      "src/main/java/org/apache/commonsl/lang3/text/StrSubstitutor.java",
+      "src/main/java/org/apache/commonsl/lang3/AnnotationUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/AppendableJoiner.java",
+      "src/main/java/org/apache/commonsl/lang3/ArchUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/ArrayFill.java",
+      "src/main/java/org/apache/commonsl/lang3/ArraySorter.java",
+      "src/main/java/org/apache/commonsl/lang3/ArrayUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/BitField.java",
+      "src/main/java/org/apache/commonsl/lang3/BooleanUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/CachedRandomBits.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commonsl/lang3/CharEncoding.java",
+      "src/main/java/org/apache/commonsl/lang3/CharRange.java",
+      "src/main/java/org/apache/commonsl/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/CharSet.java",
+      "src/main/java/org/apache/commonsl/lang3/CharSetUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/CharUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/Charsets.java",
+      "src/main/java/org/apache/commonsl/lang3/ClassLoaderUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/ClassPathUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/ClassUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/Conversion.java",
+      "src/main/java/org/apache/commonsl/lang3/DoubleRange.java",
+      "src/main/java/org/apache/commonsl/lang3/EnumUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/Functions.java",
+      "src/main/java/org/apache/commonsl/lang3/IntegerRange.java",
+      "src/main/java/org/apache/commonsl/lang3/JavaVersion.java",
+      "src/main/java/org/apache/commonsl/lang3/LocaleUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/LongRange.java",
+      "src/main/java/org/apache/commonsl/lang3/NotImplementedException.java",
+      "src/main/java/org/apache/commonsl/lang3/NumberRange.java",
+      "src/main/java/org/apache/commonsl/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/RandomUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/Range.java",
+      "src/main/java/org/apache/commonsl/lang3/RegExUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/RuntimeEnvironment.java",
+      "src/main/java/org/apache/commonsl/lang3/SerializationException.java",
+      "src/main/java/org/apache/commonsl/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/Streams.java",
+      "src/main/java/org/apache/commonsl/lang3/StringEscapeUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/StringUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/Strings.java",
+      "src/main/java/org/apache/commonsl/lang3/SystemProperties.java",
+      "src/main/java/org/apache/commonsl/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/ThreadUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/Validate.java",
+      "src/main/java/org/apache/commonsl/lang3/arch/Processor.java",
+      "src/main/java/org/apache/commonsl/lang3/arch/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/AbstractSupplier.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/Builder.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/CompareToBuilder.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/Diff.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/DiffBuilder.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/DiffExclude.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/DiffResult.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/Diffable.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/EqualsBuilder.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/EqualsExclude.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/HashCodeBuilder.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/HashCodeExclude.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/IDKey.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/MultilineRecursiveToStringStyle.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/RecursiveToStringStyle.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/Reflection.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/ReflectionDiffBuilder.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/ReflectionToStringBuilder.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/StandardToStringStyle.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/ToStringBuilder.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/ToStringExclude.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/ToStringStyle.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/ToStringSummary.java",
+      "src/main/java/org/apache/commonsl/lang3/builder/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/compare/ComparableUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/compare/ObjectToStringComparator.java",
+      "src/main/java/org/apache/commonsl/lang3/compare/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/AbstractCircuitBreaker.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/AbstractConcurrentInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/AbstractFutureProxy.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/AtomicInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/AtomicSafeInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/BackgroundInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/BasicThreadFactory.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/CallableBackgroundInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/CircuitBreaker.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/CircuitBreakingException.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/Computable.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/ConcurrentException.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/ConcurrentInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/ConcurrentRuntimeException.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/ConcurrentUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/ConstantInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/EventCountCircuitBreaker.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/FutureTasks.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/LazyInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/Memoizer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/MultiBackgroundInitializer.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/ThresholdCircuitBreaker.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/TimedSemaphore.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/UncheckedExecutionException.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/UncheckedFuture.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/UncheckedFutureImpl.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/UncheckedTimeoutException.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/locks/LockingVisitors.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/locks/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/concurrent/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/event/EventListenerSupport.java",
+      "src/main/java/org/apache/commonsl/lang3/event/EventUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/event/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/CloneFailedException.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/ContextedException.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/ContextedRuntimeException.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/DefaultExceptionContext.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/ExceptionContext.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/ExceptionUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/UncheckedException.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/UncheckedIllegalAccessException.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/UncheckedInterruptedException.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/UncheckedReflectiveOperationException.java",
+      "src/main/java/org/apache/commonsl/lang3/exception/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/function/BooleanConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/Consumers.java",
+      "src/main/java/org/apache/commonsl/lang3/function/Failable.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableBiConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableBiFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableBiPredicate.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableBooleanSupplier.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableCallable.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableDoubleBinaryOperator.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableDoubleConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableDoubleFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableDoublePredicate.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableDoubleSupplier.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableDoubleToIntFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableDoubleToLongFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableDoubleUnaryOperator.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntBinaryOperator.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntPredicate.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntSupplier.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntToDoubleFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntToFloatFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntToLongFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableIntUnaryOperator.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableLongBinaryOperator.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableLongConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableLongFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableLongPredicate.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableLongSupplier.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableLongToDoubleFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableLongToIntFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableLongUnaryOperator.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableObjDoubleConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableObjIntConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableObjLongConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailablePredicate.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableRunnable.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableShortSupplier.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableSupplier.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableToBooleanFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableToDoubleBiFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableToDoubleFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableToIntBiFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableToIntFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableToLongBiFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/FailableToLongFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/Functions.java",
+      "src/main/java/org/apache/commonsl/lang3/function/IntToCharFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/MethodInvokers.java",
+      "src/main/java/org/apache/commonsl/lang3/function/Predicates.java",
+      "src/main/java/org/apache/commonsl/lang3/function/Suppliers.java",
+      "src/main/java/org/apache/commonsl/lang3/function/ToBooleanBiFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/TriConsumer.java",
+      "src/main/java/org/apache/commonsl/lang3/function/TriFunction.java",
+      "src/main/java/org/apache/commonsl/lang3/function/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/math/Fraction.java",
+      "src/main/java/org/apache/commonsl/lang3/math/IEEE754rUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/math/NumberUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/math/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/Mutable.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/MutableBoolean.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/MutableByte.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/MutableInt.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/MutableLong.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/MutableObject.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/MutableShort.java",
+      "src/main/java/org/apache/commonsl/lang3/mutable/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/ConstructorUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/FieldUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/InheritanceUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/MemberUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/MethodUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/TypeLiteral.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/TypeUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/Typed.java",
+      "src/main/java/org/apache/commonsl/lang3/reflect/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/stream/IntStreams.java",
+      "src/main/java/org/apache/commonsl/lang3/stream/LangCollectors.java",
+      "src/main/java/org/apache/commonsl/lang3/stream/Streams.java",
+      "src/main/java/org/apache/commonsl/lang3/stream/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/text/CompositeFormat.java",
+      "src/main/java/org/apache/commonsl/lang3/text/ExtendedMessageFormat.java",
+      "src/main/java/org/apache/commonsl/lang3/text/FormatFactory.java",
+      "src/main/java/org/apache/commonsl/lang3/text/FormattableUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/text/StrBuilder.java",
+      "src/main/java/org/apache/commonsl/lang3/text/StrLookup.java",
+      "src/main/java/org/apache/commonsl/lang3/text/StrMatcher.java",
+      "src/main/java/org/apache/commonsl/lang3/text/StrTokenizer.java",
+      "src/main/java/org/apache/commonsl/lang3/text/WordUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/text/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/AggregateTranslator.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/CharSequenceTranslator.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/CodePointTranslator.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/EntityArrays.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/JavaUnicodeEscaper.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/LookupTranslator.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/NumericEntityEscaper.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/NumericEntityUnescaper.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/OctalUnescaper.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/UnicodeEscaper.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/UnicodeUnescaper.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/UnicodeUnpairedSurrogateRemover.java",
+      "src/main/java/org/apache/commonsl/lang3/text/translate/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/time/AbstractFormatCache.java",
+      "src/main/java/org/apache/commonsl/lang3/time/CalendarUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/time/DateFormatUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/time/DateParser.java",
+      "src/main/java/org/apache/commonsl/lang3/time/DatePrinter.java",
+      "src/main/java/org/apache/commonsl/lang3/time/DateUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/time/DurationFormatUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/time/DurationUtils.java",
+      "src/main/java/org/apache/commonsl/lang3/time/FastDateFormat.java",
+      "src/main/java/org/apache/commonsl/lang3/time/FastDateParser.java",
+      "src/main/java/org/apache/commonsl/lang3/time/FastDatePrinter.java",
+      "src/main/java/org/apache/commonsl/lang3/time/FastTimeZone.java",
+      "src/main/java/org/apache/commonsl/lang3/time/GmtTimeZone.java",
+      "src/main/java/org/apache/commonsl/lang3/time/StopWatch.java",
+      "src/main/java/org/apache/commonsl/lang3/time/TimeZones.java",
+      "src/main/java/org/apache/commonsl/lang3/time/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/tuple/ImmutablePair.java",
+      "src/main/java/org/apache/commonsl/lang3/tuple/ImmutableTriple.java",
+      "src/main/java/org/apache/commonsl/lang3/tuple/MutablePair.java",
+      "src/main/java/org/apache/commonsl/lang3/tuple/MutableTriple.java",
+      "src/main/java/org/apache/commonsl/lang3/tuple/Pair.java",
+      "src/main/java/org/apache/commonsl/lang3/tuple/Triple.java",
+      "src/main/java/org/apache/commonsl/lang3/tuple/package-info.java",
+      "src/main/java/org/apache/commonsl/lang3/util/FluentBitSet.java",
+      "src/main/java/org/apache/commonsl/lang3/util/IterableStringTokenizer.java",
+      "src/main/java/org/apache/commonsl/lang3/util/package-info.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1388\\StrSubstitutor_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1388\\StrSubstitutor_after.java"
+  },
+  {
+    "pr_number": 1537,
+    "risk_score": 0.8019646612803142,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "random",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "random",
+        "complexity": 39.0
+      },
+      {
+        "method": "randomExtracted",
+        "complexity": 19.0
+      }
+    ],
+    "sonarqube": {
+      "before": 65.0,
+      "after": 65.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 63 to the 15 allowed.",
+          "line": 255
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 40 to the 15 allowed.",
+          "line": 255
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.",
+          "line": 366
+        }
+      ]
+    },
+    "additional_files_refactored": [
+      {
+        "file": "src/main/java/org/apache/commons/lang3/CharSetUtils.java",
+        "extractions_applied": 1,
+        "still_over_threshold_after": [
+          {
+            "method": "squeezeExtracted",
+            "complexity": 15.0
+          }
+        ],
+        "sonarqube": {
+          "before": 35.0,
+          "after": 35.0,
+          "before_issues": [
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+              "line": 201
+            }
+          ],
+          "after_issues": []
+        }
+      },
+      {
+        "file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
+        "extractions_applied": 2,
+        "still_over_threshold_after": [
+          {
+            "method": "splitWorker",
+            "complexity": 53.0
+          },
+          {
+            "method": "replaceEach",
+            "complexity": 35.0
+          },
+          {
+            "method": "splitByWholeSeparatorWorker",
+            "complexity": 27.0
+          },
+          {
+            "method": "matches",
+            "complexity": 21.0
+          },
+          {
+            "method": "getLevenshteinDistance",
+            "complexity": 16.0
+          },
+          {
+            "method": "containsAny",
+            "complexity": 14.0
+          },
+          {
+            "method": "containsNone",
+            "complexity": 14.0
+          },
+          {
+            "method": "getFuzzyDistance",
+            "complexity": 14.0
+          }
+        ],
+        "sonarqube": {
+          "before": 763.0,
+          "after": 761.0,
+          "before_issues": [
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.",
+              "line": 2383
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+              "line": 2945
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+              "line": 5251
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.",
+              "line": 6400
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+              "line": 7354
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 53 to the 15 allowed.",
+              "line": 7606
+            }
+          ],
+          "after_issues": [
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.",
+              "line": 2383
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+              "line": 5261
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.",
+              "line": 6410
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+              "line": 7364
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 53 to the 15 allowed.",
+              "line": 7616
+            }
+          ]
+        }
+      }
+    ],
+    "total_extractions_applied_all_files": 4,
+    "files_touched_by_pr": 9,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java",
+      "src/main/java/org/apache/commons/lang3/CharSetUtils.java",
+      "src/main/java/org/apache/commons/lang3/JavaVersion.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1537\\RandomStringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1537\\RandomStringUtils_after.java"
+  },
+  {
+    "pr_number": 1523,
+    "risk_score": 0.8695302065213522,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "random",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "random",
+        "complexity": 35.0
+      },
+      {
+        "method": "randomExtracted",
+        "complexity": 19.0
+      }
+    ],
+    "sonarqube": {
+      "before": 60.0,
+      "after": 60.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 58 to the 15 allowed.",
+          "line": 255
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.",
+          "line": 255
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.",
+          "line": 364
+        }
+      ]
+    },
+    "additional_files_refactored": [
+      {
+        "file": "src/main/java/org/apache/commons/lang3/StringUtils.java",
+        "extractions_applied": 2,
+        "still_over_threshold_after": [
+          {
+            "method": "splitWorker",
+            "complexity": 53.0
+          },
+          {
+            "method": "replaceEach",
+            "complexity": 35.0
+          },
+          {
+            "method": "splitByWholeSeparatorWorker",
+            "complexity": 27.0
+          },
+          {
+            "method": "matches",
+            "complexity": 21.0
+          },
+          {
+            "method": "getLevenshteinDistance",
+            "complexity": 16.0
+          },
+          {
+            "method": "containsAny",
+            "complexity": 14.0
+          },
+          {
+            "method": "containsNone",
+            "complexity": 14.0
+          },
+          {
+            "method": "getFuzzyDistance",
+            "complexity": 14.0
+          }
+        ],
+        "sonarqube": {
+          "before": 763.0,
+          "after": 761.0,
+          "before_issues": [
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.",
+              "line": 2383
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+              "line": 2945
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+              "line": 5251
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.",
+              "line": 6400
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+              "line": 7354
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 53 to the 15 allowed.",
+              "line": 7606
+            }
+          ],
+          "after_issues": [
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.",
+              "line": 2383
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+              "line": 5261
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.",
+              "line": 6410
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+              "line": 7364
+            },
+            {
+              "message": "Refactor this method to reduce its Cognitive Complexity from 53 to the 15 allowed.",
+              "line": 7616
+            }
+          ]
+        }
+      }
+    ],
+    "total_extractions_applied_all_files": 3,
+    "files_touched_by_pr": 11,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSet.java",
+      "src/main/java/org/apache/commons/lang3/ObjectUtils.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableDouble.java",
+      "src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java",
+      "src/main/java/org/apache/commons/lang3/reflect/ConstructorUtils.java"
+    ],
+    "files_skipped_due_to_cap": [
+      "src/main/java/org/apache/commons/lang3/util/FluentBitSet.java"
+    ],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1523\\RandomStringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1523\\RandomStringUtils_after.java"
+  },
+  {
+    "pr_number": 1560,
+    "risk_score": 0.2196786787112554,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "infeasible",
+    "status": "no_suggestion",
+    "reason": null
+  },
+  {
+    "pr_number": 1532,
+    "risk_score": 0.8938244700431823,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 728 to 729 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  },
+  {
+    "pr_number": 1570,
+    "risk_score": 0.0904147569835186,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "verified",
+    "method_name": "abbreviate",
+    "extractions_applied": 2,
+    "still_over_threshold_after": [
+      {
+        "method": "splitWorker",
+        "complexity": 53.0
+      },
+      {
+        "method": "replaceEach",
+        "complexity": 35.0
+      },
+      {
+        "method": "splitByWholeSeparatorWorker",
+        "complexity": 27.0
+      },
+      {
+        "method": "matches",
+        "complexity": 21.0
+      },
+      {
+        "method": "getLevenshteinDistance",
+        "complexity": 16.0
+      },
+      {
+        "method": "containsAny",
+        "complexity": 14.0
+      },
+      {
+        "method": "containsNone",
+        "complexity": 14.0
+      },
+      {
+        "method": "getFuzzyDistance",
+        "complexity": 14.0
+      }
+    ],
+    "sonarqube": {
+      "before": 762.0,
+      "after": 760.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.",
+          "line": 2398
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 2960
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+          "line": 5282
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.",
+          "line": 6431
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+          "line": 7385
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 53 to the 15 allowed.",
+          "line": 7637
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.",
+          "line": 2398
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+          "line": 5292
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.",
+          "line": 6441
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+          "line": 7395
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 53 to the 15 allowed.",
+          "line": 7647
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 2,
+    "files_touched_by_pr": 2,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1570\\StringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1570\\StringUtils_after.java"
+  },
+  {
+    "pr_number": 1640,
+    "risk_score": 0.2526896719137828,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "random",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "random",
+        "complexity": 50.0
+      },
+      {
+        "method": "randomExtracted",
+        "complexity": 19.0
+      }
+    ],
+    "sonarqube": {
+      "before": 75.0,
+      "after": 75.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 73 to the 15 allowed.",
+          "line": 255
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 50 to the 15 allowed.",
+          "line": 255
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.",
+          "line": 363
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 1,
+    "files_touched_by_pr": 2,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/Validate.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1640\\RandomStringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1640\\RandomStringUtils_after.java"
+  },
+  {
+    "pr_number": 1738,
+    "risk_score": 0.1709140666325887,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "format",
+    "extractions_applied": 2,
+    "still_over_threshold_after": [
+      {
+        "method": "formatExtracted",
+        "complexity": 44.0
+      },
+      {
+        "method": "formatPeriod",
+        "complexity": 32.0
+      },
+      {
+        "method": "formatDurationWords",
+        "complexity": 18.0
+      }
+    ],
+    "sonarqube": {
+      "before": 174.0,
+      "after": 152.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 64 to the 15 allowed.",
+          "line": 248
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.",
+          "line": 436
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 37 to the 15 allowed.",
+          "line": 527
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 40 to the 15 allowed.",
+          "line": 656
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 48 to the 15 allowed.",
+          "line": 267
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.",
+          "line": 440
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 32 to the 15 allowed.",
+          "line": 531
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.",
+          "line": 665
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 2,
+    "files_touched_by_pr": 1,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1738\\DurationFormatUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1738\\DurationFormatUtils_after.java"
+  },
+  {
+    "pr_number": 1720,
+    "risk_score": 0.24160371373097103,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "formatPeriod",
+    "extractions_applied": 2,
+    "still_over_threshold_after": [
+      {
+        "method": "formatExtracted",
+        "complexity": 44.0
+      },
+      {
+        "method": "formatPeriod",
+        "complexity": 32.0
+      },
+      {
+        "method": "formatDurationWords",
+        "complexity": 18.0
+      }
+    ],
+    "sonarqube": {
+      "before": 162.0,
+      "after": 144.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 64 to the 15 allowed.",
+          "line": 247
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.",
+          "line": 435
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 37 to the 15 allowed.",
+          "line": 526
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.",
+          "line": 655
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 48 to the 15 allowed.",
+          "line": 266
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.",
+          "line": 439
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 32 to the 15 allowed.",
+          "line": 530
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.",
+          "line": 664
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 2,
+    "files_touched_by_pr": 1,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1720\\DurationFormatUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1720\\DurationFormatUtils_after.java"
+  },
+  {
+    "pr_number": 1521,
+    "risk_score": 0.7813399151961009,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "random",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "random",
+        "complexity": 40.0
+      },
+      {
+        "method": "randomExtracted",
+        "complexity": 19.0
+      }
+    ],
+    "sonarqube": {
+      "before": 65.0,
+      "after": 65.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 63 to the 15 allowed.",
+          "line": 255
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 40 to the 15 allowed.",
+          "line": 255
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.",
+          "line": 364
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 1,
+    "files_touched_by_pr": 1,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1521\\RandomStringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1521\\RandomStringUtils_after.java"
+  },
+  {
+    "pr_number": 1716,
+    "risk_score": 0.6744133591651916,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 397 to 398 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  },
+  {
+    "pr_number": 1733,
+    "risk_score": 0.13896143627663454,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "infeasible",
+    "status": "no_suggestion",
+    "reason": null
+  },
+  {
+    "pr_number": 1712,
+    "risk_score": 0.19521011352539064,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 397 to 398 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  },
+  {
+    "pr_number": 1635,
+    "risk_score": 0.16266273190577824,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 392 to 393 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  },
+  {
+    "pr_number": 1702,
+    "risk_score": 0.16668170054753623,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "verified",
+    "method_name": "createBigInteger",
+    "extractions_applied": 0,
+    "still_over_threshold_after": [
+      {
+        "method": "createNumber",
+        "complexity": 59.0
+      }
+    ],
+    "sonarqube": {
+      "before": 204.0,
+      "after": 204.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 100 to the 15 allowed.",
+          "line": 355
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 100 to the 15 allowed.",
+          "line": 355
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 0,
+    "files_touched_by_pr": 1,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1702\\NumberUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1702\\NumberUtils_after.java"
+  },
+  {
+    "pr_number": 1529,
+    "risk_score": 0.3264872340361277,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "verified",
+    "method_name": "random",
+    "extractions_applied": 1,
+    "still_over_threshold_after": [
+      {
+        "method": "random",
+        "complexity": 34.0
+      },
+      {
+        "method": "randomExtracted",
+        "complexity": 19.0
+      }
+    ],
+    "sonarqube": {
+      "before": 59.0,
+      "after": 59.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 57 to the 15 allowed.",
+          "line": 255
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.",
+          "line": 255
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.",
+          "line": 360
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 1,
+    "files_touched_by_pr": 3,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/RandomStringUtils.java",
+      "src/main/java/org/apache/commons/lang3/SerializationUtils.java",
+      "src/main/java/org/apache/commons/lang3/math/NumberUtils.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1529\\RandomStringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1529\\RandomStringUtils_after.java"
+  },
+  {
+    "pr_number": 1321,
+    "risk_score": 0.09723188435037931,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "(Extended from the naive line 7765 to 7766 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying. Multiple variables (['i', 'lastMatch', 'match', 'start']) are modified inside the extracted block AND used elsewhere in the method \u2014 a single return value can't carry all of them back. This suggestion is NOT safe to auto-apply; restructure manually (e.g. return a small result object, or keep this logic un-extracted)."
+  },
+  {
+    "pr_number": 1398,
+    "risk_score": 0.8762517046928406,
+    "action": "complexity_warning_and_refactoring_review",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "WARNING: the extracted block contains a `return` statement. This tool does not model return-forwarding, so the snippet below may return from the wrong method or with the wrong type. NOT safe to auto-apply - restructure manually (e.g. have the extracted method return a status the caller checks, or don't extract across this return). (Extended from the naive line 9292 to 9293 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying."
+  },
+  {
+    "pr_number": 1308,
+    "risk_score": 0.0644153613721331,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "(Extended from the naive line 7765 to 7766 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying. Multiple variables (['i', 'lastMatch', 'match', 'start']) are modified inside the extracted block AND used elsewhere in the method \u2014 a single return value can't carry all of them back. This suggestion is NOT safe to auto-apply; restructure manually (e.g. return a small result object, or keep this logic un-extracted)."
+  },
+  {
+    "pr_number": 1595,
+    "risk_score": 0.10251534660657247,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "threshold_unreachable",
+    "status": "unsafe_suggestion",
+    "caveat": "(Extended from the naive line 7713 to 7714 to avoid cutting off a multi-line statement mid-block.) Parameter and return types are inferred from the ORIGINAL method's own parameters and local variable declarations \u2014 usually correct, but not verified to compile. Review before applying. Multiple variables (['i', 'lastMatch', 'match', 'start']) are modified inside the extracted block AND used elsewhere in the method \u2014 a single return value can't carry all of them back. This suggestion is NOT safe to auto-apply; restructure manually (e.g. return a small result object, or keep this logic un-extracted)."
+  },
+  {
+    "pr_number": 1500,
+    "risk_score": 0.16576833138863245,
+    "action": "structural_complexity_threshold_exceeded",
+    "refactoring_suggestion_requested": true,
+    "ilp_status": "optimal",
+    "status": "verified",
+    "method_name": "replaceEach",
+    "extractions_applied": 2,
+    "still_over_threshold_after": [
+      {
+        "method": "splitWorker",
+        "complexity": 53.0
+      },
+      {
+        "method": "splitByWholeSeparatorWorker",
+        "complexity": 27.0
+      },
+      {
+        "method": "matches",
+        "complexity": 21.0
+      },
+      {
+        "method": "getLevenshteinDistance",
+        "complexity": 16.0
+      },
+      {
+        "method": "replaceEach",
+        "complexity": 16.0
+      },
+      {
+        "method": "containsAny",
+        "complexity": 14.0
+      },
+      {
+        "method": "containsNone",
+        "complexity": 14.0
+      },
+      {
+        "method": "getFuzzyDistance",
+        "complexity": 14.0
+      }
+    ],
+    "sonarqube": {
+      "before": 753.0,
+      "after": 751.0,
+      "before_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.",
+          "line": 2381
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.",
+          "line": 2942
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+          "line": 5251
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 6400
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+          "line": 7359
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 53 to the 15 allowed.",
+          "line": 7611
+        }
+      ],
+      "after_issues": [
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.",
+          "line": 2381
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+          "line": 5261
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+          "line": 6410
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+          "line": 7369
+        },
+        {
+          "message": "Refactor this method to reduce its Cognitive Complexity from 53 to the 15 allowed.",
+          "line": 7621
+        }
+      ]
+    },
+    "additional_files_refactored": [],
+    "total_extractions_applied_all_files": 2,
+    "files_touched_by_pr": 8,
+    "files_analyzed": [
+      "src/main/java/org/apache/commons/lang3/StringUtils.java",
+      "src/main/java/org/apache/commons/lang3/BooleanUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharSequenceUtils.java",
+      "src/main/java/org/apache/commons/lang3/CharUtils.java",
+      "src/main/java/org/apache/commons/lang3/ClassPathUtils.java",
+      "src/main/java/org/apache/commons/lang3/SystemProperties.java",
+      "src/main/java/org/apache/commons/lang3/SystemUtils.java",
+      "src/main/java/org/apache/commons/lang3/text/StrBuilder.java"
+    ],
+    "files_skipped_due_to_cap": [],
+    "original_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1500\\StringUtils_before.java",
+    "refactored_file": "C:\\Level 4 - 1st sem\\Level 4 - Research\\Research Implementation\\ppch-framework\\sense\\data\\processed\\pr_1500\\StringUtils_after.java"
   }
 ]

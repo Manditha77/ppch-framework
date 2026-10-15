@@ -119,7 +119,10 @@ def verify_with_sonarqube(target_filename: str, before_text: str, after_text: st
                     for issue in resp.json().get("issues", [])
                 ]
 
-            requests.post(f"{host}/api/projects/delete", params={"project": project_key}, auth=(token, ""))
+            if not os.environ.get("PPCH_KEEP_SONAR_PROJECT"):
+                requests.post(f"{host}/api/projects/delete", params={"project": project_key}, auth=(token, ""))
+            else:
+                log(f"  [verify] keeping SonarQube project for screenshot: {project_key}")
             return complexity, per_method_issues
 
     log("  [verify] Running real SonarQube scans (before/after, isolated copies)...")
